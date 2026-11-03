@@ -1,0 +1,40 @@
+name: trade
+
+on:
+  schedule:
+    # every 15 minutes, 13:00–20:45 UTC on weekdays (covers market hours in both EST and EDT)
+    - cron: "*/15 13-20 * * 1-5"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trade
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Run bot
+        env:
+          ALPACA_KEY: ${{ secrets.ALPACA_KEY }}
+          ALPACA_SECRET: ${{ secrets.ALPACA_SECRET }}
+          ALPACA_PAPER: ${{ vars.ALPACA_PAPER || 'true' }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: python bot/run.py
+      - name: Save state and status
+        run: |
+          git config user.name "wick-bot"
+          git config user.email "wick-bot@users.noreply.github.com"
+          git add state/state.json docs/status.json
+          git diff --cached --quiet || git commit -m "bot run $(date -u +%Y-%m-%dT%H:%MZ)"
+          git pull --rebase --quiet && git push --quiet

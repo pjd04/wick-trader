@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Wick Tracker</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: phone-first single column — Wick the candle up top, then today, the equity line, the signal, recent moves */
+:root {
+  --bg: #f3f5f2; --card: #ffffff; --fg: #1b2420; --muted: #66746d; --line: #dfe5e1;
+  --up: #1f9d5c; --up-soft: #d9f2e4; --down: #d6453d; --down-soft: #fbe1df;
+  --flat: #8b968f; --flat-soft: #e8ecea; --flame: #f2a33a; --face: #1b2420;
+  --display: "Fredoka", "Trebuchet MS", sans-serif;
+  --body: "Nunito Sans", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --mood: var(--flat); --mood-soft: var(--flat-soft);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111613; --card: #1a211d; --fg: #e8eee9; --muted: #98a59e; --line: #2a332e;
+  --up: #3ccf83; --up-soft: #173527; --down: #ff6b61; --down-soft: #3a1c1a;
+  --flat: #8f9a94; --flat-soft: #242b27; --flame: #ffb54d; --face: #111613; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #111613; --card: #1a211d; --fg: #e8eee9; --muted: #98a59e; --line: #2a332e;
+  --up: #3ccf83; --up-soft: #173527; --down: #ff6b61; --down-soft: #3a1c1a;
+  --flat: #8f9a94; --flat-soft: #242b27; --flame: #ffb54d; --face: #111613; color-scheme: dark }
+body.up { --mood: var(--up); --mood-soft: var(--up-soft); }
+body.down { --mood: var(--down); --mood-soft: var(--down-soft); }
+html { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.5 var(--body); }
+.wrap { max-width: 520px; margin: 0 auto; display: grid; gap: 14px; padding-block: 16px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.brand { font: 700 20px var(--display); letter-spacing: .01em; }
+.badge { font: 700 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 4px 8px; border-radius: 6px;
+  background: var(--flat-soft); color: var(--muted); }
+.badge.live { background: var(--down-soft); color: var(--down); }
+.example { font-size: 13px; color: var(--muted); background: var(--card); border: 1px dashed var(--line); border-radius: 10px; padding: 8px 12px; }
+.hero { background: var(--mood-soft); border-radius: 22px; padding: 18px 16px 20px; display: grid; justify-items: center; gap: 4px; text-align: center; transition: background .6s; }
+.stage { width: 170px; height: 190px; }
+.label { font: 600 12px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.big { font: 700 44px/1.05 var(--mono); color: var(--mood); font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.sub { font: 600 16px var(--mono); color: var(--mood); font-variant-numeric: tabular-nums; }
+.mood-line { font: 600 17px var(--display); margin-top: 6px; text-wrap: balance; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tile { background: var(--card); border-radius: 14px; padding: 12px 14px; display: grid; gap: 2px; min-width: 0; }
+.tile .v { font: 700 20px var(--mono); font-variant-numeric: tabular-nums; }
+.v.up { color: var(--up); } .v.down { color: var(--down); }
+.card { background: var(--card); border-radius: 16px; padding: 14px; display: grid; gap: 10px; min-width: 0; }
+.card h2 { font: 600 17px var(--display); margin: 0; }
+.chart { width: 100%; height: 150px; display: block; }
+.chart text { font: 10px var(--mono); fill: var(--muted); }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { font: 700 12px var(--body); padding: 5px 10px; border-radius: 999px; background: var(--flat-soft); color: var(--muted); display: inline-flex; gap: 6px; align-items: center; }
+.pill.on { background: var(--up-soft); color: var(--up); }
+.pill .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.meter { height: 10px; background: var(--flat-soft); border-radius: 99px; overflow: hidden; }
+.meter i { display: block; height: 100%; background: var(--mood); border-radius: 99px; transition: width .8s; }
+.row { display: flex; justify-content: space-between; gap: 10px; font-size: 14px; }
+.moves { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.moves li { display: flex; justify-content: space-between; gap: 10px; font-size: 14px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+.moves li:last-child { border: 0; padding: 0; }
+.tag { font: 700 11px var(--mono); text-transform: uppercase; padding: 2px 7px; border-radius: 5px; background: var(--flat-soft); color: var(--muted); }
+.tag.buy { background: var(--up-soft); color: var(--up); } .tag.sell { background: var(--down-soft); color: var(--down); }
+.foot { font-size: 12px; color: var(--muted); text-align: center; }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+/* Wick animations */
+#wick { overflow: visible; }
+.bob { animation: bob 1.6s ease-in-out infinite; transform-origin: 85px 170px; }
+body.down .bob { animation: droop 3.2s ease-in-out infinite; }
+body.flat .bob { animation: breathe 4s ease-in-out infinite; }
+.flame { animation: flicker .9s ease-in-out infinite alternate; transform-origin: 85px 32px; }
+.eye { animation: blink 4.5s infinite; transform-box: fill-box; transform-origin: center; }
+.spark { opacity: 0; } body.up .spark { animation: spark 2.4s ease-in-out infinite; }
+body.up .spark.s2 { animation-delay: .8s; } body.up .spark.s3 { animation-delay: 1.6s; }
+.sweat { opacity: 0; } body.down .sweat { animation: sweat 2.6s ease-in infinite; }
+.zzz { opacity: 0; } body.flat .zzz { animation: zz 3s ease-in-out infinite; }
+@keyframes bob { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-10px) rotate(2deg); } }
+@keyframes droop { 0%,100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg) translateY(3px); } }
+@keyframes breathe { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(.97); } }
+@keyframes flicker { from { transform: scale(1,1) rotate(-3deg); } to { transform: scale(.9,1.12) rotate(3deg); } }
+@keyframes blink { 0%,94%,100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+@keyframes spark { 0% { opacity: 0; transform: translateY(6px) scale(.6); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(-14px) scale(1.1); } }
+@keyframes sweat { 0% { opacity: 0; transform: translateY(0); } 20% { opacity: 1; } 100% { opacity: 0; transform: translateY(18px); } }
+@keyframes zz { 0% { opacity: 0; transform: translate(0,4px); } 40% { opacity: 1; } 100% { opacity: 0; transform: translate(8px,-12px); } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } .spark,.sweat,.zzz { opacity: 0 !important; } }
+</style>
+</head>
+<body class="flat">
+<div class="wrap">
+  <div class="top">
+    <div class="brand">Wick</div>
+    <span class="badge" id="mode">Paper</span>
+  </div>
+  <div class="example" id="example" hidden>Example numbers. Your bot hasn't written its first update yet.</div>
+
+  <section class="hero" aria-live="polite">
+    <svg id="wick" class="stage" viewBox="0 0 170 190" role="img" aria-label="Wick the candle">
+      <g class="bob">
+        <g class="flame"><path d="M85 8 C96 22 96 34 85 40 C74 34 74 22 85 8Z" fill="var(--flame)"/><path d="M85 22 C90 29 89 35 85 38 C81 35 80 29 85 22Z" fill="var(--card)" opacity=".7"/></g>
+        <line x1="85" y1="40" x2="85" y2="56" stroke="var(--fg)" stroke-width="4" stroke-linecap="round"/>
+        <rect x="45" y="54" width="80" height="104" rx="22" fill="var(--mood)"/>
+        <line x1="85" y1="158" x2="85" y2="176" stroke="var(--fg)" stroke-width="4" stroke-linecap="round"/>
+        <g id="eyes">
+          <ellipse class="eye" cx="70" cy="94" rx="6" ry="8" fill="var(--face)"/>
+          <ellipse class="eye" cx="100" cy="94" rx="6" ry="8" fill="var(--face)"/>
+        </g>
+        <g id="sleepy" hidden><path d="M63 95 h14 M93 95 h14" stroke="var(--face)" stroke-width="3.5" stroke-linecap="round"/></g>
+        <path id="mouth" d="M70 118 Q85 132 100 118" fill="none" stroke="var(--face)" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="60" cy="112" r="6" fill="var(--card)" opacity=".25"/><circle cx="110" cy="112" r="6" fill="var(--card)" opacity=".25"/>
+        <path class="sweat" d="M120 70 C126 80 126 86 120 88 C114 86 114 80 120 70Z" fill="#7cc4f2"/>
+      </g>
+      <path class="spark s1" d="M24 70 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4Z" fill="var(--flame)"/>
+      <path class="spark s2" d="M148 52 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3Z" fill="var(--up)"/>
+      <path class="spark s3" d="M146 128 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3Z" fill="var(--flame)"/>
+      <text class="zzz" x="128" y="62" font-family="Fredoka, sans-serif" font-size="18" font-weight="700" fill="var(--muted)">z z</text>
+    </svg>
+    <div class="label">Total profit</div>
+    <div class="big" id="total">+$0.00</div>
+    <div class="sub" id="totalPct">+0.00%</div>
+    <div class="mood-line" id="moodLine">Warming up.</div>
+  </section>
+
+  <div class="grid">
+    <div class="tile"><span class="label">Today</span><span class="v" id="day">$0.00</span></div>
+    <div class="tile"><span class="label">Account</span><span class="v" id="equity">$0.00</span></div>
+  </div>
+
+  <section class="card">
+    <h2>Account value</h2>
+    <svg class="chart" id="chart" viewBox="0 0 340 150" preserveAspectRatio="none" role="img" aria-label="Account value over time"></svg>
+  </section>
+
+  <section class="card">
+    <h2>What Wick is doing</h2>
+    <div class="row"><span>Invested in <span id="sym">UPRO</span></span><span class="mono" id="inv">0%</span></div>
+    <div class="meter"><i id="invBar" style="width:0%"></i></div>
+    <div class="row"><span class="muted">Signal target</span><span class="mono" id="target">0%</span></div>
+    <div class="pills" id="pills"></div>
+    <div class="row"><span class="muted">S&amp;P today</span><span class="mono" id="spy">0.00%</span></div>
+  </section>
+
+  <section class="card">
+    <h2>Recent moves</h2>
+    <ul class="moves" id="moves"></ul>
+  </section>
+
+  <div class="foot" id="foot">Updated —</div>
+</div>
+
+<script>
+const EXAMPLE = {
+  updated: "2026-11-03T15:45-05:00", mode: "paper", symbol: "UPRO", equity: 1094.2, start_equity: 1000,
+  total_pl: 94.2, total_pl_pct: .0942, day_pl: 12.4, day_pl_pct: .0115, position_value: 1072.3, invested_pct: .98,
+  signal: { exposure: 1, trend: 1, momentum: 1, dip_buy: 0 }, spy_day: .0041, market_open: true, halted: false,
+  history: Array.from({ length: 40 }, (_, i) => ({ date: "d" + i, equity: 1000 + i * 2.4 + Math.sin(i / 3) * 18 })),
+  actions: [{ date: "2026-10-30", action: "hold", amount: 0, exposure: 1 }, { date: "2026-10-31", action: "buy", amount: 412.5, exposure: 1 },
+            { date: "2026-11-03", action: "hold", amount: 0, exposure: 1 }]
+};
+const $ = id => document.getElementById(id);
+const money = (v, sign) => (sign && v > 0 ? "+" : v < 0 ? "−" : "") + "$" + Math.abs(v).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const pct = (v, d = 2) => (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v * 100).toFixed(d) + "%";
+
+function render(s, example) {
+  $("example").hidden = !example;
+  const up = s.total_pl >= 0;
+  const sleeping = s.halted || s.position_value < 1;
+  document.body.className = sleeping ? "flat" : up ? "up" : "down";
+  $("mouth").setAttribute("d", up ? "M70 118 Q85 132 100 118" : "M70 126 Q85 112 100 126");
+  $("eyes").hidden = sleeping; $("sleepy").hidden = !sleeping;
+  for (const id of ["total", "totalPct"]) $(id).style.color = Math.abs(s.total_pl) < .005 ? "var(--muted)" : up ? "var(--up)" : "var(--down)";
+  $("mode").textContent = s.mode === "live" ? "Live money" : "Paper";
+  $("mode").classList.toggle("live", s.mode === "live");
+  $("total").textContent = money(s.total_pl, true);
+  $("totalPct").textContent = pct(s.total_pl_pct);
+  $("moodLine").textContent = s.halted ? "Paused. Trading is stopped." :
+    sleeping ? "Sitting in cash, waiting for a signal." :
+    s.total_pl_pct > .05 ? "Riding high." : up ? "In the green." : s.total_pl_pct < -.1 ? "Rough stretch. Holding to the plan." : "A little red. Holding to the plan.";
+  $("day").textContent = money(s.day_pl, true) + "  " + pct(s.day_pl_pct);
+  $("day").className = "v " + (s.day_pl >= 0 ? "up" : "down");
+  $("equity").textContent = money(s.equity);
+  $("sym").textContent = s.symbol;
+  $("inv").textContent = Math.round(s.invested_pct * 100) + "%";
+  $("invBar").style.width = Math.min(100, Math.round(s.invested_pct * 100)) + "%";
+  $("target").textContent = Math.round(s.signal.exposure * 100) + "%";
+  $("pills").innerHTML = [["trend", "200-day trend"], ["momentum", "12-month momentum"], ["dip_buy", "Dip buy"]]
+    .map(([k, l]) => `<span class="pill ${s.signal[k] ? "on" : ""}"><span class="dot"></span>${l}</span>`).join("");
+  $("spy").textContent = pct(s.spy_day);
+  $("moves").innerHTML = (s.actions || []).slice().reverse().map(a =>
+    `<li><span class="mono">${a.date}</span><span><span class="tag ${a.action.includes("sell") ? "sell" : a.action === "buy" ? "buy" : ""}">${a.action}</span>${a.amount ? " " + money(Math.abs(a.amount)) : ""}</span></li>`).join("")
+    || `<li><span class="muted">No moves yet. Wick decides each weekday after 3:30 pm ET.</span></li>`;
+  const t = new Date(s.updated);
+  $("foot").textContent = "Updated " + (isNaN(t) ? s.updated : t.toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" })) + " · refreshes every 5 min";
+  chart(s.history || [], s.start_equity);
+}
+
+function chart(h, start) {
+  const svg = $("chart"); svg.innerHTML = "";
+  if (h.length < 2) { svg.innerHTML = `<text x="170" y="78" text-anchor="middle">The line starts after Wick's second day.</text>`; return; }
+  const W = 340, H = 150, P = 8, vals = h.map(x => x.equity);
+  const lo = Math.min(...vals, start), hi = Math.max(...vals, start), span = hi - lo || 1;
+  const X = i => P + (W - 2 * P) * i / (h.length - 1), Y = v => P + (H - 2 * P - 14) * (1 - (v - lo) / span);
+  const ns = "http://www.w3.org/2000/svg", mk = (t, a) => { const e = document.createElementNS(ns, t); for (const k in a) e.setAttribute(k, a[k]); svg.appendChild(e); return e; };
+  mk("line", { x1: P, x2: W - P, y1: Y(start), y2: Y(start), stroke: "var(--line)", "stroke-dasharray": "4 4", "vector-effect": "non-scaling-stroke" });
+  const pts = vals.map((v, i) => `${X(i).toFixed(1)},${Y(v).toFixed(1)}`);
+  mk("path", { d: `M${X(0)},${Y(start)}L${pts.join("L")}L${X(vals.length - 1)},${Y(start)}Z`, fill: "var(--mood)", "fill-opacity": .14 });
+  mk("polyline", { points: pts.join(" "), fill: "none", stroke: "var(--mood)", "stroke-width": 2.5, "stroke-linejoin": "round", "vector-effect": "non-scaling-stroke" });
+  mk("circle", { cx: X(vals.length - 1), cy: Y(vals[vals.length - 1]), r: 4, fill: "var(--mood)" });
+  const lbl = mk("text", { x: P, y: H - 2 }); lbl.textContent = "Start " + money(start);
+}
+
+async function load() {
+  try {
+    const r = await fetch("status.json?t=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) throw new Error(r.status);
+    render(await r.json(), false);
+  } catch (e) { render(EXAMPLE, true); }
+}
+load(); setInterval(load, 5 * 60 * 1000);
+</script>
+</body>
+</html>
