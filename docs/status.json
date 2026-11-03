@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T13:36-05:00",
+ "updated": "2026-11-03T18:38-05:00",
  "mode": "paper",
  "symbol": "UPRO",
  "equity": 100000.0,
@@ -16,8 +16,8 @@
   "momentum": 1,
   "dip_buy": 1
  },
- "spy_day": 0.0063,
- "market_open": true,
+ "spy_day": 0.003,
+ "market_open": false,
  "halted": false,
  "history": [
   {
@@ -27,6 +27,6 @@
  ],
  "actions": [],
  "log": [
-  "Watching. Decision after 15:30 ET."
+  "Market closed."
  ]
 }
