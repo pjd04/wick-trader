@@ -1,0 +1,32 @@
+{
+ "updated": "2026-11-03T13:36-05:00",
+ "mode": "paper",
+ "symbol": "UPRO",
+ "equity": 100000.0,
+ "start_equity": 100000.0,
+ "total_pl": 0.0,
+ "total_pl_pct": 0.0,
+ "day_pl": 0.0,
+ "day_pl_pct": 0.0,
+ "position_value": 0.0,
+ "invested_pct": 0.0,
+ "signal": {
+  "exposure": 1.0,
+  "trend": 1,
+  "momentum": 1,
+  "dip_buy": 1
+ },
+ "spy_day": 0.0063,
+ "market_open": true,
+ "halted": false,
+ "history": [
+  {
+   "date": "2026-11-03",
+   "equity": 100000.0
+  }
+ ],
+ "actions": [],
+ "log": [
+  "Watching. Decision after 15:30 ET."
+ ]
+}
