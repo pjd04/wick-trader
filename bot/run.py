@@ -40,7 +40,8 @@ class AlpacaBroker:
 
     def account(self) -> dict:
         a = self.trade.get_account()
-        return {"equity": float(a.equity), "last_equity": float(a.last_equity), "cash": float(a.cash)}
+        return {"equity": float(a.equity), "last_equity": float(a.last_equity), "cash": float(a.cash),
+                "account": str(a.account_number)}
 
     def position(self, symbol) -> dict:
         for p in self.trade.get_all_positions():
@@ -124,6 +125,12 @@ def run(broker, now=None):
     acct = broker.account()
     pos = broker.position(cfg.SYMBOL)
     equity = acct["equity"]
+    acct_id = acct.get("account", "")
+    if state.get("account") != acct_id or (ROOT / "RESET").exists():
+        # new account, paper reset, or switch to live: start the history fresh
+        state = {"account": acct_id, "start_equity": None, "peak": 0, "last_decision": None,
+                 "halted": False, "history": [], "actions": []}
+        log.append("Started fresh tracking for this account.")
     state["start_equity"] = state["start_equity"] or equity
     state["peak"] = max(state["peak"], equity)
 

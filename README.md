@@ -4,7 +4,11 @@ Runs in the cloud on GitHub Actions. Your MacBook can stay closed.
 
 - **Strategy:** the Ensemble signal (200-day trend + 12-month momentum + RSI(2) dip-buying,
   volatility-targeted), read from SPY and traded in **UPRO** (3x S&P 500).
-- **Schedule:** checks every 15 minutes on market days and trades once a day after 3:30 pm ET.
+- **Schedule:** one long session per market day (`session.yml`). It starts before the open, checks
+  every 4 minutes, trades once after 3:30 pm ET, and hands off to a fresh run before GitHub's 6-hour
+  limit. Several backup start times cover GitHub's habit of delaying or skipping timed jobs.
+- **Reset tracking:** add an empty file named `RESET` to start Wick's profit tracking over
+  (it also resets automatically when the Alpaca account changes). Delete the file afterwards.
 - **Phone page:** `docs/index.html`, published with GitHub Pages. Wick the candle turns green
   when you're up and red when you're down. Refreshes every 5 minutes.
 - **Alerts:** optional daily push notification through the free ntfy app.

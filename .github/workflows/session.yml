@@ -1,0 +1,45 @@
+name: session
+
+# One long run per trading day instead of short runs every 15 minutes (GitHub often delays or
+# skips those). Several start times are listed so a skipped one doesn't matter: whichever starts
+# first runs the session, and the rest wait in line, see it's handled, and finish in seconds.
+on:
+  schedule:
+    - cron: "41 12 * * 1-5"    # 7:41 am ET winter / 8:41 am summer (waits for the open)
+    - cron: "17 13 * * 1-5"
+    - cron: "47 14 * * 1-5"
+    - cron: "23 16 * * 1-5"
+    - cron: "53 17 * * 1-5"
+    - cron: "29 19 * * 1-5"    # last chance before the 3:30 pm ET decision
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: session
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Run trading session
+        env:
+          ALPACA_KEY: ${{ secrets.ALPACA_KEY }}
+          ALPACA_SECRET: ${{ secrets.ALPACA_SECRET }}
+          ALPACA_PAPER: ${{ vars.ALPACA_PAPER || 'true' }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "wick-bot"
+          git config user.email "wick-bot@users.noreply.github.com"
+          python bot/session.py
