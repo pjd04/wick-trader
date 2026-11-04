@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-04T13:57-05:00",
+ "updated": "2026-11-04T14:09-05:00",
  "mode": "paper",
  "symbol": "UPRO",
  "equity": 100000.0,
@@ -11,12 +11,12 @@
  "position_value": 0.0,
  "invested_pct": 0.0,
  "signal": {
-  "exposure": 0.77,
+  "exposure": 0.752,
   "trend": 1,
   "momentum": 1,
   "dip_buy": 0
  },
- "spy_day": 0.0172,
+ "spy_day": 0.0188,
  "market_open": true,
  "halted": false,
  "history": [
