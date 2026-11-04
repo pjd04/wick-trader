@@ -65,6 +65,17 @@ body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.5 var(--
 .tag { font: 700 11px var(--mono); text-transform: uppercase; padding: 2px 7px; border-radius: 5px; background: var(--flat-soft); color: var(--muted); }
 .tag.buy { background: var(--up-soft); color: var(--up); } .tag.sell { background: var(--down-soft); color: var(--down); }
 .foot { font-size: 12px; color: var(--muted); text-align: center; }
+.chead { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+.cprice { font: 700 22px var(--mono); font-variant-numeric: tabular-nums; }
+.cchg { font: 600 13px var(--mono); }
+.seg { display: inline-flex; background: var(--flat-soft); border-radius: 9px; padding: 3px; gap: 2px; }
+.seg button { font: 700 12px var(--body); border: 0; background: transparent; color: var(--muted); padding: 6px 10px; border-radius: 7px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--card); color: var(--fg); box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+.seg button:focus-visible { outline: 2px solid var(--mood); outline-offset: 1px; }
+.candles { height: 270px; margin: 0 -6px; position: relative; }
+.cempty { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); font-size: 13px; text-align: center; padding: 0 20px; }
+.keys { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+.keys b { font-weight: 700; } .keys .b { color: var(--up); } .keys .s { color: var(--down); }
 .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 
 /* Wick animations */
@@ -124,6 +135,21 @@ body.up .spark.s2 { animation-delay: .8s; } body.up .spark.s3 { animation-delay:
     <div class="mood-line" id="moodLine">Warming up.</div>
   </section>
 
+  <section class="card" aria-label="Price chart with trades">
+    <div class="chead">
+      <div>
+        <div class="label" id="csym">UPRO</div>
+        <div><span class="cprice" id="cprice">—</span> <span class="cchg" id="cchg"></span></div>
+      </div>
+      <div class="seg" role="group" aria-label="Chart range">
+        <button id="rng-day" aria-pressed="true">Today</button>
+        <button id="rng-3m" aria-pressed="false">3 months</button>
+      </div>
+    </div>
+    <div class="candles" id="candles"><div class="cempty" id="cempty" hidden></div></div>
+    <div class="keys"><span><b class="b">▲</b> Bought</span><span><b class="s">▼</b> Sold</span><span>- - Your entry price</span></div>
+  </section>
+
   <div class="grid">
     <div class="tile"><span class="label">Today</span><span class="v" id="day">$0.00</span></div>
     <div class="tile"><span class="label">Account</span><span class="v" id="equity">$0.00</span></div>
@@ -151,8 +177,24 @@ body.up .spark.s2 { animation-delay: .8s; } body.up .spark.s3 { animation-delay:
   <div class="foot" id="foot">Updated —</div>
 </div>
 
+<script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
 <script>
+const EXAMPLE_CHART = (() => {
+  const intraday = [], daily = []; let p = 92.4;
+  const t0 = Date.UTC(2026, 10, 3, 14, 30) / 1000;
+  for (let i = 0; i < 78; i++) { const o = p; p *= 1 + Math.sin(i / 7) * .0016 + (i % 5 - 2) * .0006;
+    intraday.push([t0 + i * 300, o, Math.max(o, p) * 1.0012, Math.min(o, p) * .9988, p]); }
+  let q = 80; const d0 = new Date(Date.UTC(2026, 7, 4));
+  for (let i = 0; daily.length < 64; i++) { const d = new Date(d0.getTime() + i * 864e5); if (d.getUTCDay() % 6 === 0) continue;
+    const o = q; q *= 1 + Math.sin(daily.length / 6) * .012 + .002; daily.push([d.toISOString().slice(0, 10), o, Math.max(o, q) * 1.01, Math.min(o, q) * .99, q]); }
+  const buyDay = daily[30][0], sellDay = daily[44][0], rebuy = daily[52][0];
+  const ts = s => Date.parse(s + "T20:35:00Z") / 1000;
+  return { symbol: "UPRO", intraday, daily, fills: [
+    { t: ts(buyDay), side: "buy", price: daily[30][4], qty: 10 }, { t: ts(sellDay), side: "sell", price: daily[44][4], qty: 10 },
+    { t: ts(rebuy), side: "buy", price: daily[52][4], qty: 11 }, { t: t0 + 72 * 300 + 60, side: "buy", price: intraday[72][4], qty: 2 }] };
+})();
 const EXAMPLE = {
+  chart: EXAMPLE_CHART, avg_entry: 92.1,
   updated: "2026-11-03T15:45-05:00", mode: "paper", symbol: "UPRO", equity: 1094.2, start_equity: 1000,
   total_pl: 94.2, total_pl_pct: .0942, day_pl: 12.4, day_pl_pct: .0115, position_value: 1072.3, invested_pct: .98,
   signal: { exposure: 1, trend: 1, momentum: 1, dip_buy: 0 }, spy_day: .0041, market_open: true, halted: false,
@@ -195,6 +237,7 @@ function render(s, example) {
   const t = new Date(s.updated);
   $("foot").textContent = "Updated " + (isNaN(t) ? s.updated : t.toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" })) + " · refreshes every 5 min";
   chart(s.history || [], s.start_equity);
+  drawCandles(s);
 }
 
 function chart(h, start) {
@@ -211,6 +254,87 @@ function chart(h, start) {
   mk("circle", { cx: X(vals.length - 1), cy: Y(vals[vals.length - 1]), r: 4, fill: "var(--mood)" });
   const lbl = mk("text", { x: P, y: H - 2 }); lbl.textContent = "Start " + money(start);
 }
+
+// ---------------------------------------------------------------- candle chart
+let lw = null, candles = null, entryLine = null, range = "day", lastStatus = null;
+const cssVar = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const local = t => t - new Date(t * 1000).getTimezoneOffset() * 60;          // show times in the viewer's clock
+const etDate = t => new Date(t * 1000).toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+
+function theme() {
+  if (!lw) return;
+  lw.applyOptions({ layout: { background: { type: "solid", color: cssVar("--card") }, textColor: cssVar("--muted") },
+                    grid: { vertLines: { visible: false }, horzLines: { color: cssVar("--line") } } });
+  candles.applyOptions({ upColor: cssVar("--up"), downColor: cssVar("--down"), wickUpColor: cssVar("--up"), wickDownColor: cssVar("--down") });
+  if (lastStatus) drawCandles(lastStatus);
+}
+
+function ensureChart() {
+  if (lw) return true;
+  if (!window.LightweightCharts) return false;
+  lw = LightweightCharts.createChart($("candles"), {
+    autoSize: true,
+    layout: { background: { type: "solid", color: cssVar("--card") }, textColor: cssVar("--muted"), fontFamily: "JetBrains Mono, ui-monospace, monospace", fontSize: 10 },
+    grid: { vertLines: { visible: false }, horzLines: { color: cssVar("--line") } },
+    rightPriceScale: { borderVisible: false, scaleMargins: { top: .12, bottom: .1 } },
+    timeScale: { borderVisible: false, timeVisible: true, secondsVisible: false },
+    crosshair: { mode: 0 },
+    handleScroll: { vertTouchDrag: false },
+  });
+  candles = lw.addCandlestickSeries({ borderVisible: false, priceLineVisible: false,
+    upColor: cssVar("--up"), downColor: cssVar("--down"), wickUpColor: cssVar("--up"), wickDownColor: cssVar("--down") });
+  return true;
+}
+
+function empty(msg) { $("cempty").textContent = msg; $("cempty").hidden = !msg; }
+
+function drawCandles(s) {
+  lastStatus = s;
+  const c = s.chart;
+  $("csym").textContent = (c && c.symbol) || s.symbol || "UPRO";
+  if (!c || !(c.intraday || []).length && !(c.daily || []).length) {
+    $("cprice").textContent = "—"; $("cchg").textContent = "";
+    if (lw) candles.setData([]);
+    empty("The chart appears after the bot's next update.");
+    return;
+  }
+  if (!ensureChart()) { empty("Chart couldn't load. Check your connection."); return; }
+  const day = range === "day" && c.intraday.length;
+  const rows = day ? c.intraday : c.daily;
+  const data = rows.map(b => ({ time: day ? local(b[0]) : b[0], open: b[1], high: b[2], low: b[3], close: b[4] }));
+  candles.setData(data);
+  empty("");
+
+  const sessionDay = c.intraday.length ? etDate(c.intraday[0][0]) : null;
+  const marks = (c.fills || []).filter(f => day ? etDate(f.t) === sessionDay : true).map(f => {
+    const buy = f.side === "buy";
+    // pin each trade to the candle it happened in (the latest candle at or before it)
+    const want = day ? local(f.t) : etDate(f.t);
+    let time = data[0].time;
+    for (const d of data) { if (d.time <= want) time = d.time; else break; }
+    return { time, position: buy ? "belowBar" : "aboveBar", color: cssVar(buy ? "--up" : "--down"),
+             shape: buy ? "arrowUp" : "arrowDown", text: day ? (buy ? "Bought " : "Sold ") + "$" + f.price.toFixed(2) : "" };
+  }).sort((a, b) => (a.time > b.time ? 1 : -1));
+  candles.setMarkers(marks);
+
+  if (entryLine) { candles.removePriceLine(entryLine); entryLine = null; }
+  if (s.avg_entry > 0 && s.position_value > 0)
+    entryLine = candles.createPriceLine({ price: s.avg_entry, color: cssVar("--muted"), lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: "entry" });
+  lw.timeScale().setVisibleLogicalRange({ from: -1, to: data.length + (day ? 9 : 4) });   // room for the latest label
+
+  const lastPx = rows[rows.length - 1][4], base = day ? rows[0][1] : rows[0][4];
+  $("cprice").textContent = "$" + lastPx.toFixed(2);
+  const ch = lastPx / base - 1;
+  $("cchg").textContent = pct(ch) + (day ? " today" : " · 3 mo");
+  $("cchg").style.color = ch >= 0 ? "var(--up)" : "var(--down)";
+}
+
+for (const [id, r] of [["rng-day", "day"], ["rng-3m", "3m"]]) {
+  $(id).onclick = () => { range = r; $("rng-day").setAttribute("aria-pressed", r === "day"); $("rng-3m").setAttribute("aria-pressed", r === "3m");
+    if (lastStatus) drawCandles(lastStatus); };
+}
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", theme);
+new MutationObserver(theme).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
 async function load() {
   try {

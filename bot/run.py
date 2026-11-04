@@ -65,6 +65,46 @@ class AlpacaBroker:
         t = self.data.get_stock_latest_trade(StockLatestTradeRequest(symbol_or_symbols=symbol, feed=DataFeed.IEX))
         return float(t[symbol].price)
 
+    def candles(self, symbol) -> dict:
+        """5-minute candles for the latest session and daily candles for ~3 months, for the phone chart."""
+        from alpaca.data.requests import StockBarsRequest
+        from alpaca.data.timeframe import TimeFrame, TimeFrameUnit
+        from alpaca.data.enums import DataFeed
+        now = datetime.now(ET)
+
+        def bars(tf, start):
+            df = self.data.get_stock_bars(StockBarsRequest(symbol_or_symbols=symbol, timeframe=tf,
+                                                           start=start, feed=DataFeed.IEX)).df
+            if not len(df):
+                return pd.DataFrame()
+            df = df.reset_index()
+            df["t"] = pd.to_datetime(df["timestamp"]).dt.tz_convert(ET)
+            return df
+
+        intra = bars(TimeFrame(5, TimeFrameUnit.Minute), now - timedelta(days=6))
+        out = {"intraday": [], "daily": []}
+        if len(intra):
+            mins = intra.t.dt.hour * 60 + intra.t.dt.minute
+            intra = intra[(mins >= 570) & (mins < 960)]
+            intra = intra[intra.t.dt.date == intra.t.dt.date.max()]
+            out["intraday"] = [[int(r.t.timestamp()), r.open, r.high, r.low, r.close] for r in intra.itertuples()]
+        daily = bars(TimeFrame.Day, now - timedelta(days=130))
+        if len(daily):
+            out["daily"] = [[r.t.strftime("%Y-%m-%d"), r.open, r.high, r.low, r.close] for r in daily.itertuples()]
+        return out
+
+    def fills(self, symbol, days=130) -> list:
+        from alpaca.trading.requests import GetOrdersRequest
+        from alpaca.trading.enums import QueryOrderStatus
+        req = GetOrdersRequest(status=QueryOrderStatus.CLOSED, symbols=[symbol], limit=200,
+                               after=datetime.now(ET) - timedelta(days=days))
+        out = []
+        for o in self.trade.get_orders(filter=req):
+            if o.filled_at and o.filled_avg_price and float(o.filled_qty or 0) > 0:
+                out.append({"t": int(o.filled_at.timestamp()), "side": getattr(o.side, "value", str(o.side)),
+                            "price": float(o.filled_avg_price), "qty": float(o.filled_qty)})
+        return sorted(out, key=lambda f: f["t"])
+
     def buy_dollars(self, symbol, dollars):
         from alpaca.trading.requests import MarketOrderRequest
         from alpaca.trading.enums import OrderSide, TimeInForce
@@ -194,6 +234,7 @@ def run(broker, now=None):
         "day_pl": round(equity - acct["last_equity"], 2),
         "day_pl_pct": round(equity / acct["last_equity"] - 1, 4) if acct["last_equity"] else 0,
         "position_value": round(pos["value"], 2),
+        "avg_entry": round(pos.get("avg", 0.0), 4),
         "invested_pct": round(pos["value"] / equity, 3) if equity else 0,
         "signal": {k: sig[k] for k in ("exposure", "trend", "momentum", "dip_buy")},
         "spy_day": round(spy_day, 4),
@@ -206,6 +247,13 @@ def run(broker, now=None):
     STATE.parent.mkdir(exist_ok=True)
     STATUS.parent.mkdir(exist_ok=True)
     STATE.write_text(json.dumps(state, indent=1))
+    # candle chart for the phone page; a failure here must never affect trading
+    try:
+        if hasattr(broker, "candles"):
+            status["chart"] = {"symbol": cfg.SYMBOL, **broker.candles(cfg.SYMBOL), "fills": broker.fills(cfg.SYMBOL)}
+    except Exception as e:
+        print("chart update skipped:", e, flush=True)
+        status["chart"] = load(STATUS, {}).get("chart")
     STATUS.write_text(json.dumps(status, indent=1))
     print("\n".join(log))
     return status

@@ -7,6 +7,7 @@ a single session starts before the open, runs a bot pass every few minutes, and 
 Alpaca is the source of truth for positions, so a session can stop and restart at any time.
 """
 from __future__ import annotations
+import importlib
 import json
 import os
 import subprocess
@@ -57,6 +58,24 @@ def relay() -> None:
     print("relay: started the next session segment", flush=True)
 
 
+_head = None
+
+
+def fresh_broker(broker):
+    """If new code was pulled in (publish does a git pull), reload it so updates apply mid-day."""
+    global _head, bot
+    head = subprocess.run(["git", "rev-parse", "HEAD:bot"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+    if _head is None:
+        _head = head
+    elif head and head != _head:
+        import config, strategy
+        importlib.reload(config); importlib.reload(strategy); bot = importlib.reload(bot)
+        _head = head
+        print("loaded updated bot code", flush=True)
+        return bot.AlpacaBroker()
+    return broker
+
+
 def main() -> None:
     broker = bot.AlpacaBroker()
     started = datetime.now(ET)
@@ -85,7 +104,13 @@ def main() -> None:
             time.sleep(max(30, wait))
             continue
 
-        status = bot.run(broker)
+        try:
+            broker = fresh_broker(broker)
+            status = bot.run(broker)
+        except Exception as e:  # one bad pass must not end the trading day
+            print(f"pass failed, retrying next pass: {e!r}", flush=True)
+            time.sleep(PASS_EVERY)
+            continue
         traded = any(a.get("date") == now.date().isoformat() and a.get("action") not in ("hold",)
                      for a in status.get("actions", []))
         if traded or time.time() - last_push >= PUSH_EVERY:
