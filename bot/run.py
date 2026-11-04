@@ -106,10 +106,17 @@ class AlpacaBroker:
         five = df.resample("5min").agg({"open": "first", "high": "max", "low": "min", "close": "last"}).dropna()
         rows = [[int(t.timestamp()), r.open, r.high, r.low, r.close] for t, r in five.iterrows()]
         try:
-            p = self.last_price(symbol)
-            if rows and datetime.now(ET).date() == five.index[-1].date() and self.market_open():
-                rows[-1][4] = p
-                rows[-1][2], rows[-1][3] = max(rows[-1][2], p), min(rows[-1][3], p)
+            from alpaca.data.requests import StockLatestTradeRequest
+            tr = self.data.get_stock_latest_trade(StockLatestTradeRequest(symbol_or_symbols=symbol, feed=DataFeed.IEX))[symbol]
+            p, ts = float(tr.price), tr.timestamp.astimezone(ET)
+            bucket = int(ts.replace(minute=ts.minute - ts.minute % 5, second=0, microsecond=0).timestamp())
+            if rows and ts.date() == five.index[-1].date() and 570 <= ts.hour * 60 + ts.minute < 960:
+                if bucket > rows[-1][0]:            # a newer candle has started: open it from the last close
+                    o = rows[-1][4]
+                    rows.append([bucket, o, max(o, p), min(o, p), p])
+                elif bucket == rows[-1][0]:
+                    rows[-1][4] = p
+                    rows[-1][2], rows[-1][3] = max(rows[-1][2], p), min(rows[-1][3], p)
         except Exception:
             pass
         return [[t, round(o, 4), round(h, 4), round(l, 4), round(c, 4)] for t, o, h, l, c in rows]
