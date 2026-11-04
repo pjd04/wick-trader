@@ -1,0 +1,56 @@
+2016: 45,208 bars
+2017: 42,877 bars
+2018: 45,424 bars
+2019: 45,402 bars
+2020: 46,949 bars
+2021: 46,384 bars
+2022: 46,780 bars
+2023: 46,766 bars
+2024: 47,092 bars
+2025: 47,481 bars
+2026: 40,577 bars
+2,725 trading days, 2016-01-05 to 2026-11-04
+
+=== Full ===
+                                      CAGR   Sharpe    MaxDD  WorstDay  DaysTraded  WinRate
+Hold UPRO all day                   -0.095   -0.040   -0.720    -0.169       1.000    0.521
+Opening range 30-min (long)          0.001    0.120   -0.439    -0.112       0.757    0.442
+Opening range 5-min                 -0.100   -0.405   -0.690    -0.054       0.989    0.196
+Opening range 5-min (long)          -0.011   -0.001   -0.381    -0.054       0.508    0.217
+Last-half-hour momentum             -0.168   -1.135   -0.833    -0.119       0.996    0.432
+Gap fade                            -0.173   -0.502   -0.899    -0.127       0.294    0.425
+Noise-band momentum                  0.057    0.374   -0.403    -0.144       0.600    0.413
+Noise-band momentum (1 trade/day)    0.024    0.226   -0.322    -0.086       0.600    0.364
+Noise-band momentum (long, 1/day)    0.018    0.221   -0.219    -0.050       0.332    0.392
+Wick daily (current)                 0.216    0.822   -0.366    -0.124       0.118    0.509
+Buy & hold UPRO                      0.282    0.733   -0.767    -0.349       0.000    0.000
+
+=== In-sample ===
+                                      CAGR   Sharpe    MaxDD  WorstDay  DaysTraded  WinRate
+Hold UPRO all day                   -0.112   -0.105   -0.660    -0.169       1.000    0.524
+Opening range 30-min (long)          0.028    0.234   -0.439    -0.112       0.760    0.461
+Opening range 5-min                 -0.098   -0.401   -0.488    -0.054       0.984    0.202
+Opening range 5-min (long)          -0.026   -0.119   -0.280    -0.054       0.495    0.226
+Last-half-hour momentum             -0.184   -1.061   -0.640    -0.119       0.996    0.419
+Gap fade                            -0.335   -1.301   -0.868    -0.127       0.274    0.388
+Noise-band momentum                  0.072    0.438   -0.338    -0.144       0.577    0.404
+Noise-band momentum (1 trade/day)    0.051    0.377   -0.322    -0.086       0.577    0.355
+Noise-band momentum (long, 1/day)    0.055    0.574   -0.155    -0.050       0.323    0.402
+Wick daily (current)                 0.270    0.946   -0.335    -0.124       0.096    0.576
+Buy & hold UPRO                      0.367    0.838   -0.767    -0.349       0.000    0.000
+
+=== Out-of-sample ===
+                                      CAGR   Sharpe    MaxDD  WorstDay  DaysTraded  WinRate
+Hold UPRO all day                   -0.077    0.022   -0.469    -0.145       1.000    0.519
+Opening range 30-min (long)         -0.025   -0.003   -0.405    -0.060       0.755    0.423
+Opening range 5-min                 -0.102   -0.410   -0.595    -0.023       0.995    0.191
+Opening range 5-min (long)           0.005    0.106   -0.381    -0.019       0.520    0.209
+Last-half-hour momentum             -0.152   -1.289   -0.554    -0.048       0.995    0.445
+Gap fade                             0.034    0.255   -0.437    -0.106       0.314    0.458
+Noise-band momentum                  0.042    0.307   -0.403    -0.052       0.623    0.420
+Noise-band momentum (1 trade/day)   -0.002    0.068   -0.309    -0.043       0.623    0.371
+Noise-band momentum (long, 1/day)   -0.018   -0.112   -0.219    -0.043       0.342    0.382
+Wick daily (current)                 0.164    0.687   -0.355    -0.089       0.141    0.462
+Buy & hold UPRO                      0.201    0.614   -0.645    -0.180       0.000    0.000
+
+Saved /home/runner/work/wick-trader/wick-trader/research/results/intraday_results.json
