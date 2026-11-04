@@ -1,11 +1,12 @@
 {
+ "account": "PA34J0XP5K55",
  "start_equity": 100000.0,
  "peak": 100000.0,
  "last_decision": null,
  "halted": false,
  "history": [
   {
-   "date": "2026-11-03",
+   "date": "2026-11-04",
    "equity": 100000.0
   }
  ],
