@@ -235,7 +235,10 @@ function render(s, example) {
     `<li><span class="mono">${a.date}</span><span><span class="tag ${a.action.includes("sell") ? "sell" : a.action === "buy" ? "buy" : ""}">${a.action}</span>${a.amount ? " " + money(Math.abs(a.amount)) : ""}</span></li>`).join("")
     || `<li><span class="muted">No moves yet. Wick decides each weekday after 3:30 pm ET.</span></li>`;
   const t = new Date(s.updated);
-  $("foot").textContent = "Updated " + (isNaN(t) ? s.updated : t.toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" })) + " · refreshes every 5 min";
+  const fresh = !isNaN(t) && Date.now() - t.getTime() < 4 * 60 * 1000;
+  $("foot").textContent = (fresh && s.market_open ? "● Live · " : "") + "Updated " +
+    (isNaN(t) ? s.updated : t.toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" })) +
+    (s.market_open ? " · price updates every minute" : " · market closed");
   chart(s.history || [], s.start_equity);
   drawCandles(s);
 }
@@ -336,14 +339,49 @@ for (const [id, r] of [["rng-day", "day"], ["rng-3m", "3m"]]) {
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change", theme);
 new MutationObserver(theme).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
+// The full status comes from GitHub Pages (refreshed ~every 10 min). Price, candles and account value
+// also come from the bot's minute-by-minute live feed on the `live` branch, read straight from GitHub.
+const OWNER = location.hostname.endsWith(".github.io") ? location.hostname.split(".")[0] : "pjd04";
+const REPO = location.pathname.split("/").filter(Boolean)[0] || "wick-trader";
+let base = null, live = null;
+
+function merged() {
+  if (!base) return null;
+  if (!live || new Date(live.updated) < new Date(base.updated)) return base;
+  const s = { ...base, ...live, chart: { ...(base.chart || {}), intraday: live.intraday }, signal: base.signal,
+              symbol: base.symbol, history: base.history, actions: base.actions, log: base.log };
+  const today = (base.history || []).slice(0, -1);
+  s.history = today.concat([{ date: "now", equity: live.equity }]);
+  return s;
+}
+
 async function load() {
   try {
     const r = await fetch("status.json?t=" + Date.now(), { cache: "no-store" });
     if (!r.ok) throw new Error(r.status);
-    render(await r.json(), false);
+    base = await r.json();
+    render(merged(), false);
+    loadLive();
   } catch (e) { render(EXAMPLE, true); }
 }
-load(); setInterval(load, 5 * 60 * 1000);
+
+async function loadLive() {
+  if (!base || document.hidden) return;
+  try {
+    const r = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/live.json?ref=live`, { cache: "no-cache" });
+    if (!r.ok) return;                       // rate limit or no feed yet: keep showing the Pages status
+    const j = await r.json();
+    const next = JSON.parse(atob(j.content.replace(/\n/g, "")));
+    if (live && next.updated === live.updated) return;
+    live = next;
+    render(merged(), false);
+  } catch (e) { /* offline: try again next minute */ }
+}
+
+load();
+setInterval(load, 5 * 60 * 1000);
+setInterval(loadLive, 70 * 1000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) loadLive(); });
 </script>
 </body>
 </html>

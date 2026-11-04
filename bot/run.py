@@ -81,17 +81,38 @@ class AlpacaBroker:
             df["t"] = pd.to_datetime(df["timestamp"]).dt.tz_convert(ET)
             return df
 
-        intra = bars(TimeFrame(5, TimeFrameUnit.Minute), now - timedelta(days=6))
-        out = {"intraday": [], "daily": []}
-        if len(intra):
-            mins = intra.t.dt.hour * 60 + intra.t.dt.minute
-            intra = intra[(mins >= 570) & (mins < 960)]
-            intra = intra[intra.t.dt.date == intra.t.dt.date.max()]
-            out["intraday"] = [[int(r.t.timestamp()), r.open, r.high, r.low, r.close] for r in intra.itertuples()]
+        out = {"intraday": self.intraday_candles(symbol), "daily": []}
         daily = bars(TimeFrame.Day, now - timedelta(days=130))
         if len(daily):
             out["daily"] = [[r.t.strftime("%Y-%m-%d"), r.open, r.high, r.low, r.close] for r in daily.itertuples()]
         return out
+
+    def intraday_candles(self, symbol) -> list:
+        """5-minute candles for the latest session, built from 1-minute bars so the current
+        candle is still forming, with the newest trade price as its close."""
+        from alpaca.data.requests import StockBarsRequest
+        from alpaca.data.timeframe import TimeFrame
+        from alpaca.data.enums import DataFeed
+        df = self.data.get_stock_bars(StockBarsRequest(symbol_or_symbols=symbol, timeframe=TimeFrame.Minute,
+                                                       start=datetime.now(ET) - timedelta(days=5),
+                                                       feed=DataFeed.IEX)).df
+        if not len(df):
+            return []
+        df = df.reset_index()
+        df["t"] = pd.to_datetime(df["timestamp"]).dt.tz_convert(ET)
+        mins = df.t.dt.hour * 60 + df.t.dt.minute
+        df = df[(mins >= 570) & (mins < 960)]
+        df = df[df.t.dt.date == df.t.dt.date.max()].set_index("t")
+        five = df.resample("5min").agg({"open": "first", "high": "max", "low": "min", "close": "last"}).dropna()
+        rows = [[int(t.timestamp()), r.open, r.high, r.low, r.close] for t, r in five.iterrows()]
+        try:
+            p = self.last_price(symbol)
+            if rows and datetime.now(ET).date() == five.index[-1].date() and self.market_open():
+                rows[-1][4] = p
+                rows[-1][2], rows[-1][3] = max(rows[-1][2], p), min(rows[-1][3], p)
+        except Exception:
+            pass
+        return [[t, round(o, 4), round(h, 4), round(l, 4), round(c, 4)] for t, o, h, l, c in rows]
 
     def fills(self, symbol, days=130) -> list:
         from alpaca.trading.requests import GetOrdersRequest

@@ -58,6 +58,38 @@ def relay() -> None:
     print("relay: started the next session segment", flush=True)
 
 
+def tick_live(broker) -> None:
+    """Publish price, candles and account value to the `live` branch (one commit, overwritten each
+    minute). The phone page reads it straight from GitHub, so it doesn't wait for a Pages rebuild."""
+    try:
+        import config as cfg
+        state = json.loads((ROOT / "state" / "state.json").read_text())
+        acct, pos = broker.account(), broker.position(cfg.SYMBOL)
+        start = state.get("start_equity") or acct["equity"]
+        data = {
+            "updated": datetime.now(ET).isoformat(timespec="seconds"),
+            "symbol": cfg.SYMBOL,
+            "equity": round(acct["equity"], 2),
+            "day_pl": round(acct["equity"] - acct["last_equity"], 2),
+            "day_pl_pct": round(acct["equity"] / acct["last_equity"] - 1, 4) if acct["last_equity"] else 0,
+            "total_pl": round(acct["equity"] - start, 2),
+            "total_pl_pct": round(acct["equity"] / start - 1, 4),
+            "position_value": round(pos["value"], 2),
+            "invested_pct": round(pos["value"] / acct["equity"], 3) if acct["equity"] else 0,
+            "intraday": broker.intraday_candles(cfg.SYMBOL),
+        }
+        tmp = ROOT / ".live.json"
+        tmp.write_text(json.dumps(data, separators=(",", ":")))
+        git = lambda *a, inp=None: subprocess.run(["git", *a], cwd=ROOT, input=inp, capture_output=True, text=True)
+        blob = git("hash-object", "-w", str(tmp)).stdout.strip()
+        tree = git("mktree", inp=f"100644 blob {blob}\tlive.json\n").stdout.strip()
+        commit = git("commit-tree", tree, "-m", "live price feed").stdout.strip()
+        if git("push", "-q", "-f", "origin", f"{commit}:refs/heads/live").returncode != 0:
+            print("live feed push failed", flush=True)
+    except Exception as e:  # the live feed is cosmetic; never let it disturb trading
+        print(f"live feed skipped: {e!r}", flush=True)
+
+
 _head = None
 
 
@@ -120,7 +152,10 @@ def main() -> None:
         if datetime.now(ET) - started > SEGMENT:
             relay()
             return
-        time.sleep(PASS_EVERY)
+        # between trading passes, publish the live price feed every minute
+        for _ in range(max(1, PASS_EVERY // 60)):
+            tick_live(broker)
+            time.sleep(60)
 
 
 if __name__ == "__main__":
