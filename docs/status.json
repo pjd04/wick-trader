@@ -1,23 +1,23 @@
 {
- "updated": "2026-11-05T15:28-05:00",
+ "updated": "2026-11-05T15:32-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 90507.04,
+ "equity": 90351.0,
  "start_equity": 100000.0,
- "total_pl": -9492.96,
- "total_pl_pct": -0.0949,
- "day_pl": -9057.81,
- "day_pl_pct": -0.091,
- "position_value": 64595.04,
+ "total_pl": -9649.0,
+ "total_pl_pct": -0.0965,
+ "day_pl": -9213.85,
+ "day_pl_pct": -0.0925,
+ "position_value": 64414.99,
  "avg_entry": 148.13,
- "invested_pct": 0.714,
+ "invested_pct": 0.713,
  "signal": {
-  "exposure": 0.521,
+  "exposure": 0.514,
   "trend": 1,
   "momentum": 1,
   "dip_buy": 0
  },
- "spy_day": -0.0408,
+ "spy_day": -0.0419,
  "market_open": true,
  "halted": false,
  "history": [
@@ -27,7 +27,7 @@
   },
   {
    "date": "2026-11-05",
-   "equity": 90507.04
+   "equity": 90351.0
   }
  ],
  "actions": [
@@ -36,10 +36,16 @@
    "action": "buy",
    "amount": 74088.0,
    "exposure": 0.756
+  },
+  {
+   "date": "2026-11-05",
+   "action": "sell",
+   "amount": -18927.39,
+   "exposure": 0.514
   }
  ],
  "log": [
-  "Watching. Decision after 15:30 ET."
+  "SELL 147.2834 UPRO (~$18,927.39)"
  ],
  "chart": {
   "symbol": "UPRO",
@@ -515,10 +521,17 @@
    ],
    [
     1793910300,
-    129.69,
-    129.69,
+    129.45,
+    129.45,
     129.37,
     129.37
+   ],
+   [
+    1793910600,
+    128.52,
+    128.52,
+    128.51,
+    128.51
    ]
   ],
   "daily": [
@@ -1163,8 +1176,8 @@
     "2026-11-05",
     146.545,
     146.63,
-    128.69,
-    129.69
+    128.51,
+    128.51
    ]
   ],
   "fills": [
