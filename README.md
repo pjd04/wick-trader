@@ -28,6 +28,12 @@ worst year −38%. Past results don't guarantee future ones. Not financial advic
    The page link is unlisted but not password-protected.
 4. **Run it once now:** Actions → trade → Run workflow. Then open your Pages link.
 
+## Reliable start (cron-job.org)
+GitHub's own timer can run hours late. A free cron-job.org job starts the session every weekday at
+8:20 am Central (with a 1:50 pm backup) by calling the GitHub API with a fine-grained token that can
+only run this repo's workflows. If a close is ever missed anyway, the bot catches up at the next open,
+and Wick shows a red "no check-in" warning when the bot goes quiet during market hours.
+
 ## Going live
 1. Fund your Alpaca live account and generate **live** API keys.
 2. Replace the two secrets with the live keys.

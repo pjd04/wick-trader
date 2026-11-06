@@ -236,6 +236,15 @@ function render(s, example) {
     || `<li><span class="muted">No moves yet. Wick decides each weekday after 3:30 pm ET.</span></li>`;
   const t = new Date(s.updated);
   const fresh = !isNaN(t) && Date.now() - t.getTime() < 4 * 60 * 1000;
+  // health check: during market hours the bot should check in every few minutes
+  const et = new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
+  const etMin = et.getHours() * 60 + et.getMinutes(), weekday = et.getDay() > 0 && et.getDay() < 6;
+  const quietMin = isNaN(t) ? 0 : Math.round((Date.now() - t.getTime()) / 60000);
+  const offline = !example && weekday && etMin >= 575 && etMin < 960 && quietMin > 25;
+  if (offline) {
+    $("moodLine").textContent = `No check-in from the bot for ${quietMin >= 120 ? Math.round(quietMin / 60) + " hours" : quietMin + " min"}. It may not be running.`;
+    $("moodLine").style.color = "var(--down)";
+  } else $("moodLine").style.color = "";
   $("foot").textContent = (fresh && s.market_open ? "● Live · " : "") + "Updated " +
     (isNaN(t) ? s.updated : t.toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" })) +
     (s.market_open ? " · price updates every minute" : " · market closed");

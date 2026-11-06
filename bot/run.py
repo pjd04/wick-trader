@@ -182,6 +182,14 @@ def rebalance(broker, exposure, equity, pos, price, log):
     return "sell", -qty * price
 
 
+def missed_session(state, closes) -> bool:
+    """True when the last decision is older than the previous trading day's close."""
+    last = state.get("last_decision")
+    if not last or len(closes) < 2:
+        return False   # fresh start: wait for the normal close decision
+    return last < closes.index[-2].date().isoformat()
+
+
 # ------------------------------------------------------------------ main pass
 def run(broker, now=None):
     now = now or datetime.now(ET)
@@ -232,6 +240,16 @@ def run(broker, now=None):
         action = "crash-guard sell"
         state["last_decision"] = today
         log.append(f"Crash guard: S&P {spy_day:.1%} today. Sold.")
+    elif is_open and missed_session(state, closes) and (now.hour, now.minute) < (hh, mm):
+        # the bot didn't run at yesterday's close (GitHub delay): act on the signal now, then
+        # still make today's normal decision at the close
+        action, amt = rebalance(broker, sig["exposure"], equity, pos, price, log)
+        state["last_decision"] = closes.index[-2].date().isoformat()
+        action = f"catch-up {action}"
+        state["actions"] = (state["actions"] + [{"date": today, "action": action, "amount": round(amt, 2),
+                                                  "exposure": sig["exposure"]}])[-60:]
+        log.insert(0, "Missed yesterday's close decision, caught up at the open.")
+        notify("Wick caught up", f"Missed yesterday's decision; {action} at the open.", up=True)
     elif is_open and (now.hour, now.minute) >= (hh, mm) and state["last_decision"] != today:
         action, amt = rebalance(broker, sig["exposure"], equity, pos, price, log)
         state["last_decision"] = today
