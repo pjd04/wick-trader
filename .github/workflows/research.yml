@@ -9,7 +9,7 @@ on:
         description: research script to run
         default: strategy_lab
         type: choice
-        options: [strategy_lab, self_tune, intraday_lab, learn_check]
+        options: [strategy_lab, self_tune, intraday_lab, learn_check, multi_asset]
 
 permissions:
   contents: write
