@@ -34,6 +34,19 @@ GitHub's own timer can run hours late. A free cron-job.org job starts the sessio
 only run this repo's workflows. If a close is ever missed anyway, the bot catches up at the next open,
 and Wick shows a red "no check-in" warning when the bot goes quiet during market hours.
 
+## How Wick learns (nightly review)
+After each close, `bot/learn.py`:
+- **Grades every buy and sell** by what the 3x market did over the next 1, 5 and 20 trading days
+  (the Report card on the phone page).
+- **Runs a shadow Wick** that re-tunes its four settings every quarter from the last 10 years and trades
+  only on paper. If, after 126+ trading days, the shadow beats the live settings by a Sharpe margin of 0.3
+  and on total return, its settings are promoted to live (`state/params.json`) and you get a notification.
+  Delete `state/params.json` to go back to the defaults.
+
+Why so strict: in walk-forward tests (research/self_tune.py) every self-tuning variant did worse than the
+fixed settings from 2000 and from 2016 on (daily re-tuning: 15.2%/yr vs 19.4%), because the best settings
+in one period rarely stay best in the next.
+
 ## Going live
 1. Fund your Alpaca live account and generate **live** API keys.
 2. Replace the two secrets with the live keys.
