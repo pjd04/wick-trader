@@ -1,0 +1,69 @@
+12 markets, 2016-01-04 to 2026-11-06
+first full date per market: {'DBC': '2016-01-04', 'EEM': '2016-01-04', 'EFA': '2016-01-04', 'GLD': '2016-01-04', 'IEF': '2016-01-04', 'IWM': '2016-01-04', 'QQQ': '2016-01-04', 'SLV': '2016-01-04', 'SPY': '2016-01-04', 'TLT': '2016-01-04', 'USO': '2016-01-04', 'UUP': '2016-01-04'}
+
+=== Full (warm-up excluded) ===
+                                                    CAGR     Vol  Sharpe   MaxDD  WorstYear  PositiveYears
+Wick now: S&P only (UPRO)                          0.202   0.292   0.779  -0.360     -0.297          0.800
+Wick on Nasdaq only (TQQQ)                         0.267   0.327   0.891  -0.411     -0.232          0.800
+All 12 markets, Wick signal, 20% vol               0.077   0.182   0.499  -0.380     -0.202          0.700
+All 12 markets, trend+momentum, 20% vol            0.080   0.185   0.510  -0.363     -0.181          0.700
+All 12 markets, momentum blend, 20% vol            0.089   0.184   0.555  -0.344     -0.208          0.800
+Stocks only (5 markets), Wick signal, 20% vol      0.087   0.224   0.486  -0.390     -0.331          0.700
+All 12 markets, Wick signal, 30% vol               0.081   0.208   0.480  -0.439     -0.248          0.700
+All 12 markets, trend+momentum, 30% vol            0.088   0.215   0.500  -0.439     -0.242          0.700
+All 12 markets, momentum blend, 30% vol            0.100   0.211   0.557  -0.418     -0.262          0.700
+Stocks only (5 markets), Wick signal, 30% vol      0.100   0.299   0.470  -0.476     -0.387          0.700
+Stocks + Treasuries + gold, Wick signal, 30% vol   0.019   0.234   0.200  -0.619     -0.500          0.600
+Buy & hold S&P (1x)                                0.145   0.179   0.844  -0.338     -0.182          0.800
+Buy & hold 3x S&P                                  0.269   0.538   0.716  -0.758     -0.572          0.800
+
+=== 2020-now ===
+                                                    CAGR     Vol  Sharpe   MaxDD  WorstYear  PositiveYears
+Wick now: S&P only (UPRO)                          0.194   0.298   0.745  -0.360     -0.297          0.857
+Wick on Nasdaq only (TQQQ)                         0.275   0.324   0.914  -0.284     -0.232          0.857
+All 12 markets, Wick signal, 20% vol               0.083   0.190   0.513  -0.380     -0.127          0.714
+All 12 markets, trend+momentum, 20% vol            0.073   0.195   0.459  -0.363     -0.172          0.714
+All 12 markets, momentum blend, 20% vol            0.076   0.194   0.475  -0.344     -0.208          0.857
+Stocks only (5 markets), Wick signal, 20% vol      0.075   0.225   0.434  -0.389     -0.331          0.714
+All 12 markets, Wick signal, 30% vol               0.097   0.220   0.534  -0.439     -0.201          0.714
+All 12 markets, trend+momentum, 30% vol            0.095   0.229   0.510  -0.439     -0.242          0.714
+All 12 markets, momentum blend, 30% vol            0.098   0.226   0.527  -0.418     -0.262          0.714
+Stocks only (5 markets), Wick signal, 30% vol      0.085   0.313   0.420  -0.460     -0.387          0.714
+Stocks + Treasuries + gold, Wick signal, 30% vol  -0.001   0.248   0.122  -0.619     -0.500          0.571
+Buy & hold S&P (1x)                                0.145   0.197   0.785  -0.338     -0.182          0.857
+Buy & hold 3x S&P                                  0.243   0.591   0.668  -0.758     -0.572          0.857
+
+=== 2022-now ===
+                                                    CAGR     Vol  Sharpe   MaxDD  WorstYear  PositiveYears
+Wick now: S&P only (UPRO)                          0.133   0.281   0.587  -0.354     -0.297          0.800
+Wick on Nasdaq only (TQQQ)                         0.198   0.309   0.742  -0.284     -0.232          0.800
+All 12 markets, Wick signal, 20% vol               0.056   0.190   0.381  -0.380     -0.127          0.600
+All 12 markets, trend+momentum, 20% vol            0.046   0.194   0.329  -0.363     -0.172          0.600
+All 12 markets, momentum blend, 20% vol            0.036   0.193   0.280  -0.344     -0.208          0.800
+Stocks only (5 markets), Wick signal, 20% vol      0.046   0.219   0.316  -0.353     -0.331          0.600
+All 12 markets, Wick signal, 30% vol               0.059   0.216   0.374  -0.439     -0.201          0.600
+All 12 markets, trend+momentum, 30% vol            0.053   0.226   0.342  -0.439     -0.242          0.600
+All 12 markets, momentum blend, 30% vol            0.042   0.221   0.297  -0.418     -0.262          0.600
+Stocks only (5 markets), Wick signal, 30% vol      0.048   0.299   0.307  -0.409     -0.387          0.600
+Stocks + Treasuries + gold, Wick signal, 30% vol  -0.043   0.255  -0.046  -0.563     -0.500          0.600
+Buy & hold S&P (1x)                                0.110   0.173   0.687  -0.245     -0.182          0.800
+Buy & hold 3x S&P                                  0.165   0.520   0.554  -0.645     -0.572          0.800
+
+=== Equal risk (scaled to S&P-only Wick's volatility) ===
+                                                   scale    CAGR  Sharpe   MaxDD  WorstYear
+Wick now: S&P only (UPRO)                          1.000   0.202   0.779  -0.360     -0.297
+Wick on Nasdaq only (TQQQ)                         0.893   0.242   0.891  -0.374     -0.210
+All 12 markets, Wick signal, 20% vol               1.605   0.108   0.499  -0.550     -0.316
+All 12 markets, trend+momentum, 20% vol            1.575   0.112   0.510  -0.522     -0.283
+All 12 markets, momentum blend, 20% vol            1.588   0.126   0.555  -0.503     -0.321
+Stocks only (5 markets), Wick signal, 20% vol      1.304   0.104   0.486  -0.485     -0.411
+All 12 markets, Wick signal, 30% vol               1.405   0.102   0.480  -0.568     -0.340
+All 12 markets, trend+momentum, 30% vol            1.354   0.108   0.500  -0.553     -0.324
+All 12 markets, momentum blend, 30% vol            1.380   0.127   0.557  -0.538     -0.353
+Stocks only (5 markets), Wick signal, 30% vol      0.976   0.098   0.470  -0.466     -0.379
+Stocks + Treasuries + gold, Wick signal, 30% vol   1.247   0.015   0.200  -0.707     -0.582
+Buy & hold S&P (1x)                                1.626   0.226   0.844  -0.503     -0.300
+Buy & hold 3x S&P                                  0.542   0.181   0.716  -0.504     -0.325
+
+Average exposure by market (best multi-market variant shown in JSON)
+saved results/multi_asset_results.json
