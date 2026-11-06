@@ -1,0 +1,10 @@
+{
+ "live_settings": "200/252/10/0.15",
+ "shadow_settings": "200/252/5/0.1",
+ "shadow_since": "2026-11-06",
+ "days": 0,
+ "hit_rate_5d": null,
+ "graded": 0
+}
+{'date': '2026-11-04', 'action': 'buy', 'amount': 74088.0, 'exposure': 0.756, 'after_1d': -0.1323, 'good_1d': False}
+{'date': '2026-11-05', 'action': 'sell', 'amount': -18927.39, 'exposure': 0.514, 'after_1d': 0.025, 'good_1d': False}
