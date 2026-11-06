@@ -19,6 +19,7 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).parent))
 import config as cfg
 from strategy import ensemble
+from learn import live_params
 
 ROOT = Path(__file__).resolve().parent.parent
 STATE = ROOT / "state" / "state.json"
@@ -53,9 +54,18 @@ class AlpacaBroker:
         from alpaca.data.requests import StockBarsRequest
         from alpaca.data.timeframe import TimeFrame
         from alpaca.data.enums import DataFeed
-        req = StockBarsRequest(symbol_or_symbols=symbol, timeframe=TimeFrame.Day,
-                               start=datetime.now(ET) - timedelta(days=800), feed=DataFeed.IEX)
-        df = self.data.get_stock_bars(req).df.reset_index()
+        from alpaca.data.enums import Adjustment
+        start = datetime.now(ET) - timedelta(days=800)
+        try:
+            # full-market (SIP) closes, same as the backtests; the free plan allows SIP data older than 15 min
+            req = StockBarsRequest(symbol_or_symbols=symbol, timeframe=TimeFrame.Day, start=start,
+                                   end=datetime.now(ET) - timedelta(minutes=16), feed=DataFeed.SIP,
+                                   adjustment=Adjustment.ALL)
+            df = self.data.get_stock_bars(req).df.reset_index()
+        except Exception as e:
+            print("SIP history unavailable, using IEX:", e, flush=True)
+            req = StockBarsRequest(symbol_or_symbols=symbol, timeframe=TimeFrame.Day, start=start, feed=DataFeed.IEX)
+            df = self.data.get_stock_bars(req).df.reset_index()
         s = df.set_index(pd.to_datetime(df["timestamp"]).dt.tz_convert(ET).dt.normalize())["close"]
         return s[~s.index.duplicated(keep="last")].astype(float)
 
@@ -217,7 +227,7 @@ def run(broker, now=None):
         closes = pd.concat([closes, pd.Series([spy_now], index=[pd.Timestamp(now.date(), tz=ET)])])
     else:
         closes.iloc[-1] = spy_now
-    sig = ensemble(closes)
+    sig = ensemble(closes, live_params())
     spy_day = spy_now / closes.iloc[-2] - 1
     price = broker.last_price(cfg.SYMBOL) if is_open or pos["qty"] else 0.0
 
@@ -261,6 +271,8 @@ def run(broker, now=None):
                f"Decision: {action} · target {sig['exposure']:.0%} in {cfg.SYMBOL}", up=total >= 0)
     elif not is_open:
         log.append("Market closed.")
+    elif state["last_decision"] == today:
+        log.append("Today's decision is done. Watching until the close.")
     else:
         log.append(f"Watching. Decision after {cfg.DECIDE_AFTER_ET} ET.")
 
@@ -282,7 +294,7 @@ def run(broker, now=None):
         "position_value": round(pos["value"], 2),
         "avg_entry": round(pos.get("avg", 0.0), 4),
         "invested_pct": round(pos["value"] / equity, 3) if equity else 0,
-        "signal": {k: sig[k] for k in ("exposure", "trend", "momentum", "dip_buy")},
+        "signal": {k: sig[k] for k in ("exposure", "trend", "momentum", "dip_buy", "params")},
         "spy_day": round(spy_day, 4),
         "market_open": is_open,
         "halted": state["halted"] or stop_file,

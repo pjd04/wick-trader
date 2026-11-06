@@ -169,6 +169,18 @@ body.up .spark.s2 { animation-delay: .8s; } body.up .spark.s3 { animation-delay:
     <div class="row"><span class="muted">S&amp;P today</span><span class="mono" id="spy">0.00%</span></div>
   </section>
 
+  <section class="card" id="learnCard">
+    <h2>Report card</h2>
+    <div class="row"><span class="muted">Calls that worked out (5 days later)</span><span class="mono" id="hit">—</span></div>
+    <ul class="moves" id="grades"><li><span class="muted">First review runs tonight after the close.</span></li></ul>
+    <div class="label" style="margin-top:4px">Learning</div>
+    <div class="row"><span>Live settings</span><span class="mono" id="liveSet">—</span></div>
+    <div class="row"><span>Shadow Wick is testing</span><span class="mono" id="shadowSet">—</span></div>
+    <div class="row"><span class="muted">Shadow vs live since <span id="since">—</span></span><span class="mono" id="vs">—</span></div>
+    <div class="meter" title="Days of evidence before the shadow can take over"><i id="learnBar" style="width:0%"></i></div>
+    <div class="muted" style="font-size:12px" id="learnNote">The shadow re-tunes itself every quarter and trades on paper. It takes over only if it clearly beats the live settings over 6 months.</div>
+  </section>
+
   <section class="card">
     <h2>Recent moves</h2>
     <ul class="moves" id="moves"></ul>
@@ -387,8 +399,33 @@ async function loadLive() {
   } catch (e) { /* offline: try again next minute */ }
 }
 
+const SET_LABEL = k => { const [t, m, d, v] = String(k).split("/"); return `${t}d trend · ${Math.round(m / 21)}mo mom · RSI<${d} · ${Math.round(v * 100)}% vol`; };
+
+async function loadLearning() {
+  let L;
+  try { const r = await fetch("learning.json?t=" + Date.now(), { cache: "no-store" }); if (!r.ok) return; L = await r.json(); }
+  catch (e) { return; }
+  $("hit").textContent = L.hit_rate_5d == null ? "not enough trades yet" : `${Math.round(L.hit_rate_5d * 100)}% of ${L.graded}`;
+  const rows = (L.report_card || []).filter(r => r.action !== "hold").slice(-6).reverse();
+  $("grades").innerHTML = rows.map(r => {
+    const g = r.good_5d, mark = g == null ? (r.after_1d == null ? "pending" : "5d pending") : g ? "✓ good call" : "✗ missed";
+    const cls = g == null ? "" : g ? "buy" : "sell";
+    const after = r.after_5d != null ? r.after_5d : r.after_1d;
+    return `<li><span><span class="mono">${r.date}</span> ${r.action}</span><span><span class="mono muted">${after == null ? "" : "3x mkt " + pct(after, 1) + " "}</span><span class="tag ${cls}">${mark}</span></span></li>`;
+  }).join("") || `<li><span class="muted">No buys or sells to grade yet.</span></li>`;
+  $("liveSet").textContent = SET_LABEL(L.live_settings);
+  $("shadowSet").textContent = L.shadow_settings === L.live_settings ? "same as live" : SET_LABEL(L.shadow_settings);
+  $("since").textContent = L.shadow_since;
+  $("vs").textContent = L.days ? `${pct(L.shadow.total, 1)} vs ${pct(L.live.total, 1)}` : "starts tonight";
+  $("learnBar").style.width = Math.min(100, Math.round(L.days / L.days_needed * 100)) + "%";
+  $("learnNote").textContent = L.just_promoted ? `Wick just switched to the shadow's settings (${SET_LABEL(L.just_promoted)}).` :
+    `${L.days} of ${L.days_needed} trading days of evidence. The shadow re-tunes every quarter and takes over only if it clearly beats the live settings.`;
+}
+
 load();
+loadLearning();
 setInterval(load, 5 * 60 * 1000);
+setInterval(loadLearning, 30 * 60 * 1000);
 setInterval(loadLive, 70 * 1000);
 document.addEventListener("visibilitychange", () => { if (!document.hidden) loadLive(); });
 </script>

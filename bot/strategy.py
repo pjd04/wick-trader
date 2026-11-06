@@ -47,10 +47,15 @@ def vol_scale(px, target=0.15, n=20, cap=1.5):
     return (target / vol).clip(upper=cap).fillna(0)
 
 
-def ensemble(px: pd.Series) -> dict:
-    t, m, d = trend(px), momentum(px), dip_buy(px)
-    exposure = ((t + m + d) / 3 * vol_scale(px)).clip(upper=1.0)
+DEFAULT_PARAMS = {"trend": 200, "mom": 252, "dip": 10, "vol": 0.15}
+
+
+def ensemble(px: pd.Series, params: dict | None = None) -> dict:
+    p = {**DEFAULT_PARAMS, **(params or {})}
+    t, m, d = trend(px, p["trend"]), momentum(px, p["mom"]), dip_buy(px, entry=p["dip"])
+    exposure = ((t + m + d) / 3 * vol_scale(px, target=p["vol"])).clip(upper=1.0)
     return {
+        "params": p,
         "exposure": round(float(exposure.iloc[-1]), 3),
         "trend": int(t.iloc[-1]),
         "momentum": int(m.iloc[-1]),

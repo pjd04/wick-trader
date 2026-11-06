@@ -33,7 +33,7 @@ def sh(*args) -> int:
 
 
 def publish(note: str) -> None:
-    sh("git", "add", "state/state.json", "docs/status.json")
+    sh("git", "add", "-A", "state", "docs")
     if sh("git", "diff", "--cached", "--quiet") == 0:
         return
     sh("git", "commit", "-q", "-m", f"bot: {note}")
@@ -123,6 +123,14 @@ def main() -> None:
         if not open_today:
             # market is done for the day (or a holiday): one last update, then stop
             status = bot.run(broker)
+            try:
+                import learn
+                rep = learn.nightly(broker, json.loads((ROOT / "state" / "state.json").read_text()), notify=bot.notify)
+                if rep:
+                    print(f"nightly review: shadow {rep['shadow_settings']} vs live {rep['live_settings']}, "
+                          f"{rep['days']}/{rep['days_needed']} days", flush=True)
+            except Exception as e:  # the review must never block the closing update
+                print(f"nightly review skipped: {e!r}", flush=True)
             publish("closing update")
             print("market closed for the day; session over", flush=True)
             return
