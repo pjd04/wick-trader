@@ -1,0 +1,41 @@
+closes 1950-01-03 to 2026-11-06
+81 setting combinations backtested
+
+=== 1970-now ===
+                                                       CAGR   Sharpe    MaxDD  WorstYear
+Fixed (current Wick)                                  0.124    0.574   -0.465     -0.382
+Self-tune: 3-yr window, monthly                       0.106    0.529   -0.561     -0.488
+Self-tune: 5-yr window, monthly                       0.106    0.526   -0.447     -0.362
+Self-tune: 10-yr window, quarterly                    0.116    0.551   -0.467     -0.364
+Self-tune: all history, yearly                        0.121    0.561   -0.612     -0.386
+Self-tune: 5-yr, monthly, sticky                      0.101    0.513   -0.474     -0.321
+Self-tune: 5-yr, monthly, by return/drop              0.102    0.512   -0.467     -0.400
+Daily self-tune: 1-yr window                          0.114    0.555   -0.524     -0.457
+Hindsight best 250/126/10/0.15 (not possible live)    0.132    0.603   -0.522     -0.375
+
+=== 2000-now ===
+                                                     CAGR   Sharpe    MaxDD  WorstYear
+Fixed (current Wick)                                0.084    0.438   -0.427     -0.382
+Self-tune: 3-yr window, monthly                     0.062    0.363   -0.519     -0.488
+Self-tune: 5-yr window, monthly                     0.061    0.358   -0.447     -0.362
+Self-tune: 10-yr window, quarterly                  0.073    0.398   -0.467     -0.364
+Self-tune: all history, yearly                      0.063    0.366   -0.561     -0.386
+Self-tune: 5-yr, monthly, sticky                    0.065    0.372   -0.474     -0.317
+Self-tune: 5-yr, monthly, by return/drop            0.058    0.353   -0.444     -0.400
+Daily self-tune: 1-yr window                        0.062    0.364   -0.502     -0.457
+Hindsight best 200/189/5/0.2 (not possible live)    0.097    0.460   -0.495     -0.442
+
+=== 2016-now ===
+                                                      CAGR   Sharpe    MaxDD  WorstYear
+Fixed (current Wick)                                 0.194    0.766   -0.361     -0.297
+Self-tune: 3-yr window, monthly                      0.189    0.759   -0.485     -0.403
+Self-tune: 5-yr window, monthly                      0.148    0.625   -0.447     -0.362
+Self-tune: 10-yr window, quarterly                   0.177    0.685   -0.467     -0.364
+Self-tune: all history, yearly                       0.162    0.671   -0.400     -0.296
+Self-tune: 5-yr, monthly, sticky                     0.145    0.617   -0.474     -0.223
+Self-tune: 5-yr, monthly, by return/drop             0.133    0.589   -0.444     -0.304
+Daily self-tune: 1-yr window                         0.152    0.652   -0.479     -0.366
+Hindsight best 200/189/10/0.2 (not possible live)    0.219    0.779   -0.428     -0.332
+
+Current Wick's rank among 81 settings, by decade: {'1970s': 49, '1980s': 51, '1990s': 22, '2000s': 19, '2010s': 65, '2020s': 24}
+saved self_tune_results.json
