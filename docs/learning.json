@@ -1,0 +1,49 @@
+{
+ "updated": "2026-11-06T16:01-05:00",
+ "live_settings": "200/252/10/0.15",
+ "shadow_settings": "200/252/5/0.1",
+ "shadow_since": "2026-11-06",
+ "days": 0,
+ "days_needed": 126,
+ "live": {
+  "total": 0.0,
+  "sharpe": 0.0
+ },
+ "shadow": {
+  "total": 0.0,
+  "sharpe": 0.0
+ },
+ "promotions": [],
+ "just_promoted": null,
+ "report_card": [
+  {
+   "date": "2026-11-04",
+   "action": "buy",
+   "amount": 74088.0,
+   "exposure": 0.756,
+   "after_1d": -0.1323,
+   "good_1d": false
+  },
+  {
+   "date": "2026-11-05",
+   "action": "sell",
+   "amount": -18927.39,
+   "exposure": 0.514,
+   "after_1d": 0.0097,
+   "good_1d": false
+  },
+  {
+   "date": "2026-11-06",
+   "action": "hold",
+   "amount": 0.0,
+   "exposure": 0.497
+  }
+ ],
+ "hit_rate_5d": null,
+ "graded": 0,
+ "research": {
+  "fixed_2016_now": 0.194,
+  "best_self_tune_2016_now": 0.189,
+  "daily_self_tune_2016_now": 0.152
+ }
+}
