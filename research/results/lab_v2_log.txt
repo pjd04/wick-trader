@@ -1,0 +1,111 @@
+daily closes 1950-01-03 to 2026-11-06 (19,335)
+AI boosted trees: walk-forward done (12s), accuracy 0.525 vs 0.530 up-days
+AI random forest: walk-forward done (81s), accuracy 0.531 vs 0.530 up-days
+
+=== DAILY 1970-now ===
+                                   CAGR   Sharpe    MaxDD  WorstYear  InMarket
+Wick now (Ensemble)               0.124    0.574   -0.465     -0.382     0.804
+Momentum 3-month                  0.095    0.444   -0.854     -0.549     0.668
+Momentum 6-month                  0.142    0.563   -0.703     -0.442     0.704
+Momentum 9-month                  0.134    0.538   -0.810     -0.463     0.737
+Momentum 12-month                 0.107    0.466   -0.883     -0.643     0.754
+Momentum blend 3-12m              0.131    0.546   -0.690     -0.461     0.856
+Momentum blend, monthly           0.118    0.502   -0.785     -0.402     0.852
+50/200 cross + ATR trail          0.014    0.167   -0.764     -0.330     0.337
+Swing pullback (RSI 40)           0.005    0.162   -0.183     -0.124     0.006
+Bollinger mean reversion          0.030    0.256   -0.788     -0.657     0.142
+Volatility squeeze breakout      -0.011   -0.060   -0.810     -0.263     0.062
+AI boosted trees (>50%)           0.178    0.611   -0.994     -0.897     0.689
+AI boosted trees (>55%)           0.183    0.718   -0.957     -0.504     0.408
+AI boosted trees (>60%)           0.183    1.059   -0.415     -0.165     0.164
+AI boosted trees + Wick filter    0.125    0.641   -0.759     -0.315     0.584
+AI random forest (>50%)           0.235    0.720   -0.989     -0.844     0.703
+AI random forest (>55%)           0.223    0.880   -0.889     -0.340     0.388
+AI random forest (>60%)           0.087    0.730   -0.495     -0.160     0.111
+AI random forest + Wick filter    0.150    0.731   -0.763     -0.330     0.601
+Buy & hold 3x                     0.084    0.420   -0.987     -0.871     1.000
+
+=== DAILY 2000-now ===
+                                   CAGR   Sharpe    MaxDD  WorstYear  InMarket
+Wick now (Ensemble)               0.084    0.438   -0.427     -0.382     0.809
+Momentum 3-month                  0.030    0.257   -0.832     -0.549     0.679
+Momentum 6-month                  0.085    0.410   -0.684     -0.442     0.716
+Momentum 9-month                  0.115    0.485   -0.584     -0.463     0.752
+Momentum 12-month                 0.090    0.418   -0.641     -0.539     0.764
+Momentum blend 3-12m              0.091    0.432   -0.597     -0.461     0.864
+Momentum blend, monthly           0.101    0.452   -0.681     -0.402     0.854
+50/200 cross + ATR trail         -0.006    0.062   -0.664     -0.303     0.366
+Swing pullback (RSI 40)          -0.002   -0.027   -0.167     -0.124     0.008
+Bollinger mean reversion          0.026    0.243   -0.777     -0.530     0.139
+Volatility squeeze breakout      -0.040   -0.361   -0.745     -0.263     0.060
+AI boosted trees (>50%)          -0.088    0.036   -0.994     -0.897     0.747
+AI boosted trees (>55%)          -0.054   -0.028   -0.957     -0.504     0.363
+AI boosted trees (>60%)           0.007    0.121   -0.415     -0.165     0.064
+AI boosted trees + Wick filter    0.003    0.133   -0.759     -0.315     0.643
+AI random forest (>50%)          -0.067    0.099   -0.989     -0.844     0.770
+AI random forest (>55%)          -0.025    0.042   -0.889     -0.340     0.341
+AI random forest (>60%)          -0.014   -0.163   -0.495     -0.160     0.032
+AI random forest + Wick filter    0.023    0.214   -0.736     -0.330     0.664
+Buy & hold 3x                     0.020    0.324   -0.987     -0.871     1.000
+
+=== DAILY 2016-now ===
+                                   CAGR   Sharpe    MaxDD  WorstYear  InMarket
+Wick now (Ensemble)               0.194    0.766   -0.361     -0.297     0.894
+Momentum 3-month                  0.171    0.638   -0.576     -0.549     0.774
+Momentum 6-month                  0.152    0.575   -0.592     -0.442     0.811
+Momentum 9-month                  0.234    0.743   -0.584     -0.393     0.844
+Momentum 12-month                 0.200    0.657   -0.592     -0.504     0.842
+Momentum blend 3-12m              0.200    0.701   -0.513     -0.461     0.923
+Momentum blend, monthly           0.191    0.647   -0.681     -0.402     0.914
+50/200 cross + ATR trail          0.082    0.496   -0.397     -0.147     0.457
+Swing pullback (RSI 40)          -0.007   -0.111   -0.167     -0.093     0.014
+Bollinger mean reversion          0.029    0.254   -0.627     -0.328     0.120
+Volatility squeeze breakout      -0.002    0.022   -0.299     -0.151     0.076
+AI boosted trees (>50%)           0.130    0.499   -0.650     -0.439     0.818
+AI boosted trees (>55%)           0.096    0.462   -0.515     -0.403     0.361
+AI boosted trees (>60%)           0.023    0.320   -0.200     -0.111     0.051
+AI boosted trees + Wick filter    0.110    0.534   -0.392     -0.235     0.751
+AI random forest (>50%)           0.168    0.568   -0.706     -0.647     0.866
+AI random forest (>55%)           0.056    0.341   -0.407     -0.291     0.351
+AI random forest (>60%)           0.011    0.179   -0.233     -0.058     0.025
+AI random forest + Wick filter    0.171    0.724   -0.332     -0.267     0.795
+Buy & hold 3x                     0.271    0.724   -0.758     -0.572     1.000
+2016: 45,208 bars
+2017: 42,877 bars
+2018: 45,424 bars
+2019: 45,402 bars
+2020: 46,949 bars
+2021: 46,384 bars
+2022: 46,780 bars
+2023: 46,766 bars
+2024: 47,092 bars
+2025: 47,481 bars
+2026: 40,930 bars
+intraday days 2016-01-05 to 2026-11-05 (2,726) [357s]
+intraday AI accuracy 0.519 vs 0.522 up-moves
+
+=== INTRADAY 2018-now ===
+                                           CAGR   Sharpe    MaxDD  WorstYear  InMarket  WinRate
+Scalp VWAP bounce (long+short)           -0.352   -4.484   -0.978     -0.492     0.863    0.376
+Scalp VWAP bounce (long only)            -0.198   -3.390   -0.860     -0.261     0.548    0.382
+Scalp VWAP bounce (1 trade/day)          -0.160   -3.024   -0.790     -0.190     0.863    0.441
+Scalp Bollinger reversion                -0.220   -1.603   -0.888     -0.350     0.696    0.415
+Opening range breakout (article rules)   -0.113   -0.460   -0.752     -0.433     0.998    0.284
+Noise-band momentum (previous best)       0.089    0.507   -0.406     -0.142     0.603    0.423
+Intraday AI, boosted trees (55/45)       -0.216   -1.881   -0.888     -0.603     0.389    0.427
+Intraday AI, boosted trees (60/40)       -0.043   -0.590   -0.371     -0.187     0.167    0.478
+Wick now (Ensemble, daily)                0.165    0.660   -0.361     -0.297     0.892    0.553
+
+=== INTRADAY 2022-now ===
+                                           CAGR   Sharpe    MaxDD  WorstYear  InMarket  WinRate
+Scalp VWAP bounce (long+short)           -0.344   -4.404   -0.870     -0.387     0.863    0.377
+Scalp VWAP bounce (long only)            -0.215   -3.598   -0.689     -0.257     0.554    0.368
+Scalp VWAP bounce (1 trade/day)          -0.169   -3.177   -0.597     -0.190     0.863    0.442
+Scalp Bollinger reversion                -0.268   -2.239   -0.777     -0.350     0.676    0.398
+Opening range breakout (article rules)   -0.007    0.069   -0.353     -0.226     0.998    0.298
+Noise-band momentum (previous best)       0.058    0.381   -0.406     -0.142     0.623    0.421
+Intraday AI, boosted trees (55/45)       -0.116   -1.252   -0.473     -0.185     0.263    0.466
+Intraday AI, boosted trees (60/40)       -0.015   -0.452   -0.074     -0.066     0.037    0.489
+Wick now (Ensemble, daily)                0.134    0.590   -0.355     -0.297     0.859    0.543
+
+Saved results/lab_v2_results.json in 361s
