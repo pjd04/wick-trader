@@ -1,7 +1,7 @@
 name: research
 
-# Run by hand: Actions -> research -> Run workflow. Tests intraday strategies on 10 years of
-# SPY 5-minute bars from Alpaca and commits the results to research/results/.
+# Run by hand: Actions -> research -> Run workflow. Tests daily, intraday and machine-learning
+# strategies (research/strategy_lab.py) and commits the results to research/results/.
 on:
   workflow_dispatch: {}
 
@@ -11,19 +11,19 @@ permissions:
 jobs:
   lab:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
           cache: pip
-      - run: pip install -r requirements.txt
-      - name: Run intraday lab
+      - run: pip install -r requirements.txt scikit-learn
+      - name: Run strategy lab
         env:
           ALPACA_KEY: ${{ secrets.ALPACA_KEY }}
           ALPACA_SECRET: ${{ secrets.ALPACA_SECRET }}
-        run: python research/intraday_lab.py | tee research/results/intraday_log.txt
+        run: python research/strategy_lab.py | tee research/results/lab_v2_log.txt
       - name: Save results
         run: |
           git config user.name "wick-bot"
