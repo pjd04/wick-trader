@@ -3,7 +3,13 @@ name: research
 # Run by hand: Actions -> research -> Run workflow. Tests daily, intraday and machine-learning
 # strategies (research/strategy_lab.py) and commits the results to research/results/.
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      script:
+        description: research script to run
+        default: strategy_lab
+        type: choice
+        options: [strategy_lab, self_tune, intraday_lab]
 
 permissions:
   contents: write
@@ -19,15 +25,15 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements.txt scikit-learn
-      - name: Run strategy lab
+      - name: Run research script
         env:
           ALPACA_KEY: ${{ secrets.ALPACA_KEY }}
           ALPACA_SECRET: ${{ secrets.ALPACA_SECRET }}
-        run: python research/strategy_lab.py | tee research/results/lab_v2_log.txt
+        run: python research/${{ inputs.script || 'strategy_lab' }}.py | tee research/results/${{ inputs.script || 'strategy_lab' }}_log.txt
       - name: Save results
         run: |
           git config user.name "wick-bot"
           git config user.email "wick-bot@users.noreply.github.com"
           git add research/results
-          git diff --cached --quiet || git commit -m "intraday research results"
+          git diff --cached --quiet || git commit -m "research results: ${{ inputs.script || 'strategy_lab' }}"
           git pull --rebase --quiet && git push --quiet
