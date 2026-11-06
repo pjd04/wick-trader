@@ -1,18 +1,18 @@
 {
- "updated": "2026-11-06T15:44-05:00",
+ "updated": "2026-11-06T15:53-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 90686.4,
+ "equity": 90457.03,
  "start_equity": 100000.0,
- "total_pl": -9313.6,
- "total_pl_pct": -0.0931,
- "day_pl": 691.63,
- "day_pl_pct": 0.0077,
- "position_value": 45813.35,
+ "total_pl": -9542.97,
+ "total_pl_pct": -0.0954,
+ "day_pl": 462.26,
+ "day_pl_pct": 0.0051,
+ "position_value": 45583.98,
  "avg_entry": 148.13,
- "invested_pct": 0.505,
+ "invested_pct": 0.504,
  "signal": {
-  "exposure": 0.499,
+  "exposure": 0.501,
   "trend": 1,
   "momentum": 1,
   "dip_buy": 0,
@@ -23,7 +23,7 @@
    "vol": 0.15
   }
  },
- "spy_day": 0.0056,
+ "spy_day": 0.004,
  "market_open": true,
  "halted": false,
  "history": [
@@ -37,7 +37,7 @@
   },
   {
    "date": "2026-11-06",
-   "equity": 90686.4
+   "equity": 90457.03
   }
  ],
  "actions": [
@@ -492,6 +492,20 @@
     129.9,
     129.77,
     129.77
+   ],
+   [
+    1793997900,
+    129.84,
+    129.975,
+    129.84,
+    129.92
+   ],
+   [
+    1793998200,
+    129.44,
+    129.44,
+    129.34,
+    129.34
    ]
   ],
   "daily": [
@@ -1137,7 +1151,7 @@
     128.69,
     132.48,
     128.56,
-    129.77
+    129.34
    ]
   ],
   "fills": [
