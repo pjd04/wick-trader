@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-06T16:01-05:00",
+ "updated": "2026-11-07T09:20-05:00",
  "live_settings": "200/252/10/0.15",
  "shadow_settings": "200/252/5/0.1",
  "shadow_since": "2026-11-06",
@@ -29,7 +29,7 @@
    "action": "sell",
    "amount": -18927.39,
    "exposure": 0.514,
-   "after_1d": 0.0097,
+   "after_1d": 0.0094,
    "good_1d": false
   },
   {
