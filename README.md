@@ -68,8 +68,8 @@ raising `DAY_TRADE_LIMIT` in `bot/config.py`.
 
 `research/intraday_lab.py` (Actions -> research -> intraday_lab) compares every intraday strategy
 on 10 years of SPY 5-minute bars, traded as 3x ETFs with costs. Latest run, full period:
-noise-band momentum +5.7%/yr (what the sleeve trades), VWAP trend -66%/yr, EMA trend pullback
--33%/yr, 5-minute opening range -10%/yr, against +21.6%/yr for Wick's daily strategy.
+noise-band momentum +6.5%/yr (what the sleeve trades), VWAP trend -66%/yr, EMA trend pullback
+-33%/yr, 5-minute opening range -9%/yr, against +20.7%/yr for Wick's daily strategy.
 
 ## Candle City
 `docs/city/index.html` is a 3D view of the same account: one tower for Wick, one for the sleeve,
