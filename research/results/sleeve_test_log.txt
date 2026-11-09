@@ -1,0 +1,29 @@
+assets: {'SPXL': {'tradable': True, 'fractionable': True, 'shortable': True}, 'SPXS': {'tradable': True, 'fractionable': True, 'shortable': False}, 'UPRO': {'tradable': True, 'fractionable': True, 'shortable': True}, 'SPXU': {'tradable': True, 'fractionable': True, 'shortable': True}}
+2016: 45,208 bars
+2017: 42,877 bars
+2018: 45,424 bars
+2019: 45,402 bars
+2020: 46,949 bars
+2021: 46,384 bars
+2022: 46,780 bars
+2023: 46,766 bars
+2024: 47,092 bars
+2025: 47,481 bars
+2026: 41,128 bars
+
+=== 2018-now ===
+                                                   CAGR   Sharpe    MaxDD  WorstYear  InMarket  WinRate
+Wick 100%                                         0.167    0.667   -0.361     -0.297     0.892    0.553
+Sleeve: 1 trade/day, 3 per 5 days (live rules)    0.004    0.099   -0.260     -0.143     0.467    0.367
+Sleeve: 1 trade/day, no limit                     0.043    0.325   -0.322     -0.121     0.603    0.374
+Sleeve: unlimited trades, no limit                0.087    0.499   -0.406     -0.154     0.603    0.423
+75% Wick + 25% sleeve (live rules)                0.136    0.679   -0.287     -0.187     0.892    0.543
+
+=== 2022-now ===
+                                                   CAGR   Sharpe    MaxDD  WorstYear  InMarket  WinRate
+Wick 100%                                         0.139    0.604   -0.355     -0.297     0.860    0.543
+Sleeve: 1 trade/day, 3 per 5 days (live rules)    0.005    0.102   -0.260     -0.143     0.478    0.371
+Sleeve: 1 trade/day, no limit                     0.011    0.149   -0.309     -0.121     0.624    0.372
+Sleeve: unlimited trades, no limit                0.055    0.365   -0.406     -0.154     0.624    0.420
+75% Wick + 25% sleeve (live rules)                0.115    0.617   -0.247     -0.187     0.860    0.530
+saved

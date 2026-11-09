@@ -1,0 +1,117 @@
+{
+ "generated": "2026-11-09T10:56-05:00",
+ "assets": {
+  "SPXL": {
+   "tradable": true,
+   "fractionable": true,
+   "shortable": true
+  },
+  "SPXS": {
+   "tradable": true,
+   "fractionable": true,
+   "shortable": false
+  },
+  "UPRO": {
+   "tradable": true,
+   "fractionable": true,
+   "shortable": true
+  },
+  "SPXU": {
+   "tradable": true,
+   "fractionable": true,
+   "shortable": true
+  }
+ },
+ "periods": {
+  "2018-now": {
+   "Wick 100%": {
+    "CAGR": 0.16702801796291,
+    "Sharpe": 0.667491281077323,
+    "MaxDD": -0.36117444707685453,
+    "WorstYear": -0.29714836312652804,
+    "InMarket": 0.8921832884097035,
+    "WinRate": 0.552870090634441
+   },
+   "Sleeve: 1 trade/day, 3 per 5 days (live rules)": {
+    "CAGR": 0.003927845505452776,
+    "Sharpe": 0.09863519425630744,
+    "MaxDD": -0.25981812300542906,
+    "WorstYear": -0.1426061966768205,
+    "InMarket": 0.4669662921348315,
+    "WinRate": 0.3666987487969201,
+    "TradesPerWeek": 2.3348314606741574
+   },
+   "Sleeve: 1 trade/day, no limit": {
+    "CAGR": 0.042860486280679844,
+    "Sharpe": 0.3245842816671251,
+    "MaxDD": -0.32152815637425236,
+    "WorstYear": -0.12052248302665702,
+    "InMarket": 0.6026966292134831,
+    "WinRate": 0.37360178970917224,
+    "TradesPerWeek": 3.0134831460674154
+   },
+   "Sleeve: unlimited trades, no limit": {
+    "CAGR": 0.08696939441478913,
+    "Sharpe": 0.49913180113894673,
+    "MaxDD": -0.40613818587828554,
+    "WorstYear": -0.1543120939661341,
+    "InMarket": 0.6026966292134831,
+    "WinRate": 0.4228187919463087,
+    "TradesPerWeek": 3.0134831460674154
+   },
+   "75% Wick + 25% sleeve (live rules)": {
+    "CAGR": 0.1362634579710238,
+    "Sharpe": 0.6790694240493944,
+    "MaxDD": -0.286778260774292,
+    "WorstYear": -0.18722464321530619,
+    "InMarket": 0.8921832884097035,
+    "WinRate": 0.5433031218529708
+   }
+  },
+  "2022-now": {
+   "Wick 100%": {
+    "CAGR": 0.138944490714058,
+    "Sharpe": 0.6041646187489811,
+    "MaxDD": -0.3549330039382328,
+    "WorstYear": -0.29714836312652804,
+    "InMarket": 0.8596059113300493,
+    "WinRate": 0.5434574976122254
+   },
+   "Sleeve: 1 trade/day, 3 per 5 days (live rules)": {
+    "CAGR": 0.0045124312357047724,
+    "Sharpe": 0.10209117510593992,
+    "MaxDD": -0.25981812300543117,
+    "WorstYear": -0.1426061966768205,
+    "InMarket": 0.4782251437962202,
+    "WinRate": 0.3711340206185567,
+    "TradesPerWeek": 2.391125718981101
+   },
+   "Sleeve: 1 trade/day, no limit": {
+    "CAGR": 0.01126195271249708,
+    "Sharpe": 0.14933315155829943,
+    "MaxDD": -0.3089520249184827,
+    "WorstYear": -0.12052248302665702,
+    "InMarket": 0.6236647493837305,
+    "WinRate": 0.3715415019762846,
+    "TradesPerWeek": 3.1183237469186524
+   },
+   "Sleeve: unlimited trades, no limit": {
+    "CAGR": 0.05494956558855124,
+    "Sharpe": 0.36545747160022146,
+    "MaxDD": -0.4061381858782849,
+    "WorstYear": -0.1543120939661341,
+    "InMarket": 0.6236647493837305,
+    "WinRate": 0.42028985507246375,
+    "TradesPerWeek": 3.1183237469186524
+   },
+   "75% Wick + 25% sleeve (live rules)": {
+    "CAGR": 0.11456542835185224,
+    "Sharpe": 0.6170829622859078,
+    "MaxDD": -0.24718521475064903,
+    "WorstYear": -0.18722464321530619,
+    "InMarket": 0.8596059113300493,
+    "WinRate": 0.5300859598853869
+   }
+  }
+ }
+}
