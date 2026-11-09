@@ -1,18 +1,18 @@
 {
- "updated": "2026-11-09T15:26-05:00",
+ "updated": "2026-11-09T15:30-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 94430.9,
+ "equity": 94367.46,
  "start_equity": 100000.0,
- "total_pl": -5569.1,
- "total_pl_pct": -0.0557,
- "day_pl": 4058.56,
- "day_pl_pct": 0.0449,
- "position_value": 49123.28,
+ "total_pl": -5632.54,
+ "total_pl_pct": -0.0563,
+ "day_pl": 3995.12,
+ "day_pl_pct": 0.0442,
+ "position_value": 49079.17,
  "avg_entry": 148.13,
  "invested_pct": 0.52,
  "signal": {
-  "exposure": 0.443,
+  "exposure": 0.444,
   "trend": 1,
   "momentum": 1,
   "dip_buy": 0,
@@ -23,7 +23,7 @@
    "vol": 0.15
   }
  },
- "spy_day": 0.027,
+ "spy_day": 0.0266,
  "market_open": true,
  "halted": false,
  "history": [
@@ -49,7 +49,7 @@
   },
   {
    "date": "2026-11-09",
-   "equity": 94430.9
+   "equity": 94367.46
   }
  ],
  "actions": [
@@ -70,6 +70,12 @@
    "action": "hold",
    "amount": 0.0,
    "exposure": 0.497
+  },
+  {
+   "date": "2026-11-09",
+   "action": "sell",
+   "amount": -18283.3,
+   "exposure": 0.444
   }
  ],
  "sleeve": {
@@ -84,25 +90,25 @@
    "qty": 87,
    "entry": 261.39,
    "spy_at_entry": 750.03,
-   "value": 23175.49,
-   "open_pnl": 434.56
+   "value": 23159.83,
+   "open_pnl": 418.9
   },
-  "pnl_total": 434.56,
-  "pnl_today": 434.56,
+  "pnl_total": 418.9,
+  "pnl_today": 418.9,
   "day_trades_used": 0,
   "day_trade_limit": 3,
   "bands": {
-   "time": "15:01",
-   "spy": 754.07,
-   "upper": 746.35,
-   "lower": 730.98,
-   "vwap": 749.85
+   "time": "15:30",
+   "spy": 754.85,
+   "upper": 746.75,
+   "lower": 730.58,
+   "vwap": 750.36
   },
   "trades": [],
-  "next_check": "15:30"
+  "next_check": null
  },
  "log": [
-  "Watching. Decision after 15:30 ET."
+  "SELL 131.4305 UPRO (~$18,283.30)"
  ],
  "chart": {
   "symbol": "UPRO",
@@ -365,6 +371,20 @@
     139.26,
     138.95,
     138.98
+   ],
+   [
+    1794255900,
+    139.35,
+    139.35,
+    139.35,
+    139.35
+   ],
+   [
+    1794256200,
+    139.35,
+    139.35,
+    139.11,
+    139.11
    ]
   ],
   "daily": [
@@ -994,9 +1014,9 @@
    [
     "2026-11-09",
     132.265,
-    139.26,
+    139.35,
     132.06,
-    138.98
+    139.35
    ]
   ],
   "fills": [
