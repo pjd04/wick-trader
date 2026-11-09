@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Candle City</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* One night-time world, single theme by choice. Layout: full-screen stage with a top bar, a transport deck and overlay panels. */
+  --night:#0a0b2e; --panel:#0e1040; --panel-2:#151852; --line:#2b2f77; --text:#e8eaff; --muted:#a3a8de;
+  --gold:#ffc24b; --up:#3df2a4; --down:#ff4d6d; --violet:#8f78ff; --cyan:#59d8ff;
+  --display:"Chakra Petch","Trebuchet MS",sans-serif; --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%;margin:0}
+body{background:var(--night);color:var(--text);font:14px/1.45 var(--body);overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.up{color:var(--up)} .down{color:var(--down)} .gold{color:var(--gold)} .muted{color:var(--muted)}
+h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:.02em}
+h2{font-size:18px} h3{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600}
+#app{height:100%;display:flex;flex-direction:column}
+
+/* top bar */
+.top{display:flex;align-items:center;gap:12px;padding:8px 16px;background:var(--panel);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:8px;min-width:0}
+.mark{width:10px;height:22px;background:var(--up);box-shadow:0 0 12px var(--up);position:relative;flex:none}
+.mark:before{content:"";position:absolute;left:4px;top:-5px;width:2px;height:32px;background:var(--up)}
+#cityName{font:700 19px var(--display);letter-spacing:.06em;text-transform:uppercase;background:transparent;border:1px dashed transparent;border-radius:4px;width:16ch;max-width:46vw;padding:2px 4px}
+#cityName:hover,#cityName:focus{border-color:var(--line)}
+.top nav{display:flex;gap:4px}
+.top nav a{font:600 13px var(--display);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--muted);padding:6px 10px;border-radius:6px;border:1px solid transparent}
+.top nav a[aria-current="page"]{color:var(--night);background:var(--gold)}
+.top nav a:hover:not([aria-current]){border-color:var(--line);color:var(--text)}
+.status{margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{font:600 11px var(--display);letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:99px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.pill.sim{border-color:var(--gold);color:var(--gold)}
+.pill.live{border-color:var(--down);color:var(--down)}
+#err{position:absolute;left:12px;bottom:12px;background:rgba(5,6,28,.9);border:1px solid var(--down);border-radius:8px;padding:6px 10px;font-size:12px;max-width:calc(100% - 24px)}
+.brand b{font:700 19px var(--display);letter-spacing:.06em;text-transform:uppercase}
+.days button{width:26px;cursor:default}
+#clock{font-family:var(--mono);font-size:12px;color:var(--muted)}
+#dayNet{font:600 15px var(--mono)}
+
+.view{flex:1;min-height:0;display:none}
+.view.on{display:flex}
+/* city */
+#v-city{flex-direction:column}
+.stage{position:relative;flex:1;min-height:0;overflow:hidden;background:linear-gradient(#0a0b2e,#1a1470)}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+#labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.lbl{position:absolute;left:0;top:0;white-space:nowrap;will-change:transform}
+.lbl-tower,.lbl-vault{pointer-events:auto;background:rgba(5,6,28,.86);border:1px solid var(--line);border-radius:6px;padding:4px 8px;text-align:center;font:500 11px/1.35 var(--mono)}
+.lbl-tower b,.lbl-vault b{display:block;font:700 12px var(--display);letter-spacing:.06em}
+.lbl-tower.call{border-color:var(--up)} .lbl-tower.put{border-color:var(--down)} .lbl-tower.off{border-color:var(--gold)}
+.lbl-vault{border-color:var(--gold);padding:5px 12px}
+.lbl-vault b{color:var(--gold);font-size:10px;letter-spacing:.14em}
+.lbl-vault .big{font:600 17px var(--mono);display:block}
+.toast{font:700 12px var(--display);letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:99px;background:rgba(5,6,28,.9);border:1.5px solid currentColor;text-shadow:0 0 8px currentColor}
+.toast.cyan{color:var(--cyan)}
+.hud{position:absolute;left:12px;top:12px;display:flex;gap:8px;flex-wrap:wrap;max-width:calc(100% - 24px)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:rgba(5,6,28,.8)}
+.seg button{background:none;border:0;padding:6px 10px;font:600 12px var(--display);letter-spacing:.06em;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--violet);color:#08082a}
+.btn{background:rgba(5,6,28,.8);border:1px solid var(--line);border-radius:8px;padding:6px 12px;font:600 12px var(--display);letter-spacing:.06em}
+.btn:hover{border-color:var(--text)} .btn:disabled{opacity:.5;cursor:default}
+.btn.primary{background:var(--gold);border-color:var(--gold);color:#1b1300}
+.btn.danger{border-color:var(--down);color:var(--down)}
+#nogl{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;color:var(--muted)}
+
+.side{position:absolute;right:12px;top:12px;bottom:12px;width:min(420px,calc(100% - 24px));background:rgba(10,11,46,.94);border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column;overflow:hidden;backdrop-filter:blur(6px)}
+.side header{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.side header .x{margin-left:auto}
+.side .body{overflow:auto;padding:12px;display:flex;flex-direction:column;gap:12px}
+.x{background:none;border:1px solid var(--line);border-radius:6px;width:28px;height:28px;line-height:1}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.stat{background:var(--panel-2);border-radius:8px;padding:6px 8px}
+.stat span{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.stat b{font:600 14px var(--mono)}
+.desk{display:grid;grid-template-columns:64px 1fr;gap:10px;align-items:end}
+.scanner{background:#05061c;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:12px/1.5 var(--mono)}
+.scanner .hd{display:flex;justify-content:space-between;gap:8px;font:700 12px var(--display);letter-spacing:.08em;color:var(--gold)}
+.scanner .hd small{font:500 10px var(--mono);color:var(--muted);letter-spacing:0;text-align:right}
+.scanner .now{margin:6px 0;padding:4px 8px;border:1px solid var(--line);border-radius:4px;font-weight:600}
+.scanner .now.call{border-color:var(--up);color:var(--up)} .scanner .now.put{border-color:var(--down);color:var(--down)} .scanner .now.off{border-color:var(--gold);color:var(--gold)}
+.bar{height:8px;background:var(--panel-2);border-radius:4px;overflow:hidden;margin:4px 0}
+.bar i{display:block;height:100%;background:var(--up);border-radius:4px}
+.thoughts{list-style:none;margin:6px 0 0;padding:0;color:var(--muted);min-height:108px}
+.thoughts li{display:flex;gap:8px} .thoughts time{color:var(--violet);flex:none}
+.thoughts .fire{color:var(--text);font-weight:600}
+canvas.chart{width:100%;height:170px;display:block;background:#05061c;border:1px solid var(--line);border-radius:8px}
+.legend{display:flex;gap:12px;font-size:11px;color:var(--muted);flex-wrap:wrap}
+.legend i{display:inline-block;width:14px;height:2px;vertical-align:middle;margin-right:4px}
+.trades{display:flex;flex-direction:column;gap:6px}
+.trade{background:var(--panel-2);border:1px solid var(--line);border-left:3px solid var(--muted);border-radius:8px}
+.trade.win{border-left-color:var(--up)} .trade.loss{border-left-color:var(--down)} .trade.open{border-left-color:var(--gold)}
+.trade summary{display:flex;gap:8px;align-items:baseline;padding:6px 10px;cursor:pointer;list-style:none;font-size:12px}
+.trade summary::-webkit-details-marker{display:none}
+.trade summary b{font-family:var(--mono);margin-left:auto}
+.trade dl{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:0;padding:2px 10px 8px;font:12px var(--mono)}
+.trade dt{color:var(--muted)} .trade dd{margin:0;text-align:right}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{font:600 10px var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:right;padding:4px 6px}
+td{padding:5px 6px;border-top:1px solid var(--line);text-align:right;font-family:var(--mono)}
+th:first-child,td:first-child{text-align:left;font-family:var(--body)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.tile{border-radius:8px;padding:10px 6px;text-align:center;font:600 12px var(--mono);color:#04121c}
+.tile small{display:block;font:700 11px var(--display);letter-spacing:.06em}
+
+/* deck */
+.deck{background:var(--panel);border-top:1px solid var(--line);padding:8px 16px;display:flex;flex-direction:column;gap:6px}
+.transport{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.transport input[type=range]{flex:1;min-width:120px;accent-color:var(--gold)}
+.days{display:flex;gap:3px}
+.days button{width:22px;height:22px;border-radius:4px;border:1px solid var(--line);background:var(--panel-2);font:600 10px var(--mono);padding:0;color:var(--muted)}
+.days button.g{background:rgba(61,242,164,.25);color:var(--up)} .days button.r{background:rgba(255,77,109,.25);color:var(--down)}
+.days button[aria-current="true"]{border-color:var(--gold);color:var(--gold)}
+.tape{display:flex;gap:18px;overflow:hidden;white-space:nowrap;font:12px var(--mono);color:var(--muted);min-height:18px}
+.tape span b{color:var(--text);font-weight:500}
+
+/* recap */
+.modal{position:absolute;inset:0;background:rgba(5,6,28,.78);display:grid;place-items:center;padding:16px;z-index:5}
+.modal[hidden]{display:none}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;width:min(560px,100%);max-height:100%;overflow:auto;text-align:center;display:flex;flex-direction:column;gap:12px}
+.card .eyebrow{font:600 12px var(--display);letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+.card .total{font:600 44px/1 var(--mono);text-shadow:0 0 24px currentColor}
+.bars{display:flex;align-items:flex-end;gap:6px;height:130px;padding-top:16px;border-bottom:1px solid var(--line);position:relative}
+.bars .col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;position:relative;min-width:0}
+.bars .col i{width:100%;border-radius:4px 4px 0 0;min-height:2px}
+.bars .col span{font:10px var(--mono);color:var(--muted);position:absolute;bottom:-18px;white-space:nowrap}
+.bars .col em{font:600 10px var(--mono);font-style:normal;margin-bottom:2px}
+.row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+
+/* compound + risk desk: scrolling pages */
+.page{flex-direction:column;overflow:auto;padding:16px;gap:16px}
+.grid{display:grid;gap:16px;grid-template-columns:minmax(260px,340px) 1fr;align-items:start}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box>header{display:flex;align-items:center;gap:8px;justify-content:space-between;flex-wrap:wrap}
+#station{width:100%;height:132px;display:block;image-rendering:pixelated;border-radius:8px;border:1px solid var(--line);background:#05061c}
+.crew{display:flex;flex-direction:column;gap:4px;list-style:none;margin:0;padding:0}
+.crew button{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;width:100%;text-align:left;background:var(--panel-2);border:1px solid transparent;border-radius:8px;padding:6px 10px}
+.crew button[aria-pressed="true"]{border-color:var(--gold)}
+.crew img,.sprite{width:30px;height:42px;image-rendering:pixelated}
+.crew .nm{font:700 13px var(--display);letter-spacing:.06em;text-transform:uppercase}
+.crew .st{font-size:11px;color:var(--muted)} .crew .st.w{color:var(--up)} .crew .st.l{color:var(--gold)}
+.crew .lv{font:600 12px var(--mono);color:var(--muted);text-align:right}
+.xp{height:3px;background:var(--line);border-radius:2px;margin-top:4px;grid-column:1/-1}.xp i{display:block;height:100%;background:var(--gold);border-radius:2px}
+.report{font:13px/1.6 var(--mono);background:#05061c;border:1px solid var(--line);border-radius:8px;padding:10px 12px;white-space:pre-wrap;overflow-wrap:anywhere;margin:0}
+.ask{display:flex;gap:8px} .ask input{flex:1;min-width:0}
+input[type=text],input[type=number],select{background:#05061c;border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tabs button{background:none;border:1px solid var(--line);border-radius:99px;padding:3px 10px;font:600 11px var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.tabs button[aria-pressed="true"]{background:var(--violet);border-color:var(--violet);color:#08082a}
+.classes{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px}
+.classes button{text-align:left;background:var(--panel-2);border:1px solid transparent;border-radius:8px;padding:8px 10px}
+.classes button[aria-pressed="true"]{border-color:var(--gold)}
+.classes b{display:block;font:700 13px var(--display);letter-spacing:.06em;text-transform:uppercase}
+.classes span{font-size:12px;color:var(--muted)}
+.looks{display:flex;gap:4px;flex-wrap:wrap}
+.looks button{background:var(--panel-2);border:1px solid transparent;border-radius:6px;padding:3px}
+.looks button[aria-pressed="true"]{border-color:var(--gold)}
+.form{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.form label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--muted)}
+.form input{width:100%}
+.conns{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.conn{background:var(--panel-2);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:4px}
+.conn b{font:700 13px var(--display);letter-spacing:.04em}
+.conn span{font-size:12px;color:var(--muted)}
+.score{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.score .stat b{font-size:17px}
+.audit{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;max-width:75ch}
+.audit b{color:var(--gold);font-weight:600}
+.note{font-size:12px;color:var(--muted);max-width:75ch;margin:0}
+canvas.curve{width:100%;height:150px;display:block;background:#05061c;border:1px solid var(--line);border-radius:8px}
+.hours{display:flex;gap:6px;align-items:flex-end;height:90px;margin-bottom:18px}
+.scroll-x{overflow-x:auto}
+
+@media (max-width:760px){
+  .grid{grid-template-columns:1fr}
+  .side{left:8px;right:8px;top:auto;bottom:8px;width:auto;height:64%}
+  .status #clock{display:none}
+  .lbl-tower{font-size:10px;padding:3px 6px}
+  .lbl-tower .s{display:none}
+  .card .total{font-size:34px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <div class="brand"><span class="mark" aria-hidden="true"></span><b>Candle City</b></div>
+    <nav aria-label="Pages"><a href="./" aria-current="page">City</a><a href="../">Wick page</a></nav>
+    <div class="status"><span id="mode" class="pill sim">Paper account</span><span id="clock">Loading…</span><span id="dayNet" class="num"></span></div>
+  </header>
+  <section id="v-city" class="view on">
+    <div class="stage">
+      <canvas id="gl" aria-label="3D city. Each tower is one of the bot's two strategies."></canvas>
+      <div id="labels"></div>
+      <div id="nogl" hidden>The 3D city needs WebGL, which this browser has turned off. The Wick page shows the same account.</div>
+      <div class="hud">
+        <div class="seg" role="group" aria-label="Camera"><button id="camFly" type="button" aria-pressed="true">Fly</button><button id="camOrbit" type="button" aria-pressed="false">Hold still</button></div>
+        <button id="payrollBtn" class="btn" type="button">Payroll</button>
+      </div>
+      <aside id="side" class="side" hidden></aside>
+      <div id="err" role="status" hidden></div>
+    </div>
+    <footer class="deck">
+      <div class="transport"><span class="muted" style="font-size:12px">Account by day</span><div id="days" class="days"></div></div>
+      <div id="tape" class="tape"></div>
+    </footer>
+  </section>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+/* ===== City: the 3D scene. Exposes City.init(canvas, labelsEl, hooks) and a small API the UI drives. ===== */
+var City = (function () {
+  var T = window.THREE, scene, cam, renderer, controls, clock, towers = [], vault, waves = [], coins = [], walls = [], traffic, lights = [], labelsEl, hooks, toasts = [], reduce = false, ok = false;
+  var COL = { up: 0x3df2a4, down: 0xff4d6d, gold: 0xffc24b, violet: 0x7a5cff, cyan: 0x59d8ff, white: 0xe8eaff };
+  var TOWER_POS = [[2, -8], [-11, -3]], VAULT_POS = [-3, 13];
+
+  function tex(w, h, draw) { var c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h); var t = new T.CanvasTexture(c); t.canvas = c; return t; }
+  function windowTex(seed, tint) {
+    return tex(64, 128, function (g, w, h) {
+      g.fillStyle = '#070824'; g.fillRect(0, 0, w, h); var s = seed;
+      for (var y = 3; y < h - 3; y += 6) for (var x = 3; x < w - 3; x += 6) {
+        s = (s * 9301 + 49297) % 233280; var r = s / 233280;
+        if (r < 0.52) { g.fillStyle = r < 0.06 ? '#ffc24b' : (r < 0.3 ? tint : '#e8eaff'); g.globalAlpha = 0.45 + r; g.fillRect(x, y, 3, 3); }
+      }
+      g.globalAlpha = 1;
+    });
+  }
+  function basic(color, o) { var m = new T.MeshBasicMaterial(Object.assign({ color: color }, o || {})); return m; }
+  function glow(color, opacity) { return basic(color, { transparent: true, opacity: opacity, blending: T.AdditiveBlending, depthWrite: false, side: T.DoubleSide }); }
+  function ring(r0, r1, color, op) { var m = new T.Mesh(new T.RingGeometry(r0, r1, 96), glow(color, op)); m.rotation.x = -Math.PI / 2; return m; }
+
+  function buildGround() {
+    var g = new T.Mesh(new T.PlaneGeometry(900, 900), basic(0x0c1048)); g.rotation.x = -Math.PI / 2; g.position.y = -0.05; scene.add(g);
+    var grid = new T.GridHelper(900, 150, 0x2a35c9, 0x1a2190); grid.material.transparent = true; grid.material.opacity = 0.35; scene.add(grid);
+    var plaza = new T.Mesh(new T.CircleGeometry(27, 96), basic(0x10145e)); plaza.rotation.x = -Math.PI / 2; plaza.position.y = 0.01; scene.add(plaza);
+    [[26.4, 27, COL.white, 0.9], [22.5, 22.7, COL.violet, 0.8], [29.5, 29.7, COL.violet, 0.5]].forEach(function (a, i) { var r = ring(a[0], a[1], a[2], a[3]); r.position.y = 0.03 + i * 0.01; scene.add(r); });
+    for (var i = 0; i < 40; i++) { // fence posts and lamps on the outer ring
+      var a = i / 40 * Math.PI * 2, p = new T.Mesh(new T.BoxGeometry(0.12, 1.1, 0.12), basic(i % 4 ? 0x3a2fb0 : COL.white)); p.position.set(Math.cos(a) * 27, 0.55, Math.sin(a) * 27); scene.add(p);
+    }
+    TOWER_POS.forEach(function (tp) { // roads from each tower to the vault
+      var dx = VAULT_POS[0] - tp[0], dz = VAULT_POS[1] - tp[1], len = Math.sqrt(dx * dx + dz * dz);
+      var road = new T.Mesh(new T.PlaneGeometry(0.5, len), glow(COL.violet, 0.45)); road.rotation.x = -Math.PI / 2; road.rotation.z = Math.atan2(dx, dz); road.position.set(tp[0] + dx / 2, 0.04, tp[1] + dz / 2); scene.add(road);
+    });
+  }
+
+  function buildSkyline() {
+    var geo = new T.BoxGeometry(1, 1, 1); geo.translate(0, 0.5, 0);
+    var tints = ['#7a5cff', '#59d8ff', '#b9a8ff'], dummy = new T.Object3D(), s = 12345;
+    function rnd() { s = (s * 9301 + 49297) % 233280; return s / 233280; }
+    for (var k = 0; k < 3; k++) {
+      var t = windowTex(11 + k * 7, tints[k]); t.wrapS = t.wrapT = T.RepeatWrapping; t.repeat.set(1, 1 + k);
+      var n = 190, im = new T.InstancedMesh(geo, basic(0xffffff, { map: t }), n);
+      for (var i = 0; i < n; i++) {
+        var far = rnd() < 0.55, a = rnd() * Math.PI * 2, r = far ? 125 + rnd() * 120 : 40 + rnd() * 60;
+        var w = far ? 6 + rnd() * 9 : 2 + rnd() * 3.5, h = far ? 14 + rnd() * 46 : 1.5 + rnd() * 4;
+        dummy.position.set(Math.cos(a) * r, 0, Math.sin(a) * r); dummy.scale.set(w, h, far ? w : 2 + rnd() * 3.5); dummy.rotation.y = far ? 0 : rnd() * 0.6; dummy.updateMatrix(); im.setMatrixAt(i, dummy.matrix);
+      }
+      scene.add(im);
+    }
+    var pg = new T.BufferGeometry(), pos = new Float32Array(300 * 3);
+    for (var j = 0; j < 300; j++) { var a2 = rnd() * 6.283, r2 = 20 + rnd() * 240; pos[j * 3] = Math.cos(a2) * r2; pos[j * 3 + 1] = 8 + rnd() * 70; pos[j * 3 + 2] = Math.sin(a2) * r2; }
+    pg.setAttribute('position', new T.BufferAttribute(pos, 3));
+    traffic = new T.Points(pg, new T.PointsMaterial({ color: 0xf2f0ff, size: 1.1, transparent: true, opacity: 0.85 })); scene.add(traffic);
+    for (var q = 0; q < 2; q++) { // searchlights
+      var cone = new T.Mesh(new T.ConeGeometry(16, 190, 20, 1, true), glow(0xb9a8ff, 0.07)); cone.geometry.translate(0, -95, 0); cone.rotation.x = Math.PI; cone.position.set(q ? 60 : -70, 0, q ? -50 : 40); cone.userData.ph = q * 2; lights.push(cone); scene.add(cone);
+    }
+  }
+
+  function buildTower(i, pos) {
+    var g = new T.Group(); g.position.set(pos[0], 0, pos[1]);
+    var tiers = i === 0 ? [[5.2, 9], [4.2, 7], [3.2, 6], [2.2, 5], [1.2, 3]] : [[4.4, 7], [3.4, 6], [2.4, 5], [1.4, 3]], y = 0.4;
+    var base = new T.Mesh(new T.BoxGeometry(11, 0.4, 11), basic(0x05061c)); base.position.y = 0.2; g.add(base);
+    var be = new T.LineSegments(new T.EdgesGeometry(new T.BoxGeometry(11, 0.4, 11)), new T.LineBasicMaterial({ color: COL.violet })); be.position.y = 0.2; g.add(be);
+    var wt = windowTex(31 + i * 13, '#b9a8ff'), edgeMat = new T.LineBasicMaterial({ color: 0xcfc6ff });
+    tiers.forEach(function (t) {
+      var geo = new T.BoxGeometry(t[0], t[1], t[0]), m = new T.Mesh(geo, basic(0xffffff, { map: wt })); m.position.y = y + t[1] / 2; g.add(m);
+      var e = new T.LineSegments(new T.EdgesGeometry(geo), edgeMat); e.position.y = m.position.y; g.add(e); y += t[1];
+    });
+    var spire = new T.Mesh(new T.CylinderGeometry(0.06, 0.12, 5, 6), basic(COL.white)); spire.position.y = y + 2.5; g.add(spire);
+    for (var k = 0; k < 8; k++) { // small campus buildings and trees at the base
+      var a = k / 8 * Math.PI * 2 + 0.4, sb = new T.Mesh(new T.BoxGeometry(1.4, 1.5 + (k % 3), 1.4), basic(0xffffff, { map: wt })); sb.position.set(Math.cos(a) * 4.6, 0.4 + (1.5 + (k % 3)) / 2, Math.sin(a) * 4.6); g.add(sb);
+      var tr = new T.Mesh(new T.ConeGeometry(0.28, 0.9, 5), basic(COL.cyan)); tr.position.set(Math.cos(a + 0.4) * 5.1, 0.85, Math.sin(a + 0.4) * 5.1); g.add(tr);
+    }
+    var halos = [0, 1].map(function (h) { var m = new T.Mesh(new T.TorusGeometry(2.4 - h * 0.7, 0.05, 6, 48), glow(COL.white, 0.9)); m.rotation.x = Math.PI / 2; m.position.y = y + 1.2 + h * 1.6; g.add(m); return m; });
+    var beam = new T.Mesh(new T.CylinderGeometry(0.45, 0.45, 260, 14, 1, true), glow(COL.up, 0.85)); beam.position.y = y + 130; beam.visible = false; g.add(beam);
+    var aura = new T.Mesh(new T.CylinderGeometry(1.5, 1.5, 260, 14, 1, true), glow(COL.up, 0.16)); aura.position.y = y + 130; aura.visible = false; g.add(aura);
+    var hit = new T.Mesh(new T.BoxGeometry(8, y + 4, 8), basic(0, { visible: false })); hit.position.y = (y + 4) / 2; hit.userData.pick = { type: 'tower', i: i }; g.add(hit);
+    scene.add(g);
+    var el = document.createElement('button'); el.className = 'lbl lbl-tower'; el.type = 'button'; el.onclick = function () { hooks.onPick({ type: 'tower', i: i }); }; labelsEl.appendChild(el);
+    return { g: g, top: y, halos: halos, beam: beam, aura: aura, hit: hit, el: el, anchor: new T.Vector3(pos[0], y + 5.5, pos[1]), pos: pos, mode: 0, lblKey: '' };
+  }
+
+  function buildVault() {
+    var g = new T.Group(); g.position.set(VAULT_POS[0], 0, VAULT_POS[1]);
+    var disc = new T.Mesh(new T.CircleGeometry(5.4, 48), basic(0x05061c)); disc.rotation.x = -Math.PI / 2; disc.position.y = 0.05; g.add(disc);
+    var r = ring(5.3, 5.6, COL.white, 0.9); r.position.y = 0.07; g.add(r);
+    var stripes = tex(64, 16, function (c, w, h) { for (var x = 0; x < w; x += 8) { c.fillStyle = (x / 8) % 2 ? '#7a2f1c' : '#ffd9b8'; c.fillRect(x, 0, 8, h); } });
+    stripes.wrapS = T.RepeatWrapping; stripes.repeat.set(3, 1);
+    var drum = new T.Mesh(new T.CylinderGeometry(2.6, 2.6, 2.4, 32), basic(0xffffff, { map: stripes })); drum.position.y = 1.3; g.add(drum);
+    var dome = new T.Mesh(new T.SphereGeometry(2.7, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2), basic(0xfff3df)); dome.position.y = 2.5; g.add(dome);
+    var halo = new T.Mesh(new T.SphereGeometry(3.6, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2), glow(0xffe2b0, 0.22)); halo.position.y = 2.4; g.add(halo);
+    for (var k = 0; k < 12; k++) { var a = k / 12 * Math.PI * 2, tr = new T.Mesh(new T.ConeGeometry(0.3, 1, 5), basic(COL.cyan)); tr.position.set(Math.cos(a) * 4.3, 0.55, Math.sin(a) * 4.3); g.add(tr); }
+    var hit = new T.Mesh(new T.CylinderGeometry(5, 5, 6, 12), basic(0, { visible: false })); hit.position.y = 3; hit.userData.pick = { type: 'vault' }; g.add(hit);
+    scene.add(g);
+    var el = document.createElement('button'); el.className = 'lbl lbl-vault'; el.type = 'button'; el.onclick = function () { hooks.onPick({ type: 'vault' }); }; labelsEl.appendChild(el);
+    return { g: g, halo: halo, hit: hit, el: el, anchor: new T.Vector3(VAULT_POS[0], 8.5, VAULT_POS[1]), lblKey: '' };
+  }
+
+  function sign(text, color, a, r, y, scale) {
+    var t = tex(512, 128, function (g, w, h) {
+      g.fillStyle = '#05061c'; g.fillRect(0, 0, w, h); g.strokeStyle = color; g.lineWidth = 8; g.strokeRect(6, 6, w - 12, h - 12);
+      g.fillStyle = color; g.font = '700 64px "Chakra Petch", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.shadowColor = color; g.shadowBlur = 18; g.fillText(text, w / 2, h / 2 + 4);
+    });
+    var grp = new T.Group(), geo = new T.PlaneGeometry(8 * scale, 2 * scale), front = new T.Mesh(geo, basic(0xffffff, { map: t })), back = front.clone(); back.rotation.y = Math.PI;
+    grp.add(front); grp.add(back);
+    [-3, 3].forEach(function (x) { var p = new T.Mesh(new T.BoxGeometry(0.12, y, 0.12), basic(0x3a2fb0)); p.position.set(x * scale, -y / 2 - scale, 0); grp.add(p); });
+    grp.position.set(Math.cos(a) * r, y + scale, Math.sin(a) * r); grp.lookAt(0, y + scale, 0); scene.add(grp);
+    return { tex: t, grp: grp };
+  }
+  var citySign;
+  function setCityName(name) {
+    if (!ok) return; if (citySign) { scene.remove(citySign.grp); citySign.tex.dispose(); }
+    citySign = sign(name.toUpperCase().slice(0, 16), '#e8eaff', -Math.PI / 2 - 0.5, 33, 15, 1.7);
+  }
+
+  function buildWalls() {
+    [{ sym: 'UPRO today' }, { sym: 'UPRO 3 mo' }, { sym: 'Account' }].forEach(function (s, k) {
+      var t = tex(256, 128, function () { }), a = -Math.PI / 2 + (k - 1) * 0.62, r = 31;
+      var grp = new T.Group(), geo = new T.PlaneGeometry(12, 6), f = new T.Mesh(geo, basic(0xffffff, { map: t, transparent: true, opacity: 0.95 })), b = f.clone(); b.rotation.y = Math.PI; grp.add(f); grp.add(b);
+      grp.position.set(Math.cos(a) * r, 6.5, Math.sin(a) * r); grp.lookAt(0, 6.5, 0); scene.add(grp);
+      walls.push({ sym: s.sym, tex: t });
+    });
+  }
+  function drawWall(w, m, i) {
+    var c = w.tex.canvas, g = c.getContext('2d'), W = c.width, H = c.height, px = m.px, last = px[i], chg = (last / m.prevClose - 1) * 100, col = chg >= 0 ? '#3df2a4' : '#ff4d6d';
+    g.clearRect(0, 0, W, H); g.fillStyle = 'rgba(5,6,28,.82)'; g.fillRect(0, 0, W, H); g.strokeStyle = '#2b2f77'; g.lineWidth = 2; g.strokeRect(1, 1, W - 2, H - 2);
+    g.strokeStyle = 'rgba(122,92,255,.25)'; g.lineWidth = 1; for (var x = 32; x < W; x += 32) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, H); g.stroke(); }
+    var lo = 1e9, hi = -1e9; for (var j = 0; j <= i; j++) { if (px[j] < lo) lo = px[j]; if (px[j] > hi) hi = px[j]; } var pad = (hi - lo) * 0.15 + 0.05; lo -= pad; hi += pad;
+    g.strokeStyle = col; g.lineWidth = 2.5; g.beginPath(); for (j = 0; j <= i; j++) { var X = 6 + j / Math.max(1, px.length - 1) * (W - 12), Y = H - 8 - (px[j] - lo) / (hi - lo) * (H - 62); j ? g.lineTo(X, Y) : g.moveTo(X, Y); } g.stroke();
+    g.font = '700 20px "Chakra Petch", sans-serif'; g.fillStyle = '#e8eaff'; g.textBaseline = 'top'; g.fillText(w.sym, 8, 6);
+    g.fillStyle = col; var tw = g.measureText(w.sym).width; g.font = '600 15px "IBM Plex Mono", monospace'; g.fillText((last > 5000 ? Math.round(last).toLocaleString() : last.toFixed(2)) + ' ' + (chg >= 0 ? '+' : '') + chg.toFixed(1) + '%', 8, 30); void tw;
+    w.tex.needsUpdate = true;
+  }
+
+  function init(canvas, labels, h) {
+    hooks = h; labelsEl = labels;
+    if (!T) return false;
+    try { renderer = new T.WebGLRenderer({ canvas: canvas, antialias: true, powerPreference: 'high-performance' }); } catch (e) { return false; }
+    reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    scene = new T.Scene(); scene.background = new T.Color(0x0a0b2e); scene.fog = new T.Fog(0x1a1470, 120, 380);
+    cam = new T.PerspectiveCamera(48, 1, 0.5, 900); cam.position.set(42, 40, 88);
+    controls = new T.OrbitControls(cam, canvas); controls.target.set(0, 13, 2); controls.enableDamping = true; controls.dampingFactor = 0.08; controls.maxPolarAngle = 1.47; controls.minDistance = 22; controls.maxDistance = 170; controls.autoRotate = !reduce; controls.autoRotateSpeed = 0.35;
+    clock = new T.Clock();
+    buildGround(); buildSkyline(); towers = TOWER_POS.map(function (p, i) { return buildTower(i, p); }); vault = buildVault(); buildWalls();
+    [['CUT LOSERS FAST', '#ff4d6d', 0.2], ['GREEN DAYS', '#3df2a4', 1.15], ['NOISE BAND', '#e8eaff', 2.3], ['TREND', '#ffc24b', 3.3], ['PAPER FIRST', '#59d8ff', 5.6]].forEach(function (s) { sign(s[0], s[1], s[2], 35, 5, 0.8); });
+    for (var i = 0; i < 10; i++) { var w = ring(0.82, 1, COL.up, 0); w.visible = false; scene.add(w); waves.push({ m: w, t: 1 }); var d = new T.Mesh(new T.CircleGeometry(1, 48), glow(COL.up, 0)); d.rotation.x = -Math.PI / 2; d.visible = false; scene.add(d); waves[i].d = d; }
+    for (var c = 0; c < 24; c++) { var coin = new T.Mesh(new T.SphereGeometry(0.28, 10, 8), basic(COL.gold)); coin.visible = false; scene.add(coin); coins.push({ m: coin, t: 1, from: null }); }
+    var ray = new T.Raycaster(), down = null;
+    canvas.addEventListener('pointerdown', function (e) { down = [e.clientX, e.clientY]; });
+    canvas.addEventListener('pointerup', function (e) {
+      if (!down || Math.abs(e.clientX - down[0]) + Math.abs(e.clientY - down[1]) > 8) return;
+      var r = canvas.getBoundingClientRect(), v = new T.Vector2((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1);
+      ray.setFromCamera(v, cam); var hits = ray.intersectObjects(towers.map(function (t) { return t.hit; }).concat([vault.hit]));
+      if (hits.length) hooks.onPick(hits[0].object.userData.pick);
+    });
+    ok = true; resize(); requestAnimationFrame(frame); return true;
+  }
+
+  function resize() {
+    if (!ok) return; var el = renderer.domElement.parentElement, w = el.clientWidth, h = el.clientHeight; if (!w || !h) return;
+    renderer.setSize(w, h, false); cam.aspect = w / h; cam.fov = w < h ? 62 : 48; cam.updateProjectionMatrix();
+  }
+
+  var v3 = T ? new T.Vector3() : null;
+  function place(el, anchor, dy) {
+    v3.copy(anchor).project(cam); var w = labelsEl.clientWidth, h = labelsEl.clientHeight;
+    if (v3.z > 1 || v3.z < -1) { el.style.display = 'none'; return; }
+    el.style.display = ''; el.style.transform = 'translate(-50%,-100%) translate(' + ((v3.x + 1) / 2 * w).toFixed(1) + 'px,' + ((1 - v3.y) / 2 * h - (dy || 0)).toFixed(1) + 'px)';
+  }
+
+  function frame() {
+    requestAnimationFrame(frame); if (!ok || renderer.domElement.offsetParent === null) return;
+    var dt = Math.min(clock.getDelta(), 0.1), t = clock.elapsedTime;
+    controls.update();
+    towers.forEach(function (tw, i) {
+      var on = tw.mode > 0; tw.beam.visible = tw.aura.visible = on;
+      if (on) { var p = 0.75 + Math.sin(t * 6 + i) * 0.2; tw.beam.material.opacity = p; tw.beam.scale.x = tw.beam.scale.z = 1 + Math.sin(t * 9 + i) * 0.12; }
+      tw.halos.forEach(function (hm, k) { hm.rotation.z += dt * (on ? 2.2 : 0.3) * (k ? -1 : 1); hm.scale.setScalar(on ? 1 + Math.sin(t * 5 + k) * 0.08 : 1); });
+      place(tw.el, tw.anchor);
+    });
+    vault.halo.material.opacity = 0.18 + Math.sin(t * 2) * 0.06; place(vault.el, vault.anchor);
+    waves.forEach(function (w) {
+      if (w.t >= 1) { w.m.visible = w.d.visible = false; return; } w.t += dt / 1.8; var e = 1 - Math.pow(1 - w.t, 3), s = 2 + e * 20;
+      w.m.scale.setScalar(s); w.d.scale.setScalar(s * 0.8); w.m.material.opacity = (1 - w.t) * 0.9; w.d.material.opacity = (1 - w.t) * 0.28;
+    });
+    coins.forEach(function (c) {
+      if (c.t >= 1) { c.m.visible = false; return; } c.t += dt / 1.6; var k = Math.max(0, Math.min(1, c.t));
+      c.m.position.set(c.from[0] + (VAULT_POS[0] - c.from[0]) * k, 0.5 + Math.sin(k * Math.PI) * 3, c.from[1] + (VAULT_POS[1] - c.from[1]) * k);
+    });
+    if (!reduce) { traffic.rotation.y += dt * 0.02; lights.forEach(function (l) { l.rotation.z = Math.sin(t * 0.3 + l.userData.ph) * 0.5; l.rotation.x = Math.PI + Math.cos(t * 0.23 + l.userData.ph) * 0.35; }); }
+    for (var i = toasts.length - 1; i >= 0; i--) {
+      var o = toasts[i]; o.age += dt; if (o.age > 3.4) { o.el.remove(); toasts.splice(i, 1); continue; }
+      place(o.el, o.anchor, 30 + o.age * 16 + o.slot * 26); o.el.style.opacity = o.age > 2.6 ? String(Math.max(0, (3.4 - o.age) / 0.8)) : '1';
+    }
+    renderer.render(scene, cam);
+  }
+
+  /* --- API --- */
+  function setTower(i, mode, html, key) { // mode: 0 idle, 1 call, 2 put, 3 gold
+    if (!ok) return; var tw = towers[i];
+    if (tw.mode !== mode) { tw.mode = mode; var c = mode === 1 ? COL.up : mode === 2 ? COL.down : COL.gold; tw.beam.material.color.setHex(c); tw.aura.material.color.setHex(c); }
+    if (tw.lblKey !== key) { tw.lblKey = key; tw.el.innerHTML = html; }
+  }
+  function setVault(html, key) { if (ok && vault.lblKey !== key) { vault.lblKey = key; vault.el.innerHTML = html; } }
+  function burst(i, win, n) {
+    if (!ok) return; var tw = towers[i], w = waves.filter(function (x) { return x.t >= 1; })[0];
+    if (w && !reduce) { var c = win ? COL.up : COL.down; w.t = 0; [w.m, w.d].forEach(function (m) { m.visible = true; m.material.color.setHex(c); m.position.set(tw.pos[0], 0.12, tw.pos[1]); }); w.d.position.y = 0.1; }
+    var k = 0; coins.forEach(function (c2) { if (c2.t >= 1 && k < n) { c2.t = -k * 0.12; c2.from = tw.pos; c2.m.material.color.setHex(win ? COL.gold : COL.down); c2.m.visible = true; k++; } });
+  }
+  function toast(i, text, cls) {
+    if (!ok) return; var el = document.createElement('div'); el.className = 'lbl toast ' + cls; el.textContent = text; labelsEl.appendChild(el);
+    var slot = toasts.filter(function (o) { return o.i === i && o.age < 1.5; }).length;
+    toasts.push({ el: el, anchor: i < 0 ? vault.anchor : towers[i].anchor, age: 0, i: i, slot: slot });
+  }
+  function clearFx() { toasts.forEach(function (o) { o.el.remove(); }); toasts = []; waves.forEach(function (w) { w.t = 1; }); coins.forEach(function (c) { c.t = 1; }); }
+  function setSeries(list) { if (ok) walls.forEach(function (w, k) { var m = list[k]; if (m && m.px && m.px.length > 1 && m.prevClose) drawWall(w, m, m.px.length - 1); }); }
+  function setFly(on) { if (ok) controls.autoRotate = on; }
+  function focus(i) { if (!ok) return; var p = i < 0 ? [VAULT_POS[0], 4, VAULT_POS[1]] : [towers[i].pos[0], towers[i].top * 0.6, towers[i].pos[1]]; controls.target.set(p[0] * 0.5, Math.max(10, p[1] * 0.8), p[2] * 0.5 + 1); }
+  return { init: init, resize: resize, setTower: setTower, setVault: setVault, burst: burst, toast: toast, clearFx: clearFx, setSeries: setSeries, setFly: setFly, focus: focus, setCityName: setCityName, ready: function () { return ok; } };
+})();
+
+</script>
+<script>
+/* Candle City, live: reads ../status.json written by the Wick bot (Alpaca account). No simulated prices. */
+(function () {
+  var $ = function (id) { return document.getElementById(id); }, ST = null, sel = null, seen = {}, first = true;
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function money(v, d) { v = +v || 0; return (v < 0 ? '-' : '+') + '$' + Math.abs(v).toLocaleString('en-US', { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 }); }
+  function usd(v) { return '$' + (+v || 0).toLocaleString('en-US', { maximumFractionDigits: 0 }); }
+  function pct(v, d) { return ((+v || 0) * 100).toFixed(d == null ? 1 : d) + '%'; }
+  function cls(v) { return v > 0.005 ? 'up' : v < -0.005 ? 'down' : 'muted'; }
+  var WORKERS = [{ name: 'Wick', star: true, tag: 'Daily trend strategy in UPRO (3x S&P 500). Decides once a day after 3:30 pm ET.' }, { name: 'Sleeve', tag: 'Day-trades a quarter of the account on noise-band momentum, using SPXL to bet up and SPXS to bet down.' }];
+
+  function sleevePnl() { return ST.sleeve && ST.sleeve.enabled ? +ST.sleeve.pnl_total || 0 : 0; }
+  function wickState() {
+    var held = ST.position_value > 1;
+    if (ST.halted) return { mode: 2, c: 'put', text: 'halted · in cash' };
+    return held ? { mode: 1, c: 'call', text: 'holding ' + esc(ST.symbol) + ' · ' + pct(ST.invested_pct, 0) + ' invested' } : { mode: 0, c: '', text: 'in cash · waiting for the signal' };
+  }
+  function sleeveState() {
+    var s = ST.sleeve || {}, p = s.position;
+    if (!s.enabled) return { mode: 0, c: 'off', text: 'switched off' };
+    if (p) return { mode: p.side > 0 ? 1 : 2, c: p.side > 0 ? 'call' : 'put', text: (p.side > 0 ? '▲ ' : '▼ ') + esc(p.side_name) + ' · ' + esc(p.symbol) + ' ' + money(p.open_pnl) };
+    if (!ST.market_open) return { mode: 0, c: '', text: 'market closed' };
+    return { mode: 0, c: '', text: s.next_check ? 'watching · next check ' + esc(s.next_check) : 'done for the day' };
+  }
+  function render() {
+    var w = wickState(), s = sleeveState(), sp = sleevePnl(), wp = (+ST.total_pl || 0) - sp, els = document.querySelectorAll('.lbl-tower');
+    [[w, wp, 'since start'], [s, +(ST.sleeve || {}).pnl_today || 0, 'today']].forEach(function (x, k) {
+      var html = '<b>' + (WORKERS[k].star ? '★ ' : '') + WORKERS[k].name + '</b><span class="s">' + x[0].text + '<br></span>' + x[2] + ' <span class="' + cls(x[1]) + '">' + money(x[1]) + '</span>';
+      if (els[k]) els[k].className = 'lbl lbl-tower ' + x[0].c; City.setTower(k, x[0].mode, html, html);
+    });
+    var vh = '<b>The vault · ' + (ST.history || []).length + ' days</b><span class="big ' + cls(ST.total_pl) + '">' + money(ST.total_pl) + '</span>' + usd(ST.equity) + ' in the account · tap for payroll';
+    City.setVault(vh, vh);
+    var paper = ST.mode !== 'live'; $('mode').textContent = paper ? 'Paper account' : 'Real money'; $('mode').className = 'pill ' + (paper ? 'sim' : 'live');
+    $('clock').textContent = 'Updated ' + String(ST.updated || '').replace('T', ' ').slice(0, 16) + ' ET · market ' + (ST.market_open ? 'open' : 'closed');
+    $('dayNet').textContent = 'Today ' + money(ST.day_pl) + ' (' + pct(ST.day_pl_pct) + ')'; $('dayNet').className = 'num ' + cls(ST.day_pl);
+    var ch = ST.chart || {}, intr = (ch.intraday || []).map(function (r) { return r[4]; }), daily = (ch.daily || []).map(function (r) { return r[4]; }), eq = (ST.history || []).map(function (h) { return h.equity; });
+    City.setSeries([{ px: intr, prevClose: daily.length > 1 ? daily[daily.length - 2] : intr[0] }, { px: daily, prevClose: daily[0] }, { px: eq, prevClose: ST.start_equity }]);
+    var H = ST.history || [], h = '';
+    H.slice(-14).forEach(function (d, n, arr) { var prev = n ? arr[n - 1].equity : (H.length > arr.length ? H[H.length - arr.length - 1].equity : ST.start_equity), v = d.equity - prev; h += '<button type="button" class="' + (v > 0.5 ? 'g' : v < -0.5 ? 'r' : '') + '" title="' + esc(d.date) + ': ' + money(v) + '">' + esc(d.date.slice(8)) + '</button>'; });
+    $('days').innerHTML = h;
+    var tape = []; ((ST.sleeve || {}).trades || []).slice(-6).reverse().forEach(function (t) { tape.push('<span><b>Sleeve</b> ' + esc(t.date.slice(5)) + ' ' + esc(t.time) + ' ' + esc(t.side_name) + ' ' + t.qty + ' ' + esc(t.symbol) + (t.exit != null ? ' · sold <span class="' + cls(t.pnl) + '">' + money(t.pnl) + '</span> · ' + esc(t.reason) : ' · open') + '</span>'); });
+    (ST.actions || []).slice(-6).reverse().forEach(function (a) { tape.push('<span><b>Wick</b> ' + esc(a.date.slice(5)) + ' ' + esc(a.action) + (a.amount ? ' ' + usd(Math.abs(a.amount)) : '') + ' · now ' + pct(a.exposure, 0) + ' invested</span>'); });
+    $('tape').innerHTML = tape.join('') || '<span>No trades yet.</span>';
+    ((ST.sleeve || {}).trades || []).forEach(function (t) { var key = t.date + t.time; if (t.exit == null || seen[key]) return; seen[key] = 1; var today = t.date === String(ST.updated).slice(0, 10); if (!first || today) { City.toast(1, t.reason + ' ' + money(t.pnl), t.pnl > 0 ? 'gold' : 'down'); City.burst(1, t.pnl > 0, Math.max(1, Math.min(6, Math.round(Math.abs(t.pnl) / 80)))); } });
+    first = false; if (sel != null) side();
+  }
+  function sizeCanvas(c) { var r = c.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2); c.width = Math.round(r.width * dpr); c.height = Math.round(r.height * dpr); var g = c.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); return { g: g, w: r.width, h: r.height }; }
+  function chart() {
+    var c = $('chart'); if (!c) return; var rows = (ST.chart || {}).intraday || [], o = sizeCanvas(c), g = o.g, W = o.w, H = o.h; if (rows.length < 2) { g.fillStyle = '#a3a8de'; g.font = '12px "IBM Plex Mono", monospace'; g.fillText('No candles for this session yet.', 12, 24); return; }
+    var lo = Math.min.apply(null, rows.map(function (r) { return r[3]; })), hi = Math.max.apply(null, rows.map(function (r) { return r[2]; })), pad = (hi - lo) * 0.1 + 0.01; lo -= pad; hi += pad;
+    var bw = (W - 60) / Math.max(rows.length, 78); function X(i) { return 6 + i * bw + bw / 2; } function Y(v) { return 8 + (hi - v) / (hi - lo) * (H - 28); }
+    g.font = '10px "IBM Plex Mono", monospace'; g.fillStyle = '#a3a8de'; [hi - pad, lo + pad].forEach(function (v) { g.fillText(v.toFixed(2), W - 50, Y(v) + 3); });
+    rows.forEach(function (r, i) { var up = r[4] >= r[1]; g.strokeStyle = g.fillStyle = up ? '#3df2a4' : '#ff4d6d'; g.beginPath(); g.moveTo(X(i), Y(r[2])); g.lineTo(X(i), Y(r[3])); g.stroke(); g.fillRect(X(i) - bw * 0.35, Math.min(Y(r[1]), Y(r[4])), bw * 0.7, Math.max(1, Math.abs(Y(r[1]) - Y(r[4])))); });
+    var t0 = rows[0][0]; ((ST.chart || {}).fills || []).forEach(function (f) { var i = (f.t - t0) / 300; if (i < 0 || i > rows.length) return; var x = X(i), y = Y(f.price), buy = f.side === 'buy'; g.fillStyle = buy ? '#59d8ff' : '#ffc24b'; g.beginPath(); g.moveTo(x, y + (buy ? 9 : -9)); g.lineTo(x - 5, y + (buy ? 17 : -17)); g.lineTo(x + 5, y + (buy ? 17 : -17)); g.fill(); });
+    g.fillStyle = '#a3a8de'; var d0 = new Date(t0 * 1000); g.fillText(d0.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'America/New_York' }) + ' · 5-minute candles', 8, H - 6);
+  }
+  function side() {
+    var el = $('side'), h, sp = sleevePnl();
+    if (sel === 'vault') {
+      var rows = [['Wick', (+ST.total_pl || 0) - sp, (ST.actions || []).filter(function (a) { return a.action !== 'hold'; }).length], ['Sleeve', sp, ((ST.sleeve || {}).trades || []).length]].sort(function (a, b) { return b[1] - a[1]; });
+      h = '<header><h2>Payroll</h2><button class="x" type="button" aria-label="Close" data-close>×</button></header><div class="body"><div class="stats"><div class="stat"><span>Account</span><b>' + usd(ST.equity) + '</b></div><div class="stat"><span>Started at</span><b>' + usd(ST.start_equity) + '</b></div><div class="stat"><span>Since start</span><b class="' + cls(ST.total_pl) + '">' + pct(ST.total_pl_pct) + '</b></div><div class="stat"><span>Today</span><b class="' + cls(ST.day_pl) + '">' + money(ST.day_pl) + '</b></div></div><h3>Worker heatmap · since start</h3><div class="tiles" style="grid-template-columns:repeat(2,1fr)">' + rows.map(function (r) { return '<div class="tile" style="background:' + (r[1] > 0 ? '#3df2a4' : r[1] < 0 ? '#ff4d6d' : '#a3a8de') + '"><small>' + r[0] + '</small>' + money(r[1]) + '</div>'; }).join('') + '</div><h3>Leaderboard</h3><table><tr><th>Worker</th><th>Trades</th><th>Earned</th></tr>' + rows.map(function (r, n) { return '<tr><td>' + (n + 1) + '. <button class="btn" type="button" data-tower="' + (r[0] === 'Wick' ? 0 : 1) + '">' + r[0] + '</button></td><td>' + r[2] + '</td><td class="' + cls(r[1]) + '">' + money(r[1]) + '</td></tr>'; }).join('') + '</table><p class="note">Wick’s figure is the account’s total change minus what the Sleeve made. These are ' + (ST.mode === 'live' ? 'real-money' : 'paper-account') + ' results from Alpaca.</p></div>';
+    } else if (sel === 0) {
+      var w = wickState(), sg = ST.signal || {}, yn = function (v) { return v ? 'yes' : 'no'; };
+      h = '<header><div><h2>★ Wick</h2><div class="muted" style="font-size:12px">' + WORKERS[0].tag + '</div></div><button class="x" type="button" aria-label="Close" data-close>×</button></header><div class="body"><div class="stats"><div class="stat"><span>Holding</span><b>' + usd(ST.position_value) + '</b></div><div class="stat"><span>Invested</span><b>' + pct(ST.invested_pct, 0) + '</b></div><div class="stat"><span>Avg entry</span><b>' + (+ST.avg_entry || 0).toFixed(2) + '</b></div><div class="stat"><span>S&amp;P today</span><b class="' + cls(ST.spy_day) + '">' + pct(ST.spy_day) + '</b></div></div>' +
+        '<div class="scanner"><div class="hd">Signal scanner<small>decides after 3:30 pm ET</small></div><div class="now ' + w.c + '">' + w.text + '</div><div class="bar" role="img" aria-label="Target exposure ' + pct(sg.exposure, 0) + '"><i style="width:' + Math.min(100, (+sg.exposure || 0) * 100) + '%"></i></div><ul class="thoughts" style="min-height:0"><li><time>target</time><span>' + pct(sg.exposure, 0) + ' of Wick’s share in ' + esc(ST.symbol) + '</span></li><li><time>trend</time><span>S&amp;P above its 200-day average: ' + yn(sg.trend) + '</span></li><li><time>momentum</time><span>up over 12 months: ' + yn(sg.momentum) + '</span></li><li><time>dip buy</time><span>short-term dip signal: ' + yn(sg.dip_buy) + '</span></li>' + (ST.log || []).slice(-3).map(function (l) { return '<li><time>log</time><span>' + esc(l) + '</span></li>'; }).join('') + '</ul></div>' +
+        '<canvas id="chart" class="chart" aria-label="' + esc(ST.symbol) + ' five-minute candles with Wick’s fills"></canvas><div class="legend"><span style="color:#59d8ff">▲ bought</span><span class="gold">▼ sold</span></div><h3>Daily decisions</h3><div class="trades">' + ((ST.actions || []).slice().reverse().map(function (a) { return '<details class="trade ' + (a.action === 'buy' ? 'win' : a.action === 'sell' ? 'open' : '') + '"><summary><span>' + esc(a.date) + '</span><span class="muted">' + esc(a.action) + '</span><b>' + (a.amount ? usd(Math.abs(a.amount)) : '–') + '</b></summary><dl><dt>Invested after</dt><dd>' + pct(a.exposure, 0) + '</dd></dl></details>'; }).join('') || '<p class="note">No decisions yet.</p>') + '</div></div>';
+    } else {
+      var s = ST.sleeve || {}, b = s.bands || {}, st = sleeveState(), where = b.spy > b.upper ? 'above the upper band' : b.spy < b.lower ? 'below the lower band' : 'inside the band';
+      h = '<header><div><h2>Sleeve</h2><div class="muted" style="font-size:12px">' + WORKERS[1].tag + '</div></div><button class="x" type="button" aria-label="Close" data-close>×</button></header><div class="body"><div class="stats"><div class="stat"><span>Today</span><b class="' + cls(s.pnl_today) + '">' + money(s.pnl_today) + '</b></div><div class="stat"><span>Since start</span><b class="' + cls(s.pnl_total) + '">' + money(s.pnl_total) + '</b></div><div class="stat"><span>Share</span><b>' + pct(s.share, 0) + '</b></div><div class="stat"><span>Day trades</span><b>' + (s.day_trades_used || 0) + ' / ' + (s.day_trade_limit || 0) + '</b></div></div>' +
+        '<div class="scanner"><div class="hd">Signal scanner<small>checks every 30 min, flat by 3:50</small></div><div class="now ' + st.c + '">' + st.text + '</div>' + (b.spy ? '<ul class="thoughts" style="min-height:0"><li><time>' + esc(b.time || '') + '</time><span>SPY ' + (+b.spy).toFixed(2) + ' is ' + where + '</span></li><li><time>upper</time><span>' + (+b.upper).toFixed(2) + ' · a break above bets up</span></li><li><time>lower</time><span>' + (+b.lower).toFixed(2) + ' · a break below bets down</span></li><li><time>VWAP</time><span>' + (+b.vwap).toFixed(2) + ' · the trailing exit line</span></li></ul>' : '<ul class="thoughts" style="min-height:0"><li>No band reading yet today.</li></ul>') + '</div>' +
+        '<h3>Trades</h3><div class="trades">' + ((s.trades || []).slice().reverse().map(function (t) { var open = t.exit == null; return '<details class="trade ' + (open ? 'open' : t.pnl > 0 ? 'win' : 'loss') + '"' + (open ? ' open' : '') + '><summary><span>' + (t.side > 0 ? '▲ ' : '▼ ') + t.qty + ' ' + esc(t.symbol) + '</span><span class="muted">' + (open ? 'open' : esc(t.reason)) + '</span><b class="' + cls(t.pnl) + '">' + (open ? '–' : money(t.pnl)) + '</b></summary><dl><dt>Day</dt><dd>' + esc(t.date) + '</dd><dt>Entry</dt><dd>' + esc(t.time) + ' · ' + esc(t.symbol) + ' ' + (+t.entry).toFixed(2) + '</dd><dt>SPY at entry</dt><dd>' + (+t.spy_at_entry).toFixed(2) + '</dd>' + (open ? '' : '<dt>Exit</dt><dd>' + esc(t.exit_time) + ' · ' + (+t.exit).toFixed(2) + '</dd><dt>How it closed</dt><dd>' + esc(t.reason) + '</dd><dt>Return</dt><dd class="' + cls(t.pnl) + '">' + pct(t.exit / t.entry - 1) + '</dd>') + '</dl></details>'; }).join('') || '<p class="note">No sleeve trades yet.</p>') + '</div></div>';
+    }
+    el.innerHTML = h; el.hidden = false; chart();
+  }
+  function open(s) { sel = s; side(); City.focus(s === 'vault' ? -1 : s); }
+  function load() {
+    return fetch('../status.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { ST = j; $('err').hidden = true; render(); }).catch(function () { $('err').hidden = false; $('err').textContent = ST ? 'Could not refresh. Showing the last reading.' : 'Could not load status.json. The page needs to be opened from the Wick site, next to the bot’s status file.'; });
+  }
+  var ok = City.init($('gl'), $('labels'), { onPick: function (p) { open(p.type === 'vault' ? 'vault' : p.i); } }); if (!ok) $('nogl').hidden = false;
+  City.setCityName('Candle City'); if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { City.setCityName('Candle City'); });
+  $('side').addEventListener('click', function (e) { if (e.target.closest('[data-close]')) { sel = null; $('side').hidden = true; } var t = e.target.closest('[data-tower]'); if (t) open(+t.dataset.tower); });
+  $('payrollBtn').onclick = function () { sel === 'vault' ? (sel = null, $('side').hidden = true) : open('vault'); };
+  $('camFly').onclick = function () { City.setFly(true); this.setAttribute('aria-pressed', 'true'); $('camOrbit').setAttribute('aria-pressed', 'false'); };
+  $('camOrbit').onclick = function () { City.setFly(false); this.setAttribute('aria-pressed', 'true'); $('camFly').setAttribute('aria-pressed', 'false'); };
+  window.addEventListener('resize', function () { City.resize(); if (sel != null) side(); });
+  load(); setInterval(load, 60000);
+})();
+
+</script>
+</body>
+</html>
