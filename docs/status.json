@@ -1,18 +1,18 @@
 {
- "updated": "2026-11-09T15:50-05:00",
+ "updated": "2026-11-09T15:55-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 94166.32,
+ "equity": 94095.6,
  "start_equity": 100000.0,
- "total_pl": -5833.68,
- "total_pl_pct": -0.0583,
- "day_pl": 3793.98,
- "day_pl_pct": 0.042,
- "position_value": 30682.91,
+ "total_pl": -5904.4,
+ "total_pl_pct": -0.059,
+ "day_pl": 3723.26,
+ "day_pl_pct": 0.0412,
+ "position_value": 30607.84,
  "avg_entry": 148.13,
- "invested_pct": 0.326,
+ "invested_pct": 0.325,
  "signal": {
-  "exposure": 0.449,
+  "exposure": 0.452,
   "trend": 1,
   "momentum": 1,
   "dip_buy": 0,
@@ -23,7 +23,7 @@
    "vol": 0.15
   }
  },
- "spy_day": 0.0253,
+ "spy_day": 0.0243,
  "market_open": true,
  "halted": false,
  "history": [
@@ -49,7 +49,7 @@
   },
   {
    "date": "2026-11-09",
-   "equity": 94166.32
+   "equity": 94095.6
   }
  ],
  "actions": [
@@ -112,8 +112,7 @@
   "next_check": null
  },
  "log": [
-  "Today's decision is done. Watching until the close.",
-  "Active sleeve: sold 87 SPXL at $265.29 (end of day), P&L $+339.30"
+  "Today's decision is done. Watching until the close."
  ],
  "chart": {
   "symbol": "UPRO",
@@ -407,10 +406,17 @@
    ],
    [
     1794257400,
-    138.87,
-    138.87,
-    138.635,
-    138.635
+    138.72,
+    138.72,
+    138.38,
+    138.39
+   ],
+   [
+    1794257700,
+    138.39,
+    138.39,
+    138.26,
+    138.26
    ]
   ],
   "daily": [
@@ -1042,7 +1048,7 @@
     132.265,
     139.35,
     132.06,
-    138.87
+    138.39
    ]
   ],
   "fills": [
