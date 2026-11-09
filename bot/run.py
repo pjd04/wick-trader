@@ -177,7 +177,7 @@ def notify(title, msg, up=True):
 
 
 def rebalance(broker, exposure, equity, pos, price, log):
-    target = max(0.0, exposure) * equity * (1 - cfg.CASH_BUFFER)
+    target = max(0.0, exposure) * equity * cfg.WICK_SHARE * (1 - cfg.CASH_BUFFER)
     diff = target - pos["value"]
     if abs(diff) < max(cfg.MIN_TRADE_DOLLARS, cfg.MIN_TRADE_PCT * equity):
         log.append(f"Holding: target ${target:,.2f} is close to current ${pos['value']:,.2f}")
@@ -276,6 +276,14 @@ def run(broker, now=None):
     else:
         log.append(f"Watching. Decision after {cfg.DECIDE_AFTER_ET} ET.")
 
+    # active sleeve: day trades its share of the account; a failure here never affects Wick
+    sleeve_status = None
+    try:
+        import sleeve
+        sleeve_status = sleeve.step(broker, now, equity, is_open, log, notify=notify)
+    except Exception as e:
+        log.append(f"Active sleeve skipped this pass: {e!r}")
+
     # keep one equity point per day (latest value of the day wins)
     hist = [h for h in state["history"] if h["date"] != today] + [{"date": today, "equity": round(equity, 2)}]
     state["history"] = hist[-400:]
@@ -300,6 +308,7 @@ def run(broker, now=None):
         "halted": state["halted"] or stop_file,
         "history": state["history"],
         "actions": state["actions"][-10:],
+        "sleeve": sleeve_status,
         "log": log,
     }
     STATE.parent.mkdir(exist_ok=True)

@@ -76,6 +76,16 @@ body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.5 var(--
 .cempty { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); font-size: 13px; text-align: center; padding: 0 20px; }
 .keys { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
 .keys b { font-weight: 700; } .keys .b { color: var(--up); } .keys .s { color: var(--down); }
+.state-pill { font: 700 12px var(--body); padding: 4px 10px; border-radius: 999px; background: var(--flat-soft); color: var(--muted); }
+.state-pill.long { background: var(--up-soft); color: var(--up); } .state-pill.short { background: var(--down-soft); color: var(--down); }
+.dots { display: inline-flex; gap: 5px; vertical-align: middle; }
+.dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--flat-soft); border: 1px solid var(--line); }
+.dots i.used { background: var(--mood); border-color: transparent; }
+.band { position: relative; height: 34px; background: var(--flat-soft); border-radius: 8px; overflow: hidden; }
+.band .zone { position: absolute; top: 0; bottom: 0; background: var(--card); border-left: 2px dashed var(--muted); border-right: 2px dashed var(--muted); }
+.band .now { position: absolute; top: 4px; bottom: 4px; width: 4px; border-radius: 2px; background: var(--fg); transform: translateX(-2px); }
+.band .vw { position: absolute; top: 0; bottom: 0; width: 0; border-left: 2px solid var(--flame); }
+.v.up, .mono.up { color: var(--up); } .v.down, .mono.down { color: var(--down); }
 .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 
 /* Wick animations */
@@ -169,6 +179,26 @@ body.up .spark.s2 { animation-delay: .8s; } body.up .spark.s3 { animation-delay:
     <div class="row"><span class="muted">S&amp;P today</span><span class="mono" id="spy">0.00%</span></div>
   </section>
 
+  <section class="card" id="sleeveCard">
+    <div class="chead">
+      <h2>Active trader <span class="muted" style="font:500 12px var(--body)">(<span id="slShare">25</span>% of account, day trades)</span></h2>
+      <span class="state-pill" id="slState">In cash</span>
+    </div>
+    <div class="grid">
+      <div class="tile" style="background:var(--bg)"><span class="label">Today</span><span class="v" id="slToday">$0.00</span></div>
+      <div class="tile" style="background:var(--bg)"><span class="label">All time</span><span class="v" id="slTotal">$0.00</span></div>
+    </div>
+    <div class="row" id="slPosRow" hidden><span id="slPos"></span><span class="mono" id="slPosPnl"></span></div>
+    <div id="slBandWrap" hidden>
+      <div class="row" style="font-size:12px"><span class="muted">SPY vs today's noise band (<span id="slBandTime"></span>)</span><span class="mono" id="slBandTxt"></span></div>
+      <div class="band" aria-hidden="true"><div class="zone" id="slZone"></div><div class="vw" id="slVw"></div><div class="now" id="slNow"></div></div>
+      <div class="keys" style="margin-top:4px"><span>▮ SPY now</span><span>┆ band edges</span><span style="color:var(--flame)">│ VWAP</span></div>
+    </div>
+    <div class="row"><span>Day trades used (last 5 days)</span><span><span class="dots" id="slDots"></span> <span class="mono" id="slUsed"></span></span></div>
+    <div class="row"><span class="muted">Next check</span><span class="mono" id="slNext">—</span></div>
+    <ul class="moves" id="slTrades"></ul>
+  </section>
+
   <section class="card" id="learnCard">
     <h2>Report card</h2>
     <div class="row"><span class="muted">Calls that worked out (5 days later)</span><span class="mono" id="hit">—</span></div>
@@ -207,6 +237,11 @@ const EXAMPLE_CHART = (() => {
 })();
 const EXAMPLE = {
   chart: EXAMPLE_CHART, avg_entry: 92.1,
+  sleeve: { enabled: true, share: 0.25, pnl_today: 182.4, pnl_total: 341.9, day_trades_used: 2, day_trade_limit: 3, next_check: "13:30",
+    position: { side: 1, symbol: "SPXL", qty: 160, entry: 151.2, time: "11:00", open_pnl: 182.4, value: 24374 },
+    bands: { time: "13:00", spy: 603.8, upper: 602.4, lower: 596.1, vwap: 601.9 },
+    trades: [{ date: "2026-11-03", time: "10:30", exit_time: "15:48", side: -1, symbol: "SPXS", pnl: 412.1 },
+             { date: "2026-11-05", time: "11:00", exit_time: "12:00", side: 1, symbol: "SPXL", pnl: -252.6 }] },
   updated: "2026-11-03T15:45-05:00", mode: "paper", symbol: "UPRO", equity: 1094.2, start_equity: 1000,
   total_pl: 94.2, total_pl_pct: .0942, day_pl: 12.4, day_pl_pct: .0115, position_value: 1072.3, invested_pct: .98,
   signal: { exposure: 1, trend: 1, momentum: 1, dip_buy: 0 }, spy_day: .0041, market_open: true, halted: false,
@@ -262,6 +297,43 @@ function render(s, example) {
     (s.market_open ? " · price updates every minute" : " · market closed");
   chart(s.history || [], s.start_equity);
   drawCandles(s);
+  drawSleeve(s.sleeve);
+}
+
+function drawSleeve(sl) {
+  const card = $("sleeveCard");
+  card.hidden = !sl || !sl.enabled;
+  if (card.hidden) return;
+  $("slShare").textContent = Math.round(sl.share * 100);
+  const p = sl.position;
+  $("slState").textContent = p ? (p.side === 1 ? "▲ Betting up" : "▼ Betting down") : "In cash";
+  $("slState").className = "state-pill" + (p ? (p.side === 1 ? " long" : " short") : "");
+  for (const [id, v] of [["slToday", sl.pnl_today], ["slTotal", sl.pnl_total]]) {
+    $(id).textContent = money(v, true); $(id).className = "v " + (v > 0 ? "up" : v < 0 ? "down" : "");
+  }
+  $("slPosRow").hidden = !p;
+  if (p) {
+    $("slPos").textContent = `${p.qty} ${p.symbol} since ${p.time} at $${p.entry.toFixed(2)}`;
+    $("slPosPnl").textContent = money(p.open_pnl, true);
+    $("slPosPnl").className = "mono " + (p.open_pnl >= 0 ? "up" : "down");
+  }
+  const b = sl.bands;
+  $("slBandWrap").hidden = !b;
+  if (b) {
+    const lo = Math.min(b.lower, b.spy, b.vwap), hi = Math.max(b.upper, b.spy, b.vwap), pad = (hi - lo) * 0.25 || 1;
+    const X = v => ((v - (lo - pad)) / (hi - lo + 2 * pad) * 100).toFixed(1) + "%";
+    $("slZone").style.left = X(b.lower);
+    $("slZone").style.width = `calc(${X(b.upper)} - ${X(b.lower)})`;
+    $("slNow").style.left = X(b.spy); $("slVw").style.left = X(b.vwap);
+    $("slBandTime").textContent = b.time;
+    $("slBandTxt").textContent = `${b.spy.toFixed(2)} · band ${b.lower.toFixed(2)}–${b.upper.toFixed(2)}`;
+  }
+  $("slDots").innerHTML = Array.from({ length: sl.day_trade_limit }, (_, i) => `<i class="${i < sl.day_trades_used ? "used" : ""}"></i>`).join("");
+  $("slUsed").textContent = `${sl.day_trades_used}/${sl.day_trade_limit}`;
+  $("slNext").textContent = sl.next_check ? sl.next_check + " ET" : "tomorrow 10:00 ET";
+  $("slTrades").innerHTML = (sl.trades || []).slice().reverse().slice(0, 5).map(t =>
+    `<li><span><span class="mono">${t.date.slice(5)} ${t.time}–${t.exit_time}</span> ${t.side === 1 ? "▲" : "▼"} ${t.symbol}</span><span class="mono ${t.pnl >= 0 ? "up" : "down"}">${money(t.pnl, true)}</span></li>`).join("")
+    || `<li><span class="muted">No day trades yet. It checks every 30 min from 10:00 ET and trades only on a breakout.</span></li>`;
 }
 
 function chart(h, start) {

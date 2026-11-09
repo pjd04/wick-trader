@@ -17,3 +17,11 @@ CRASH_GUARD = None
 
 MAX_DRAWDOWN_HALT = 0.50     # stop trading and go to cash if the account falls 50% from its peak
 NTFY_TOPIC = os.environ.get("NTFY_TOPIC", "")  # optional phone notifications via the free ntfy app
+
+# ---- active sleeve (bot/sleeve.py): day trading on part of the account ----
+SLEEVE_ENABLED = True
+SLEEVE_SHARE = 0.25          # share of the account the sleeve trades; Wick sizes to the rest
+SLEEVE_LONG = "SPXL"         # 3x S&P (separate fund from Wick's UPRO)
+SLEEVE_SHORT = "SPXS"        # inverse 3x S&P, bought to bet on a drop
+DAY_TRADE_LIMIT = 3          # max day trades per 5 business days (US rule for accounts under $25k)
+WICK_SHARE = 1 - SLEEVE_SHARE if SLEEVE_ENABLED else 1.0
