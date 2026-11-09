@@ -1,18 +1,18 @@
 {
- "updated": "2026-11-09T11:09-05:00",
+ "updated": "2026-11-09T11:21-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 93116.38,
+ "equity": 93103.52,
  "start_equity": 100000.0,
- "total_pl": -6883.62,
- "total_pl_pct": -0.0688,
- "day_pl": 2744.04,
- "day_pl_pct": 0.0304,
- "position_value": 48243.33,
+ "total_pl": -6896.48,
+ "total_pl_pct": -0.069,
+ "day_pl": 2731.18,
+ "day_pl_pct": 0.0302,
+ "position_value": 48226.99,
  "avg_entry": 148.13,
  "invested_pct": 0.518,
  "signal": {
-  "exposure": 0.463,
+  "exposure": 0.464,
   "trend": 1,
   "momentum": 1,
   "dip_buy": 0,
@@ -23,7 +23,7 @@
    "vol": 0.15
   }
  },
- "spy_day": 0.0206,
+ "spy_day": 0.0202,
  "market_open": true,
  "halted": false,
  "history": [
@@ -49,7 +49,7 @@
   },
   {
    "date": "2026-11-09",
-   "equity": 93116.38
+   "equity": 93103.52
   }
  ],
  "actions": [
@@ -72,6 +72,35 @@
    "exposure": 0.497
   }
  ],
+ "sleeve": {
+  "enabled": true,
+  "share": 0.25,
+  "position": {
+   "date": "2026-11-09",
+   "time": "11:13",
+   "side": 1,
+   "side_name": "bet up",
+   "symbol": "SPXL",
+   "qty": 87,
+   "entry": 261.39,
+   "spy_at_entry": 750.03,
+   "value": 22744.41,
+   "open_pnl": 3.48
+  },
+  "pnl_total": 3.48,
+  "pnl_today": 3.48,
+  "day_trades_used": 0,
+  "day_trade_limit": 3,
+  "bands": {
+   "time": "11:13",
+   "spy": 750.03,
+   "upper": 745.98,
+   "lower": 731.35,
+   "vwap": 747.8
+  },
+  "trades": [],
+  "next_check": "11:30"
+ },
  "log": [
   "Watching. Decision after 15:30 ET."
  ],
@@ -182,6 +211,20 @@
     136.75,
     136.68,
     136.68
+   ],
+   [
+    1794240600,
+    136.61,
+    136.61,
+    136.61,
+    136.61
+   ],
+   [
+    1794241200,
+    136.61,
+    136.71,
+    136.61,
+    136.71
    ]
   ],
   "daily": [
@@ -813,7 +856,7 @@
     132.265,
     137.33,
     132.06,
-    136.75
+    136.61
    ]
   ],
   "fills": [
