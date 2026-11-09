@@ -1,18 +1,26 @@
 {
  "day": "2026-11-09",
- "pos": {
-  "date": "2026-11-09",
-  "time": "11:13",
-  "side": 1,
-  "side_name": "bet up",
-  "symbol": "SPXL",
-  "qty": 87,
-  "entry": 261.39,
-  "spy_at_entry": 750.03
- },
- "day_trades": [],
- "trades": [],
- "pnl_total": 0.0,
+ "pos": null,
+ "day_trades": [
+  "2026-11-09"
+ ],
+ "trades": [
+  {
+   "date": "2026-11-09",
+   "time": "11:13",
+   "side": 1,
+   "side_name": "bet up",
+   "symbol": "SPXL",
+   "qty": 87,
+   "entry": 261.39,
+   "spy_at_entry": 750.03,
+   "exit": 265.29,
+   "exit_time": "15:51",
+   "pnl": 339.3,
+   "reason": "end of day"
+  }
+ ],
+ "pnl_total": 339.3,
  "sigma": [
   0.002885,
   0.004738,

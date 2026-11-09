@@ -1,18 +1,18 @@
 {
- "updated": "2026-11-09T15:46-05:00",
+ "updated": "2026-11-09T15:50-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 94276.85,
+ "equity": 94166.32,
  "start_equity": 100000.0,
- "total_pl": -5723.15,
- "total_pl_pct": -0.0572,
- "day_pl": 3904.51,
- "day_pl_pct": 0.0432,
- "position_value": 30747.12,
+ "total_pl": -5833.68,
+ "total_pl_pct": -0.0583,
+ "day_pl": 3793.98,
+ "day_pl_pct": 0.042,
+ "position_value": 30682.91,
  "avg_entry": 148.13,
  "invested_pct": 0.326,
  "signal": {
-  "exposure": 0.446,
+  "exposure": 0.449,
   "trend": 1,
   "momentum": 1,
   "dip_buy": 0,
@@ -23,7 +23,7 @@
    "vol": 0.15
   }
  },
- "spy_day": 0.0259,
+ "spy_day": 0.0253,
  "market_open": true,
  "halted": false,
  "history": [
@@ -49,7 +49,7 @@
   },
   {
    "date": "2026-11-09",
-   "equity": 94276.85
+   "equity": 94166.32
   }
  ],
  "actions": [
@@ -81,21 +81,10 @@
  "sleeve": {
   "enabled": true,
   "share": 0.25,
-  "position": {
-   "date": "2026-11-09",
-   "time": "11:13",
-   "side": 1,
-   "side_name": "bet up",
-   "symbol": "SPXL",
-   "qty": 87,
-   "entry": 261.39,
-   "spy_at_entry": 750.03,
-   "value": 23122.2,
-   "open_pnl": 381.27
-  },
-  "pnl_total": 381.27,
-  "pnl_today": 381.27,
-  "day_trades_used": 0,
+  "position": null,
+  "pnl_total": 339.3,
+  "pnl_today": 339.3,
+  "day_trades_used": 1,
   "day_trade_limit": 3,
   "bands": {
    "time": "15:30",
@@ -104,11 +93,27 @@
    "lower": 730.58,
    "vwap": 750.36
   },
-  "trades": [],
+  "trades": [
+   {
+    "date": "2026-11-09",
+    "time": "11:13",
+    "side": 1,
+    "side_name": "bet up",
+    "symbol": "SPXL",
+    "qty": 87,
+    "entry": 261.39,
+    "spy_at_entry": 750.03,
+    "exit": 265.29,
+    "exit_time": "15:51",
+    "pnl": 339.3,
+    "reason": "end of day"
+   }
+  ],
   "next_check": null
  },
  "log": [
-  "Today's decision is done. Watching until the close."
+  "Today's decision is done. Watching until the close.",
+  "Active sleeve: sold 87 SPXL at $265.29 (end of day), P&L $+339.30"
  ],
  "chart": {
   "symbol": "UPRO",
@@ -392,6 +397,20 @@
     139.05,
     138.91,
     138.91
+   ],
+   [
+    1794257100,
+    138.87,
+    138.87,
+    138.87,
+    138.87
+   ],
+   [
+    1794257400,
+    138.87,
+    138.87,
+    138.635,
+    138.635
    ]
   ],
   "daily": [
@@ -1023,7 +1042,7 @@
     132.265,
     139.35,
     132.06,
-    138.91
+    138.87
    ]
   ],
   "fills": [
