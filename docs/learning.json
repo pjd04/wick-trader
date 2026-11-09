@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-08T09:20-05:00",
+ "updated": "2026-11-09T16:03-05:00",
  "live_settings": "200/252/10/0.15",
  "shadow_settings": "200/252/5/0.1",
  "shadow_since": "2026-11-06",
- "days": 0,
+ "days": 1,
  "days_needed": 126,
  "live": {
   "total": 0.0,
@@ -36,7 +36,15 @@
    "date": "2026-11-06",
    "action": "hold",
    "amount": 0.0,
-   "exposure": 0.497
+   "exposure": 0.497,
+   "after_1d": 0.071,
+   "good_1d": null
+  },
+  {
+   "date": "2026-11-09",
+   "action": "sell",
+   "amount": -18283.3,
+   "exposure": 0.444
   }
  ],
  "hit_rate_5d": null,
