@@ -13,6 +13,9 @@ Strategies
   gap_fade        fade opening gaps larger than 0.5%
   noise_area      "Beat the Market" intraday momentum (Zarattini, Aziz & Barbon 2024):
                   trade breakouts of the day's noise band, trail with VWAP, checked every 30 min
+  vwap_trend      long above the day's VWAP, short below (Zarattini & Aziz 2024, "VWAP: The Holy Grail
+                  for Day Trading Systems"), here on 5-minute bars
+  trend_pullback  EMA 9/30 trend with a pullback entry, the star worker in the Candle City demo
 Baselines over the same dates
   wick_daily      the current Wick strategy (daily Ensemble, holds overnight)
   buy_hold_3x     hold UPRO through everything
@@ -199,6 +202,61 @@ def noise_area(d, hist, long_only=False, max_trades=None):
     return eq - 1, int(n > 0)
 
 
+def _session_vwap(d):
+    return np.cumsum(d["vw"] * d["v"]) / np.maximum(np.cumsum(d["v"]), 1e-9)
+
+
+def vwap_trend(d, _, long_only=False):
+    """Long while price is above the day's VWAP, short while below, flat at the close."""
+    vw = _session_vwap(d)
+    pos, entry, eq, n = 0, 0.0, 1.0, 0
+    for i in range(len(d["c"]) - 1):
+        p = d["c"][i]
+        want = 1 if p > vw[i] else (-1 if p < vw[i] else pos)
+        if long_only and want < 0:
+            want = 0
+        if want != pos:
+            if pos:
+                eq *= 1 + trade(pos, entry, p)
+            pos, entry = want, p
+            n += 1 if want else 0
+    if pos:
+        eq *= 1 + trade(pos, entry, d["c"][-1])
+    return eq - 1, int(n > 0)
+
+
+def trend_pullback(d, _, max_trades=4):
+    """Candle City's star worker: with EMA 9 over EMA 30 and price over VWAP, buy the first bar that
+    closes back above EMA 9 after dipping to it (mirror image for shorts). Stop under the dip,
+    exit on a close through EMA 30, at most 4 trades a day, no entries after 3:30."""
+    c, h, l, o = d["c"], d["h"], d["l"], d["o"]
+    e9 = pd.Series(c).ewm(span=9, adjust=False).mean().to_numpy()
+    e30 = pd.Series(c).ewm(span=30, adjust=False).mean().to_numpy()
+    vw = _session_vwap(d)
+    pos, entry, stop, eq, n = 0, 0.0, 0.0, 1.0, 0
+    for i in range(6, len(c) - 1):
+        if pos == 0:
+            if n >= max_trades or d["m"][i] >= 360:
+                continue
+            if e9[i] > e30[i] and c[i] > vw[i] and l[i - 1] <= e9[i - 1] and c[i] > e9[i] and c[i] > c[i - 1]:
+                pos, entry, stop, n = 1, c[i], min(l[i - 1], l[i]), n + 1
+            elif e9[i] < e30[i] and c[i] < vw[i] and h[i - 1] >= e9[i - 1] and c[i] < e9[i] and c[i] < c[i - 1]:
+                pos, entry, stop, n = -1, c[i], max(h[i - 1], h[i]), n + 1
+        elif pos == 1:
+            if l[i] <= stop:
+                eq *= 1 + trade(1, entry, min(stop, o[i])); pos = 0
+            elif c[i] < e30[i]:
+                eq *= 1 + trade(1, entry, c[i]); pos = 0
+        else:
+            if h[i] >= stop:
+                eq *= 1 + trade(-1, entry, max(stop, o[i])); pos = 0
+            elif c[i] > e30[i]:
+                eq *= 1 + trade(-1, entry, c[i]); pos = 0
+    if pos:
+        eq *= 1 + trade(pos, entry, c[-1])
+    return eq - 1, int(n > 0)
+
+
 STRATEGIES = {
     "Hold UPRO all day": hold_intraday,
     "Opening range 30-min (long)": orb30_long,
@@ -209,6 +267,9 @@ STRATEGIES = {
     "Noise-band momentum": noise_area,
     "Noise-band momentum (1 trade/day)": lambda d, h: noise_area(d, h, max_trades=1),
     "Noise-band momentum (long, 1/day)": lambda d, h: noise_area(d, h, long_only=True, max_trades=1),
+    "VWAP trend": vwap_trend,
+    "VWAP trend (long)": lambda d, h: vwap_trend(d, h, long_only=True),
+    "EMA trend pullback (Candle City)": trend_pullback,
 }
 
 
