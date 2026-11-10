@@ -62,4 +62,16 @@ in one period rarely stay best in the next.
 ## Day trading
 `research/intraday_test.py` tests an intraday strategy on real minute data. Run it on your Mac
 first; only wire an intraday strategy into the bot if it clearly beats holding after costs.
-With under $25k in a margin account, US rules allow 3 day trades per 5 business days.
+The old rule (3 day trades per 5 business days under $25k) was removed by FINRA on June 4, 2026,
+but brokers are switching over at their own pace. Check Alpaca's current day-trading terms before
+raising `DAY_TRADE_LIMIT` in `bot/config.py`.
+
+`research/intraday_lab.py` (Actions -> research -> intraday_lab) compares every intraday strategy
+on 10 years of SPY 5-minute bars, traded as 3x ETFs with costs. Latest run, full period:
+noise-band momentum +6.5%/yr (what the sleeve trades), VWAP trend -66%/yr, EMA trend pullback
+-33%/yr, 5-minute opening range -9%/yr, against +20.7%/yr for Wick's daily strategy.
+
+## Candle City
+`docs/city/index.html` is a 3D view of the same account: one tower for Wick, one for the sleeve,
+beams while a position is open, and a vault with the total. It reads `docs/status.json`, so it
+shows whatever account the bot is connected to (paper or live). Open `<your Pages link>/city/`.
