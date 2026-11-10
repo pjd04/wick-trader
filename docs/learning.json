@@ -1,17 +1,17 @@
 {
- "updated": "2026-11-09T16:03-05:00",
+ "updated": "2026-11-10T16:00-05:00",
  "live_settings": "200/252/10/0.15",
  "shadow_settings": "200/252/5/0.1",
  "shadow_since": "2026-11-06",
- "days": 1,
+ "days": 2,
  "days_needed": 126,
  "live": {
-  "total": 0.0,
-  "sharpe": 0.0
+  "total": 0.03022714804459503,
+  "sharpe": 8.42319306258977
  },
  "shadow": {
-  "total": 0.0,
-  "sharpe": 0.0
+  "total": 0.020191285154090854,
+  "sharpe": 8.423193062589771
  },
  "promotions": [],
  "just_promoted": null,
@@ -44,7 +44,15 @@
    "date": "2026-11-09",
    "action": "sell",
    "amount": -18283.3,
-   "exposure": 0.444
+   "exposure": 0.444,
+   "after_1d": -0.0108,
+   "good_1d": true
+  },
+  {
+   "date": "2026-11-10",
+   "action": "hold",
+   "amount": 0.0,
+   "exposure": 0.453
   }
  ],
  "hit_rate_5d": null,
