@@ -1,6 +1,15 @@
 {
  "day": "2026-11-11",
- "pos": null,
+ "pos": {
+  "date": "2026-11-11",
+  "time": "13:32",
+  "side": 1,
+  "side_name": "bet up",
+  "symbol": "SPXL",
+  "qty": 85,
+  "entry": 273.73,
+  "spy_at_entry": 762.08
+ },
  "day_trades": [
   "2026-11-09"
  ],
@@ -44,15 +53,16 @@
   120,
   150,
   180,
-  210
+  210,
+  240
  ],
- "entries_today": 0,
+ "entries_today": 1,
  "pnl_day_start": 339.3,
  "bands": {
-  "time": "13:00",
-  "spy": 761.2,
-  "upper": 761.65,
-  "lower": 745.15,
-  "vwap": 758.3
+  "time": "13:32",
+  "spy": 762.08,
+  "upper": 761.7,
+  "lower": 745.1,
+  "vwap": 758.7
  }
 }

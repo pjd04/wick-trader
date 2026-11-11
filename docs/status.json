@@ -1,18 +1,18 @@
 {
- "updated": "2026-11-11T13:24-05:00",
+ "updated": "2026-11-11T13:37-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 95138.6,
+ "equity": 95140.58,
  "start_equity": 100000.0,
- "total_pl": -4861.4,
+ "total_pl": -4859.42,
  "total_pl_pct": -0.0486,
- "day_pl": 1453.76,
+ "day_pl": 1455.74,
  "day_pl_pct": 0.0155,
- "position_value": 31651.71,
+ "position_value": 31663.89,
  "avg_entry": 148.13,
  "invested_pct": 0.333,
  "signal": {
-  "exposure": 0.442,
+  "exposure": 0.441,
   "trend": 1,
   "momentum": 1,
   "dip_buy": 0,
@@ -23,7 +23,7 @@
    "vol": 0.15
   }
  },
- "spy_day": 0.016,
+ "spy_day": 0.0162,
  "market_open": true,
  "halted": false,
  "history": [
@@ -57,7 +57,7 @@
   },
   {
    "date": "2026-11-11",
-   "equity": 95138.6
+   "equity": 95140.58
   }
  ],
  "actions": [
@@ -95,17 +95,28 @@
  "sleeve": {
   "enabled": true,
   "share": 0.25,
-  "position": null,
-  "pnl_total": 339.3,
-  "pnl_today": 0.0,
+  "position": {
+   "date": "2026-11-11",
+   "time": "13:32",
+   "side": 1,
+   "side_name": "bet up",
+   "symbol": "SPXL",
+   "qty": 85,
+   "entry": 273.73,
+   "spy_at_entry": 762.08,
+   "value": 23256.85,
+   "open_pnl": -10.2
+  },
+  "pnl_total": 329.1,
+  "pnl_today": -10.2,
   "day_trades_used": 1,
   "day_trade_limit": 3,
   "bands": {
-   "time": "13:00",
-   "spy": 761.2,
-   "upper": 761.65,
-   "lower": 745.15,
-   "vwap": 758.3
+   "time": "13:32",
+   "spy": 762.08,
+   "upper": 761.7,
+   "lower": 745.1,
+   "vwap": 758.7
   },
   "trades": [
    {
@@ -123,7 +134,7 @@
     "reason": "end of day"
    }
   ],
-  "next_check": "13:30"
+  "next_check": "14:00"
  },
  "log": [
   "Watching. Decision after 15:30 ET."
@@ -389,6 +400,20 @@
     142.68,
     142.53,
     142.68
+   ],
+   [
+    1794421500,
+    142.93,
+    142.93,
+    142.93,
+    142.93
+   ],
+   [
+    1794422100,
+    142.99,
+    142.99,
+    142.99,
+    142.99
    ]
   ],
   "daily": [
@@ -1032,9 +1057,9 @@
    [
     "2026-11-11",
     140.13,
-    142.68,
+    142.99,
     139.09,
-    142.68
+    142.99
    ]
   ],
   "fills": [
