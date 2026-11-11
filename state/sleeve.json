@@ -1,17 +1,9 @@
 {
  "day": "2026-11-11",
- "pos": {
-  "date": "2026-11-11",
-  "time": "13:32",
-  "side": 1,
-  "side_name": "bet up",
-  "symbol": "SPXL",
-  "qty": 85,
-  "entry": 273.73,
-  "spy_at_entry": 762.08
- },
+ "pos": null,
  "day_trades": [
-  "2026-11-09"
+  "2026-11-09",
+  "2026-11-11"
  ],
  "trades": [
   {
@@ -27,9 +19,23 @@
    "exit_time": "15:51",
    "pnl": 339.3,
    "reason": "end of day"
+  },
+  {
+   "date": "2026-11-11",
+   "time": "13:32",
+   "side": 1,
+   "side_name": "bet up",
+   "symbol": "SPXL",
+   "qty": 85,
+   "entry": 273.73,
+   "spy_at_entry": 762.08,
+   "exit": 273.43,
+   "exit_time": "14:01",
+   "pnl": -25.5,
+   "reason": "fell back into the band"
   }
  ],
- "pnl_total": 339.3,
+ "pnl_total": 313.8,
  "sigma": [
   0.003465,
   0.004867,
@@ -54,15 +60,16 @@
   150,
   180,
   210,
-  240
+  240,
+  270
  ],
  "entries_today": 1,
  "pnl_day_start": 339.3,
  "bands": {
-  "time": "13:32",
-  "spy": 762.08,
-  "upper": 761.7,
-  "lower": 745.1,
-  "vwap": 758.7
+  "time": "14:01",
+  "spy": 761.91,
+  "upper": 762.05,
+  "lower": 744.75,
+  "vwap": 758.85
  }
 }

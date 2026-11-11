@@ -1,18 +1,18 @@
 {
- "updated": "2026-11-11T13:49-05:00",
+ "updated": "2026-11-11T14:01-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 95187.02,
+ "equity": 95101.77,
  "start_equity": 100000.0,
- "total_pl": -4812.98,
- "total_pl_pct": -0.0481,
- "day_pl": 1502.18,
- "day_pl_pct": 0.016,
- "position_value": 31688.23,
+ "total_pl": -4898.23,
+ "total_pl_pct": -0.049,
+ "day_pl": 1416.93,
+ "day_pl_pct": 0.0151,
+ "position_value": 31639.53,
  "avg_entry": 148.13,
  "invested_pct": 0.333,
  "signal": {
-  "exposure": 0.441,
+  "exposure": 0.442,
   "trend": 1,
   "momentum": 1,
   "dip_buy": 0,
@@ -23,7 +23,7 @@
    "vol": 0.15
   }
  },
- "spy_day": 0.0165,
+ "spy_day": 0.016,
  "market_open": true,
  "halted": false,
  "history": [
@@ -57,7 +57,7 @@
   },
   {
    "date": "2026-11-11",
-   "equity": 95187.02
+   "equity": 95101.77
   }
  ],
  "actions": [
@@ -95,28 +95,17 @@
  "sleeve": {
   "enabled": true,
   "share": 0.25,
-  "position": {
-   "date": "2026-11-11",
-   "time": "13:32",
-   "side": 1,
-   "side_name": "bet up",
-   "symbol": "SPXL",
-   "qty": 85,
-   "entry": 273.73,
-   "spy_at_entry": 762.08,
-   "value": 23278.95,
-   "open_pnl": 11.9
-  },
-  "pnl_total": 351.2,
-  "pnl_today": 11.9,
-  "day_trades_used": 1,
+  "position": null,
+  "pnl_total": 313.8,
+  "pnl_today": -25.5,
+  "day_trades_used": 2,
   "day_trade_limit": 3,
   "bands": {
-   "time": "13:32",
-   "spy": 762.08,
-   "upper": 761.7,
-   "lower": 745.1,
-   "vwap": 758.7
+   "time": "14:01",
+   "spy": 761.91,
+   "upper": 762.05,
+   "lower": 744.75,
+   "vwap": 758.85
   },
   "trades": [
    {
@@ -132,12 +121,27 @@
     "exit_time": "15:51",
     "pnl": 339.3,
     "reason": "end of day"
+   },
+   {
+    "date": "2026-11-11",
+    "time": "13:32",
+    "side": 1,
+    "side_name": "bet up",
+    "symbol": "SPXL",
+    "qty": 85,
+    "entry": 273.73,
+    "spy_at_entry": 762.08,
+    "exit": 273.43,
+    "exit_time": "14:01",
+    "pnl": -25.5,
+    "reason": "fell back into the band"
    }
   ],
-  "next_check": "14:00"
+  "next_check": "14:30"
  },
  "log": [
-  "Watching. Decision after 15:30 ET."
+  "Watching. Decision after 15:30 ET.",
+  "Active sleeve: sold 85 SPXL at $273.43 (fell back into the band), P&L $-25.50"
  ],
  "chart": {
   "symbol": "UPRO",
@@ -421,6 +425,27 @@
     143.075,
     143.075,
     143.075
+   ],
+   [
+    1794423000,
+    143.09,
+    143.09,
+    143.05,
+    143.05
+   ],
+   [
+    1794423300,
+    143.02,
+    143.02,
+    143.02,
+    143.02
+   ],
+   [
+    1794423600,
+    143.02,
+    143.02,
+    142.88,
+    142.88
    ]
   ],
   "daily": [
@@ -1064,9 +1089,9 @@
    [
     "2026-11-11",
     140.13,
-    143.075,
+    143.09,
     139.09,
-    143.075
+    143.02
    ]
   ],
   "fills": [
