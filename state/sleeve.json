@@ -55,15 +55,16 @@
  "done": [
   30,
   60,
-  90
+  90,
+  120
  ],
  "entries_today": 0,
  "pnl_day_start": 313.8,
  "bands": {
-  "time": "11:01",
-  "spy": 760.56,
-  "upper": 764.2,
-  "lower": 749.61,
-  "vwap": 757.4
+  "time": "11:30",
+  "spy": 761.93,
+  "upper": 763.68,
+  "lower": 750.13,
+  "vwap": 758.73
  }
 }
