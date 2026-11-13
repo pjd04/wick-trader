@@ -1,18 +1,18 @@
 {
- "updated": "2026-11-13T13:25-05:00",
+ "updated": "2026-11-13T13:37-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 93839.98,
+ "equity": 93897.16,
  "start_equity": 100000.0,
- "total_pl": -6160.02,
- "total_pl_pct": -0.0616,
- "day_pl": -673.57,
- "day_pl_pct": -0.0071,
- "position_value": 30359.6,
+ "total_pl": -6102.84,
+ "total_pl_pct": -0.061,
+ "day_pl": -616.39,
+ "day_pl_pct": -0.0065,
+ "position_value": 30443.75,
  "avg_entry": 148.13,
  "invested_pct": 0.324,
  "signal": {
-  "exposure": 0.451,
+  "exposure": 0.452,
   "trend": 1,
   "momentum": 1,
   "dip_buy": 0,
@@ -23,7 +23,7 @@
    "vol": 0.15
   }
  },
- "spy_day": -0.007,
+ "spy_day": -0.0062,
  "market_open": true,
  "halted": false,
  "history": [
@@ -65,7 +65,7 @@
   },
   {
    "date": "2026-11-13",
-   "equity": 93839.98
+   "equity": 93897.16
   }
  ],
  "actions": [
@@ -115,28 +115,17 @@
  "sleeve": {
   "enabled": true,
   "share": 0.25,
-  "position": {
-   "date": "2026-11-13",
-   "time": "10:03",
-   "side": -1,
-   "side_name": "bet down",
-   "symbol": "SPXS",
-   "qty": 896,
-   "entry": 25.7,
-   "spy_at_entry": 752.32,
-   "value": 23045.21,
-   "open_pnl": 18.01
-  },
-  "pnl_total": 331.81,
-  "pnl_today": 18.01,
-  "day_trades_used": 2,
+  "position": null,
+  "pnl_total": 304.84,
+  "pnl_today": -8.96,
+  "day_trades_used": 3,
   "day_trade_limit": 3,
   "bands": {
-   "time": "13:00",
-   "spy": 751.39,
-   "upper": 765.48,
-   "lower": 751.81,
-   "vwap": 751.85
+   "time": "13:33",
+   "spy": 752.19,
+   "upper": 765.59,
+   "lower": 751.7,
+   "vwap": 751.84
   },
   "trades": [
    {
@@ -166,9 +155,23 @@
     "exit_time": "14:01",
     "pnl": -25.5,
     "reason": "fell back into the band"
+   },
+   {
+    "date": "2026-11-13",
+    "time": "10:03",
+    "side": -1,
+    "side_name": "bet down",
+    "symbol": "SPXS",
+    "qty": 896,
+    "entry": 25.7,
+    "spy_at_entry": 752.32,
+    "exit": 25.69,
+    "exit_time": "13:33",
+    "pnl": -8.96,
+    "reason": "rose back into the band"
    }
   ],
-  "next_check": "13:30"
+  "next_check": "14:00"
  },
  "log": [
   "Watching. Decision after 15:30 ET."
