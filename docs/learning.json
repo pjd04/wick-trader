@@ -1,17 +1,17 @@
 {
- "updated": "2026-11-13T16:02-05:00",
+ "updated": "2026-11-14T09:20-05:00",
  "live_settings": "200/252/10/0.15",
  "shadow_settings": "200/252/5/0.1",
  "shadow_since": "2026-11-06",
  "days": 5,
  "days_needed": 126,
  "live": {
-  "total": 0.037879275584078,
-  "sharpe": 6.530023887234711
+  "total": 0.03817500717110911,
+  "sharpe": 6.5962503171095515
  },
  "shadow": {
-  "total": 0.025278264295845565,
-  "sharpe": 6.530023887234713
+  "total": 0.025472681189516733,
+  "sharpe": 6.5962503171095515
  },
  "promotions": [],
  "just_promoted": null,
@@ -43,7 +43,7 @@
    "exposure": 0.497,
    "after_1d": 0.071,
    "good_1d": null,
-   "after_5d": 0.0768,
+   "after_5d": 0.0775,
    "good_5d": null
   },
   {
@@ -75,7 +75,7 @@
    "action": "hold",
    "amount": 0.0,
    "exposure": 0.447,
-   "after_1d": -0.0115,
+   "after_1d": -0.0109,
    "good_1d": null
   },
   {
