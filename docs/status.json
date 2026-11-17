@@ -1,14 +1,14 @@
 {
- "updated": "2026-11-17T11:01-05:00",
+ "updated": "2026-11-17T11:05-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 91698.3,
+ "equity": 91645.32,
  "start_equity": 100000.0,
- "total_pl": -8301.7,
- "total_pl_pct": -0.083,
- "day_pl": -1159.12,
- "day_pl_pct": -0.0125,
- "position_value": 43666.58,
+ "total_pl": -8354.68,
+ "total_pl_pct": -0.0835,
+ "day_pl": -1212.1,
+ "day_pl_pct": -0.0131,
+ "position_value": 43621.67,
  "avg_entry": 141.5159,
  "invested_pct": 0.476,
  "signal": {
@@ -81,7 +81,7 @@
   },
   {
    "date": "2026-11-17",
-   "equity": 91698.3
+   "equity": 91645.32
   }
  ],
  "actions": [
@@ -152,11 +152,11 @@
    "qty": 807,
    "entry": 27.83,
    "spy_at_entry": 732.13,
-   "value": 22446.71,
-   "open_pnl": -12.1
+   "value": 22450.74,
+   "open_pnl": -8.07
   },
-  "pnl_total": 958.02,
-  "pnl_today": 653.18,
+  "pnl_total": 962.05,
+  "pnl_today": 657.21,
   "day_trades_used": 2,
   "day_trade_limit": 3,
   "bands": {
@@ -227,8 +227,7 @@
   "next_check": "11:30"
  },
  "log": [
-  "Watching. Decision after 15:30 ET.",
-  "Active sleeve: bet down, bought 807 SPXS at $27.83 (SPY 732.13 broke below the band)"
+  "Watching. Decision after 15:30 ET."
  ],
  "chart": {
   "symbol": "UPRO",
@@ -362,9 +361,9 @@
    [
     1794931200,
     126.17,
-    126.48,
-    126.13,
-    126.13
+    126.77,
+    126.07,
+    126.58
    ]
   ],
   "daily": [
@@ -1003,7 +1002,7 @@
     129.72,
     130.24,
     123.75,
-    126.24
+    126.58
    ]
   ],
   "fills": [
