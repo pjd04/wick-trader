@@ -1,18 +1,18 @@
 {
- "updated": "2026-11-17T15:31-05:00",
+ "updated": "2026-11-17T15:35-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 91335.61,
+ "equity": 91530.7,
  "start_equity": 100000.0,
- "total_pl": -8664.39,
- "total_pl_pct": -0.0866,
- "day_pl": -1521.81,
- "day_pl_pct": -0.0164,
- "position_value": 43376.52,
+ "total_pl": -8469.3,
+ "total_pl_pct": -0.0847,
+ "day_pl": -1326.72,
+ "day_pl_pct": -0.0143,
+ "position_value": 43571.61,
  "avg_entry": 141.5159,
- "invested_pct": 0.475,
+ "invested_pct": 0.476,
  "signal": {
-  "exposure": 0.647,
+  "exposure": 0.649,
   "trend": 1,
   "momentum": 1,
   "dip_buy": 1,
@@ -23,7 +23,7 @@
    "vol": 0.15
   }
  },
- "spy_day": -0.0126,
+ "spy_day": -0.0112,
  "market_open": true,
  "halted": false,
  "history": [
@@ -81,7 +81,7 @@
   },
   {
    "date": "2026-11-17",
-   "equity": 91335.61
+   "equity": 91530.7
   }
  ],
  "actions": [
@@ -236,7 +236,7 @@
   "next_check": null
  },
  "log": [
-  "Holding: target $43,434.19 is close to current $43,376.52"
+  "Today's decision is done. Watching until the close."
  ],
  "chart": {
   "symbol": "UPRO",
@@ -653,6 +653,20 @@
     125.36,
     125.36,
     125.36
+   ],
+   [
+    1794947400,
+    125.59,
+    125.9,
+    125.59,
+    125.9
+   ],
+   [
+    1794947700,
+    125.9,
+    125.965,
+    125.9,
+    125.965
    ]
   ],
   "daily": [
@@ -1291,7 +1305,7 @@
     129.72,
     130.24,
     123.75,
-    125.36
+    125.9
    ]
   ],
   "fills": [
