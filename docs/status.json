@@ -1,14 +1,14 @@
 {
- "updated": "2026-11-17T12:33-05:00",
+ "updated": "2026-11-17T12:37-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 91735.05,
+ "equity": 91729.31,
  "start_equity": 100000.0,
- "total_pl": -8264.95,
- "total_pl_pct": -0.0826,
- "day_pl": -1122.37,
+ "total_pl": -8270.69,
+ "total_pl_pct": -0.0827,
+ "day_pl": -1128.11,
  "day_pl_pct": -0.0121,
- "position_value": 43784.03,
+ "position_value": 43770.22,
  "avg_entry": 141.5159,
  "invested_pct": 0.477,
  "signal": {
@@ -81,7 +81,7 @@
   },
   {
    "date": "2026-11-17",
-   "equity": 91735.05
+   "equity": 91729.31
   }
  ],
  "actions": [
@@ -230,8 +230,7 @@
   "next_check": "13:00"
  },
  "log": [
-  "Watching. Decision after 15:30 ET.",
-  "Active sleeve: sold 807 SPXS at $27.74 (rose back into the band), P&L $-72.63"
+  "Watching. Decision after 15:30 ET."
  ],
  "chart": {
   "symbol": "UPRO",
@@ -473,6 +472,20 @@
     127.59,
     127.07,
     127.07
+   ],
+   [
+    1794936600,
+    126.795,
+    126.795,
+    126.795,
+    126.795
+   ],
+   [
+    1794936900,
+    126.8,
+    126.8,
+    126.66,
+    126.66
    ]
   ],
   "daily": [
@@ -1111,7 +1124,7 @@
     129.72,
     130.24,
     123.75,
-    127.07
+    126.73
    ]
   ],
   "fills": [
