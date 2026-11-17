@@ -1,18 +1,18 @@
 {
- "updated": "2026-11-17T10:57-05:00",
+ "updated": "2026-11-17T11:01-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 91325.2,
+ "equity": 91698.3,
  "start_equity": 100000.0,
- "total_pl": -8674.8,
- "total_pl_pct": -0.0867,
- "day_pl": -1532.22,
- "day_pl_pct": -0.0165,
- "position_value": 43293.48,
+ "total_pl": -8301.7,
+ "total_pl_pct": -0.083,
+ "day_pl": -1159.12,
+ "day_pl_pct": -0.0125,
+ "position_value": 43666.58,
  "avg_entry": 141.5159,
- "invested_pct": 0.474,
+ "invested_pct": 0.476,
  "signal": {
-  "exposure": 0.646,
+  "exposure": 0.65,
   "trend": 1,
   "momentum": 1,
   "dip_buy": 1,
@@ -23,7 +23,7 @@
    "vol": 0.15
   }
  },
- "spy_day": -0.0132,
+ "spy_day": -0.0106,
  "market_open": true,
  "halted": false,
  "history": [
@@ -81,7 +81,7 @@
   },
   {
    "date": "2026-11-17",
-   "equity": 91325.2
+   "equity": 91698.3
   }
  ],
  "actions": [
@@ -143,17 +143,28 @@
  "sleeve": {
   "enabled": true,
   "share": 0.25,
-  "position": null,
-  "pnl_total": 970.12,
-  "pnl_today": 665.28,
+  "position": {
+   "date": "2026-11-17",
+   "time": "11:01",
+   "side": -1,
+   "side_name": "bet down",
+   "symbol": "SPXS",
+   "qty": 807,
+   "entry": 27.83,
+   "spy_at_entry": 732.13,
+   "value": 22446.71,
+   "open_pnl": -12.1
+  },
+  "pnl_total": 958.02,
+  "pnl_today": 653.18,
   "day_trades_used": 2,
   "day_trade_limit": 3,
   "bands": {
-   "time": "10:32",
-   "spy": 735.24,
-   "upper": 744.53,
-   "lower": 733.91,
-   "vwap": 737.67
+   "time": "11:01",
+   "spy": 732.13,
+   "upper": 745.04,
+   "lower": 733.4,
+   "vwap": 733.64
   },
   "trades": [
    {
@@ -213,10 +224,11 @@
     "reason": "rose back into the band"
    }
   ],
-  "next_check": "11:00"
+  "next_check": "11:30"
  },
  "log": [
-  "Watching. Decision after 15:30 ET."
+  "Watching. Decision after 15:30 ET.",
+  "Active sleeve: bet down, bought 807 SPXS at $27.83 (SPY 732.13 broke below the band)"
  ],
  "chart": {
   "symbol": "UPRO",
@@ -343,9 +355,16 @@
    [
     1794930900,
     124.0,
-    124.35,
+    126.1,
     124.0,
-    124.35
+    126.1
+   ],
+   [
+    1794931200,
+    126.17,
+    126.48,
+    126.13,
+    126.13
    ]
   ],
   "daily": [
@@ -984,7 +1003,7 @@
     129.72,
     130.24,
     123.75,
-    124.35
+    126.24
    ]
   ],
   "fills": [

@@ -1,6 +1,15 @@
 {
  "day": "2026-11-17",
- "pos": null,
+ "pos": {
+  "date": "2026-11-17",
+  "time": "11:01",
+  "side": -1,
+  "side_name": "bet down",
+  "symbol": "SPXS",
+  "qty": 807,
+  "entry": 27.83,
+  "spy_at_entry": 732.13
+ },
  "day_trades": [
   "2026-11-09",
   "2026-11-11",
@@ -83,15 +92,16 @@
  "open": 738.39,
  "done": [
   30,
-  60
+  60,
+  90
  ],
- "entries_today": 0,
+ "entries_today": 1,
  "pnl_day_start": 304.84,
  "bands": {
-  "time": "10:32",
-  "spy": 735.24,
-  "upper": 744.53,
-  "lower": 733.91,
-  "vwap": 737.67
+  "time": "11:01",
+  "spy": 732.13,
+  "upper": 745.04,
+  "lower": 733.4,
+  "vwap": 733.64
  }
 }
