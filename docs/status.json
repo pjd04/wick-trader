@@ -1,21 +1,21 @@
 {
- "updated": "2026-11-16T21:34-05:00",
+ "updated": "2026-11-17T09:30-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 92912.57,
+ "equity": 92787.34,
  "start_equity": 100000.0,
- "total_pl": -7087.43,
- "total_pl_pct": -0.0709,
- "day_pl": -1209.97,
- "day_pl_pct": -0.0129,
- "position_value": 28984.45,
+ "total_pl": -7212.66,
+ "total_pl_pct": -0.0721,
+ "day_pl": -70.08,
+ "day_pl_pct": -0.0008,
+ "position_value": 28651.87,
  "avg_entry": 148.13,
- "invested_pct": 0.312,
+ "invested_pct": 0.309,
  "signal": {
-  "exposure": 0.436,
+  "exposure": 0.656,
   "trend": 1,
   "momentum": 1,
-  "dip_buy": 0,
+  "dip_buy": 1,
   "params": {
    "trend": 200,
    "mom": 252,
@@ -23,8 +23,8 @@
    "vol": 0.15
   }
  },
- "spy_day": -0.019,
- "market_open": false,
+ "spy_day": -0.0027,
+ "market_open": true,
  "halted": false,
  "history": [
   {
@@ -78,6 +78,10 @@
   {
    "date": "2026-11-16",
    "equity": 92912.57
+  },
+  {
+   "date": "2026-11-17",
+   "equity": 92787.34
   }
  ],
  "actions": [
@@ -128,6 +132,12 @@
    "action": "hold",
    "amount": 0.0,
    "exposure": 0.452
+  },
+  {
+   "date": "2026-11-17",
+   "action": "catch-up buy",
+   "amount": 16086.48,
+   "exposure": 0.656
   }
  ],
  "sleeve": {
@@ -142,20 +152,14 @@
    "qty": 864,
    "entry": 26.39,
    "spy_at_entry": 745.57,
-   "value": 23276.16,
-   "open_pnl": 475.2
+   "value": 23487.84,
+   "open_pnl": 686.88
   },
-  "pnl_total": 780.04,
-  "pnl_today": 475.2,
+  "pnl_total": 991.72,
+  "pnl_today": 686.88,
   "day_trades_used": 2,
   "day_trade_limit": 3,
-  "bands": {
-   "time": "10:03",
-   "spy": 745.57,
-   "upper": 757.39,
-   "lower": 746.55,
-   "vwap": 747.85
-  },
+  "bands": null,
   "trades": [
    {
     "date": "2026-11-09",
@@ -200,10 +204,11 @@
     "reason": "rose back into the band"
    }
   ],
-  "next_check": null
+  "next_check": "10:00"
  },
  "log": [
-  "Market closed."
+  "Missed yesterday's close decision, caught up at the open.",
+  "BUY $16,086.48 of UPRO"
  ],
  "chart": {
   "symbol": "UPRO",
@@ -644,13 +649,6 @@
    ]
   ],
   "daily": [
-   [
-    "2026-07-10",
-    144.57,
-    146.3,
-    142.31,
-    145.99
-   ],
    [
     "2026-07-13",
     144.71,
