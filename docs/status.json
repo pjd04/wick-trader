@@ -1,18 +1,18 @@
 {
- "updated": "2026-11-17T12:29-05:00",
+ "updated": "2026-11-17T12:33-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 91780.21,
+ "equity": 91735.05,
  "start_equity": 100000.0,
- "total_pl": -8219.79,
- "total_pl_pct": -0.0822,
- "day_pl": -1077.21,
- "day_pl_pct": -0.0116,
- "position_value": 43863.49,
+ "total_pl": -8264.95,
+ "total_pl_pct": -0.0826,
+ "day_pl": -1122.37,
+ "day_pl_pct": -0.0121,
+ "position_value": 43784.03,
  "avg_entry": 141.5159,
- "invested_pct": 0.478,
+ "invested_pct": 0.477,
  "signal": {
-  "exposure": 0.652,
+  "exposure": 0.651,
   "trend": 1,
   "momentum": 1,
   "dip_buy": 1,
@@ -23,7 +23,7 @@
    "vol": 0.15
   }
  },
- "spy_day": -0.0092,
+ "spy_day": -0.0095,
  "market_open": true,
  "halted": false,
  "history": [
@@ -81,7 +81,7 @@
   },
   {
    "date": "2026-11-17",
-   "equity": 91780.21
+   "equity": 91735.05
   }
  ],
  "actions": [
@@ -143,28 +143,17 @@
  "sleeve": {
   "enabled": true,
   "share": 0.25,
-  "position": {
-   "date": "2026-11-17",
-   "time": "11:01",
-   "side": -1,
-   "side_name": "bet down",
-   "symbol": "SPXS",
-   "qty": 807,
-   "entry": 27.83,
-   "spy_at_entry": 732.13,
-   "value": 22343.81,
-   "open_pnl": -115.0
-  },
-  "pnl_total": 855.12,
-  "pnl_today": 550.28,
-  "day_trades_used": 2,
+  "position": null,
+  "pnl_total": 897.49,
+  "pnl_today": 592.65,
+  "day_trades_used": 3,
   "day_trade_limit": 3,
   "bands": {
-   "time": "12:00",
-   "spy": 731.0,
-   "upper": 745.5,
-   "lower": 732.94,
-   "vwap": 732.87
+   "time": "12:33",
+   "spy": 732.91,
+   "upper": 745.7,
+   "lower": 732.74,
+   "vwap": 732.86
   },
   "trades": [
    {
@@ -222,12 +211,27 @@
     "exit_time": "10:03",
     "pnl": 665.28,
     "reason": "rose back into the band"
+   },
+   {
+    "date": "2026-11-17",
+    "time": "11:01",
+    "side": -1,
+    "side_name": "bet down",
+    "symbol": "SPXS",
+    "qty": 807,
+    "entry": 27.83,
+    "spy_at_entry": 732.13,
+    "exit": 27.74,
+    "exit_time": "12:33",
+    "pnl": -72.63,
+    "reason": "rose back into the band"
    }
   ],
-  "next_check": "12:30"
+  "next_check": "13:00"
  },
  "log": [
-  "Watching. Decision after 15:30 ET."
+  "Watching. Decision after 15:30 ET.",
+  "Active sleeve: sold 807 SPXS at $27.74 (rose back into the band), P&L $-72.63"
  ],
  "chart": {
   "symbol": "UPRO",
