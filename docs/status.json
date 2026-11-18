@@ -12,10 +12,10 @@
  "avg_entry": 141.5159,
  "invested_pct": 0.474,
  "signal": {
-  "exposure": 0.219,
-  "trend": 0,
+  "exposure": 0.656,
+  "trend": 1,
   "momentum": 1,
-  "dip_buy": 0,
+  "dip_buy": 1,
   "params": {
    "trend": 200,
    "mom": 252,
@@ -23,7 +23,7 @@
    "vol": 0.15
   }
  },
- "spy_day": -0.0033,
+ "spy_day": -0.0032,
  "market_open": true,
  "halted": false,
  "history": [
