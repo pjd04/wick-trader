@@ -1,21 +1,21 @@
 {
- "updated": "2026-11-18T15:32-05:00",
+ "updated": "2026-11-18T15:36-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 91220.51,
+ "equity": 91247.61,
  "start_equity": 100000.0,
- "total_pl": -8779.49,
- "total_pl_pct": -0.0878,
- "day_pl": -452.56,
- "day_pl_pct": -0.0049,
- "position_value": 14683.31,
+ "total_pl": -8752.39,
+ "total_pl_pct": -0.0875,
+ "day_pl": -425.46,
+ "day_pl_pct": -0.0046,
+ "position_value": 14714.97,
  "avg_entry": 141.5159,
  "invested_pct": 0.161,
  "signal": {
-  "exposure": 0.219,
-  "trend": 0,
+  "exposure": 0.656,
+  "trend": 1,
   "momentum": 1,
-  "dip_buy": 0,
+  "dip_buy": 1,
   "params": {
    "trend": 200,
    "mom": 252,
@@ -23,7 +23,7 @@
    "vol": 0.15
   }
  },
- "spy_day": -0.0033,
+ "spy_day": -0.0028,
  "market_open": true,
  "halted": false,
  "history": [
@@ -85,7 +85,7 @@
   },
   {
    "date": "2026-11-18",
-   "equity": 91220.51
+   "equity": 91247.61
   }
  ],
  "actions": [
@@ -240,8 +240,7 @@
   "next_check": null
  },
  "log": [
-  "SELL 228.2127 UPRO (~$28,579.07)",
-  "Active sleeve: no breakout today; stayed in cash."
+  "Today's decision is done. Watching until the close."
  ],
  "chart": {
   "symbol": "UPRO",
@@ -634,9 +633,16 @@
    [
     1795033800,
     125.03,
-    125.23,
+    125.46,
     125.03,
-    125.23
+    125.19
+   ],
+   [
+    1795034100,
+    125.395,
+    125.395,
+    125.395,
+    125.395
    ]
   ],
   "daily": [
@@ -1282,7 +1288,7 @@
     127.65,
     127.68,
     123.62,
-    125.03
+    125.395
    ]
   ],
   "fills": [
