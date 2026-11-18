@@ -1,18 +1,18 @@
 {
- "updated": "2026-11-18T12:22-05:00",
+ "updated": "2026-11-18T12:35-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 91448.52,
+ "equity": 91837.17,
  "start_equity": 100000.0,
- "total_pl": -8551.48,
- "total_pl_pct": -0.0855,
- "day_pl": -224.55,
- "day_pl_pct": -0.0024,
- "position_value": 43490.39,
+ "total_pl": -8162.83,
+ "total_pl_pct": -0.0816,
+ "day_pl": 164.1,
+ "day_pl_pct": 0.0018,
+ "position_value": 43879.04,
  "avg_entry": 141.5159,
- "invested_pct": 0.476,
+ "invested_pct": 0.478,
  "signal": {
-  "exposure": 0.655,
+  "exposure": 0.654,
   "trend": 1,
   "momentum": 1,
   "dip_buy": 1,
@@ -23,7 +23,7 @@
    "vol": 0.15
   }
  },
- "spy_day": -0.0013,
+ "spy_day": 0.0014,
  "market_open": true,
  "halted": false,
  "history": [
@@ -85,7 +85,7 @@
   },
   {
    "date": "2026-11-18",
-   "equity": 91448.52
+   "equity": 91837.17
   }
  ],
  "actions": [
@@ -159,11 +159,11 @@
   "day_trades_used": 2,
   "day_trade_limit": 3,
   "bands": {
-   "time": "12:02",
-   "spy": 729.82,
-   "upper": 739.28,
-   "lower": 726.45,
-   "vwap": 730.55
+   "time": "12:31",
+   "spy": 733.33,
+   "upper": 739.3,
+   "lower": 726.43,
+   "vwap": 730.66
   },
   "trades": [
    {
@@ -237,7 +237,7 @@
     "reason": "rose back into the band"
    }
   ],
-  "next_check": "12:30"
+  "next_check": "13:00"
  },
  "log": [
   "Watching. Decision after 15:30 ET."
@@ -475,6 +475,27 @@
     125.29,
     125.07,
     125.07
+   ],
+   [
+    1795022400,
+    126.46,
+    126.46,
+    126.46,
+    126.46
+   ],
+   [
+    1795022700,
+    126.81,
+    127.0,
+    126.76,
+    126.99
+   ],
+   [
+    1795023000,
+    126.96,
+    127.24,
+    126.96,
+    127.24
    ]
   ],
   "daily": [
@@ -1120,7 +1141,7 @@
     127.65,
     127.68,
     123.62,
-    125.07
+    127.24
    ]
   ],
   "fills": [
