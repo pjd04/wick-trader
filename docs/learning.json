@@ -1,17 +1,17 @@
 {
- "updated": "2026-11-17T16:00-05:00",
+ "updated": "2026-11-18T16:01-05:00",
  "live_settings": "200/252/10/0.15",
  "shadow_settings": "200/252/5/0.1",
  "shadow_since": "2026-11-06",
- "days": 7,
+ "days": 8,
  "days_needed": 126,
  "live": {
-  "total": -0.009427806830062613,
-  "sharpe": -0.8614667513874905
+  "total": -0.015384612185365576,
+  "sharpe": -1.413837676484184
  },
  "shadow": {
-  "total": -0.0014316211446409044,
-  "sharpe": -0.14573343516847853
+  "total": -0.00410093808319445,
+  "sharpe": -0.5564502328746317
  },
  "promotions": [],
  "just_promoted": null,
@@ -63,7 +63,7 @@
    "exposure": 0.453,
    "after_1d": 0.0396,
    "good_1d": null,
-   "after_5d": -0.0704,
+   "after_5d": -0.0702,
    "good_5d": null
   },
   {
@@ -72,7 +72,9 @@
    "amount": 0.0,
    "exposure": 0.446,
    "after_1d": -0.0106,
-   "good_1d": null
+   "good_1d": null,
+   "after_5d": -0.1138,
+   "good_5d": null
   },
   {
    "date": "2026-11-12",
@@ -94,13 +96,23 @@
    "date": "2026-11-17",
    "action": "catch-up buy",
    "amount": 16086.48,
-   "exposure": 0.656
+   "exposure": 0.656,
+   "after_1d": -0.0092,
+   "good_1d": false
   },
   {
    "date": "2026-11-17",
    "action": "hold",
    "amount": 0.0,
-   "exposure": 0.647
+   "exposure": 0.647,
+   "after_1d": -0.0092,
+   "good_1d": null
+  },
+  {
+   "date": "2026-11-18",
+   "action": "sell",
+   "amount": -28579.07,
+   "exposure": 0.219
   }
  ],
  "hit_rate_5d": 0.3333333333333333,
