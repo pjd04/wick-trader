@@ -1,21 +1,21 @@
 {
- "updated": "2026-11-18T15:28-05:00",
+ "updated": "2026-11-18T15:32-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 91331.06,
+ "equity": 91220.51,
  "start_equity": 100000.0,
- "total_pl": -8668.94,
- "total_pl_pct": -0.0867,
- "day_pl": -342.01,
- "day_pl_pct": -0.0037,
- "position_value": 43372.93,
+ "total_pl": -8779.49,
+ "total_pl_pct": -0.0878,
+ "day_pl": -452.56,
+ "day_pl_pct": -0.0049,
+ "position_value": 14683.31,
  "avg_entry": 141.5159,
- "invested_pct": 0.475,
+ "invested_pct": 0.161,
  "signal": {
-  "exposure": 0.656,
-  "trend": 1,
+  "exposure": 0.219,
+  "trend": 0,
   "momentum": 1,
-  "dip_buy": 1,
+  "dip_buy": 0,
   "params": {
    "trend": 200,
    "mom": 252,
@@ -23,7 +23,7 @@
    "vol": 0.15
   }
  },
- "spy_day": -0.0025,
+ "spy_day": -0.0033,
  "market_open": true,
  "halted": false,
  "history": [
@@ -85,16 +85,10 @@
   },
   {
    "date": "2026-11-18",
-   "equity": 91331.06
+   "equity": 91220.51
   }
  ],
  "actions": [
-  {
-   "date": "2026-11-04",
-   "action": "buy",
-   "amount": 74088.0,
-   "exposure": 0.756
-  },
   {
    "date": "2026-11-05",
    "action": "sell",
@@ -148,6 +142,12 @@
    "action": "hold",
    "amount": 0.0,
    "exposure": 0.647
+  },
+  {
+   "date": "2026-11-18",
+   "action": "sell",
+   "amount": -28579.07,
+   "exposure": 0.219
   }
  ],
  "sleeve": {
@@ -159,11 +159,11 @@
   "day_trades_used": 2,
   "day_trade_limit": 3,
   "bands": {
-   "time": "15:03",
-   "spy": 730.4,
-   "upper": 739.89,
-   "lower": 725.85,
-   "vwap": 730.87
+   "time": "15:32",
+   "spy": 729.99,
+   "upper": 740.39,
+   "lower": 725.35,
+   "vwap": 730.84
   },
   "trades": [
    {
@@ -237,10 +237,11 @@
     "reason": "rose back into the band"
    }
   ],
-  "next_check": "15:30"
+  "next_check": null
  },
  "log": [
-  "Watching. Decision after 15:30 ET."
+  "SELL 228.2127 UPRO (~$28,579.07)",
+  "Active sleeve: no breakout today; stayed in cash."
  ],
  "chart": {
   "symbol": "UPRO",
@@ -629,6 +630,13 @@
     125.75,
     125.74,
     125.75
+   ],
+   [
+    1795033800,
+    125.03,
+    125.23,
+    125.03,
+    125.23
    ]
   ],
   "daily": [
@@ -1274,7 +1282,7 @@
     127.65,
     127.68,
     123.62,
-    125.75
+    125.03
    ]
   ],
   "fills": [
@@ -1301,6 +1309,12 @@
     "side": "buy",
     "price": 129.706458,
     "qty": 124.022121165
+   },
+   {
+    "t": 1795033937,
+    "side": "sell",
+    "price": 125.21,
+    "qty": 228.212684
    }
   ]
  }
