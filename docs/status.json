@@ -1,18 +1,18 @@
 {
- "updated": "2026-11-19T12:22-05:00",
+ "updated": "2026-11-19T12:34-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 90763.01,
+ "equity": 90666.49,
  "start_equity": 100000.0,
- "total_pl": -9236.99,
- "total_pl_pct": -0.0924,
- "day_pl": -472.27,
- "day_pl_pct": -0.0052,
- "position_value": 14208.44,
+ "total_pl": -9333.51,
+ "total_pl_pct": -0.0933,
+ "day_pl": -568.79,
+ "day_pl_pct": -0.0062,
+ "position_value": 14439.43,
  "avg_entry": 129.7091,
- "invested_pct": 0.157,
+ "invested_pct": 0.159,
  "signal": {
-  "exposure": 0.219,
+  "exposure": 0.221,
   "trend": 0,
   "momentum": 1,
   "dip_buy": 0,
@@ -23,7 +23,7 @@
    "vol": 0.15
   }
  },
- "spy_day": -0.0109,
+ "spy_day": -0.0058,
  "market_open": true,
  "halted": false,
  "history": [
@@ -89,7 +89,7 @@
   },
   {
    "date": "2026-11-19",
-   "equity": 90763.01
+   "equity": 90666.49
   }
  ],
  "actions": [
@@ -157,28 +157,17 @@
  "sleeve": {
   "enabled": true,
   "share": 0.25,
-  "position": {
-   "date": "2026-11-19",
-   "time": "12:01",
-   "side": -1,
-   "side_name": "bet down",
-   "symbol": "SPXS",
-   "qty": 769,
-   "entry": 28.94,
-   "spy_at_entry": 722.85,
-   "value": 22285.62,
-   "open_pnl": 30.76
-  },
-  "pnl_total": 928.25,
-  "pnl_today": 30.76,
-  "day_trades_used": 2,
+  "position": null,
+  "pnl_total": 597.58,
+  "pnl_today": -299.91,
+  "day_trades_used": 3,
   "day_trade_limit": 3,
   "bands": {
-   "time": "12:01",
-   "spy": 722.85,
-   "upper": 743.61,
-   "lower": 724.19,
-   "vwap": 731.53
+   "time": "12:30",
+   "spy": 725.97,
+   "upper": 743.43,
+   "lower": 724.37,
+   "vwap": 728.9
   },
   "trades": [
    {
@@ -250,9 +239,23 @@
     "exit_time": "12:33",
     "pnl": -72.63,
     "reason": "rose back into the band"
+   },
+   {
+    "date": "2026-11-19",
+    "time": "12:01",
+    "side": -1,
+    "side_name": "bet down",
+    "symbol": "SPXS",
+    "qty": 769,
+    "entry": 28.94,
+    "spy_at_entry": 722.85,
+    "exit": 28.55,
+    "exit_time": "12:30",
+    "pnl": -299.91,
+    "reason": "rose back into the band"
    }
   ],
-  "next_check": "12:30"
+  "next_check": "13:00"
  },
  "log": [
   "Watching. Decision after 15:30 ET."
@@ -483,6 +486,20 @@
     120.81,
     119.705,
     120.81
+   ],
+   [
+    1795109100,
+    123.1,
+    123.1,
+    122.41,
+    122.71
+   ],
+   [
+    1795109400,
+    122.375,
+    123.26,
+    122.375,
+    123.15
    ]
   ],
   "daily": [
@@ -1135,7 +1152,7 @@
     129.16,
     129.85,
     119.06,
-    120.81
+    122.93
    ]
   ],
   "fills": [

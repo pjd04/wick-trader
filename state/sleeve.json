@@ -1,20 +1,12 @@
 {
  "day": "2026-11-19",
- "pos": {
-  "date": "2026-11-19",
-  "time": "12:01",
-  "side": -1,
-  "side_name": "bet down",
-  "symbol": "SPXS",
-  "qty": 769,
-  "entry": 28.94,
-  "spy_at_entry": 722.85
- },
+ "pos": null,
  "day_trades": [
   "2026-11-09",
   "2026-11-11",
   "2026-11-13",
-  "2026-11-17"
+  "2026-11-17",
+  "2026-11-19"
  ],
  "trades": [
   {
@@ -86,9 +78,23 @@
    "exit_time": "12:33",
    "pnl": -72.63,
    "reason": "rose back into the band"
+  },
+  {
+   "date": "2026-11-19",
+   "time": "12:01",
+   "side": -1,
+   "side_name": "bet down",
+   "symbol": "SPXS",
+   "qty": 769,
+   "entry": 28.94,
+   "spy_at_entry": 722.85,
+   "exit": 28.55,
+   "exit_time": "12:30",
+   "pnl": -299.91,
+   "reason": "rose back into the band"
   }
  ],
- "pnl_total": 897.49,
+ "pnl_total": 597.58,
  "sigma": [
   0.004403,
   0.006258,
@@ -110,15 +116,16 @@
   60,
   90,
   120,
-  150
+  150,
+  180
  ],
  "entries_today": 1,
  "pnl_day_start": 897.49,
  "bands": {
-  "time": "12:01",
-  "spy": 722.85,
-  "upper": 743.61,
-  "lower": 724.19,
-  "vwap": 731.53
+  "time": "12:30",
+  "spy": 725.97,
+  "upper": 743.43,
+  "lower": 724.37,
+  "vwap": 728.9
  }
 }
