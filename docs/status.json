@@ -1,18 +1,18 @@
 {
- "updated": "2026-11-20T15:39-05:00",
+ "updated": "2026-11-20T15:52-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 89935.84,
+ "equity": 89961.04,
  "start_equity": 100000.0,
- "total_pl": -10064.16,
- "total_pl_pct": -0.1006,
- "day_pl": -113.44,
- "day_pl_pct": -0.0013,
- "position_value": 12395.75,
+ "total_pl": -10038.96,
+ "total_pl_pct": -0.1004,
+ "day_pl": -88.24,
+ "day_pl_pct": -0.001,
+ "position_value": 12357.05,
  "avg_entry": 129.7091,
- "invested_pct": 0.138,
+ "invested_pct": 0.137,
  "signal": {
-  "exposure": 0.193,
+  "exposure": 0.192,
   "trend": 0,
   "momentum": 1,
   "dip_buy": 0,
@@ -23,7 +23,7 @@
    "vol": 0.15
   }
  },
- "spy_day": -0.0341,
+ "spy_day": -0.0352,
  "market_open": true,
  "halted": false,
  "history": [
@@ -93,7 +93,7 @@
   },
   {
    "date": "2026-11-20",
-   "equity": 89935.84
+   "equity": 89961.04
   }
  ],
  "actions": [
@@ -161,21 +161,10 @@
  "sleeve": {
   "enabled": true,
   "share": 0.25,
-  "position": {
-   "date": "2026-11-20",
-   "time": "11:01",
-   "side": -1,
-   "side_name": "bet down",
-   "symbol": "SPXS",
-   "qty": 710,
-   "entry": 30.95,
-   "spy_at_entry": 706.29,
-   "value": 23288.0,
-   "open_pnl": 1313.5
-  },
-  "pnl_total": 1911.08,
-  "pnl_today": 1313.5,
-  "day_trades_used": 2,
+  "position": null,
+  "pnl_total": 1960.78,
+  "pnl_today": 1363.2,
+  "day_trades_used": 3,
   "day_trade_limit": 3,
   "bands": {
    "time": "15:31",
@@ -268,12 +257,27 @@
     "exit_time": "12:30",
     "pnl": -299.91,
     "reason": "rose back into the band"
+   },
+   {
+    "date": "2026-11-20",
+    "time": "11:01",
+    "side": -1,
+    "side_name": "bet down",
+    "symbol": "SPXS",
+    "qty": 710,
+    "entry": 30.95,
+    "spy_at_entry": 706.29,
+    "exit": 32.87,
+    "exit_time": "15:52",
+    "pnl": 1363.2,
+    "reason": "end of day"
    }
   ],
   "next_check": null
  },
  "log": [
-  "Today's decision is done. Watching until the close."
+  "Today's decision is done. Watching until the close.",
+  "Active sleeve: sold 710 SPXS at $32.87 (end of day), P&L $+1,363.20"
  ],
  "chart": {
   "symbol": "UPRO",
@@ -792,9 +796,30 @@
    [
     1795206900,
     105.11,
-    105.61,
+    105.79,
     105.11,
-    105.61
+    105.79
+   ],
+   [
+    1795207200,
+    105.745,
+    105.8,
+    105.07,
+    105.07
+   ],
+   [
+    1795207500,
+    104.945,
+    106.92,
+    104.945,
+    106.92
+   ],
+   [
+    1795207800,
+    105.72,
+    105.72,
+    105.435,
+    105.435
    ]
   ],
   "daily": [
@@ -1446,8 +1471,8 @@
     "2026-11-20",
     116.56,
     118.66,
-    105.11,
-    105.61
+    104.945,
+    105.435
    ]
   ],
   "fills": [
