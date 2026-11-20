@@ -1,18 +1,18 @@
 {
- "updated": "2026-11-20T15:27-05:00",
+ "updated": "2026-11-20T15:39-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 89879.24,
+ "equity": 89935.84,
  "start_equity": 100000.0,
- "total_pl": -10120.76,
- "total_pl_pct": -0.1012,
- "day_pl": -170.04,
- "day_pl_pct": -0.0019,
- "position_value": 12495.35,
+ "total_pl": -10064.16,
+ "total_pl_pct": -0.1006,
+ "day_pl": -113.44,
+ "day_pl_pct": -0.0013,
+ "position_value": 12395.75,
  "avg_entry": 129.7091,
- "invested_pct": 0.139,
+ "invested_pct": 0.138,
  "signal": {
-  "exposure": 0.196,
+  "exposure": 0.193,
   "trend": 0,
   "momentum": 1,
   "dip_buy": 0,
@@ -23,7 +23,7 @@
    "vol": 0.15
   }
  },
- "spy_day": -0.0317,
+ "spy_day": -0.0341,
  "market_open": true,
  "halted": false,
  "history": [
@@ -93,16 +93,10 @@
   },
   {
    "date": "2026-11-20",
-   "equity": 89879.24
+   "equity": 89935.84
   }
  ],
  "actions": [
-  {
-   "date": "2026-11-06",
-   "action": "hold",
-   "amount": 0.0,
-   "exposure": 0.497
-  },
   {
    "date": "2026-11-09",
    "action": "sell",
@@ -156,6 +150,12 @@
    "action": "hold",
    "amount": 0.0,
    "exposure": 0.214
+  },
+  {
+   "date": "2026-11-20",
+   "action": "hold",
+   "amount": 0.0,
+   "exposure": 0.193
   }
  ],
  "sleeve": {
@@ -170,19 +170,19 @@
    "qty": 710,
    "entry": 30.95,
    "spy_at_entry": 706.29,
-   "value": 23145.93,
-   "open_pnl": 1171.43
+   "value": 23288.0,
+   "open_pnl": 1313.5
   },
-  "pnl_total": 1769.01,
-  "pnl_today": 1171.43,
+  "pnl_total": 1911.08,
+  "pnl_today": 1313.5,
   "day_trades_used": 2,
   "day_trade_limit": 3,
   "bands": {
-   "time": "15:02",
-   "spy": 694.89,
-   "upper": 723.07,
-   "lower": 706.4,
-   "vwap": 705.02
+   "time": "15:31",
+   "spy": 691.38,
+   "upper": 723.77,
+   "lower": 705.7,
+   "vwap": 704.08
   },
   "trades": [
    {
@@ -270,10 +270,10 @@
     "reason": "rose back into the band"
    }
   ],
-  "next_check": "15:30"
+  "next_check": null
  },
  "log": [
-  "Watching. Decision after 15:30 ET."
+  "Today's decision is done. Watching until the close."
  ],
  "chart": {
   "symbol": "UPRO",
@@ -779,8 +779,22 @@
     1795206300,
     106.77,
     106.77,
-    106.77,
-    106.77
+    106.68,
+    106.7
+   ],
+   [
+    1795206600,
+    106.21,
+    106.21,
+    105.62,
+    105.71
+   ],
+   [
+    1795206900,
+    105.11,
+    105.61,
+    105.11,
+    105.61
    ]
   ],
   "daily": [
@@ -1432,8 +1446,8 @@
     "2026-11-20",
     116.56,
     118.66,
-    106.62,
-    106.77
+    105.11,
+    105.61
    ]
   ],
   "fills": [
