@@ -1,18 +1,18 @@
 {
- "updated": "2026-11-20T12:24-05:00",
+ "updated": "2026-11-20T12:36-05:00",
  "mode": "paper",
  "symbol": "UPRO",
- "equity": 89659.96,
+ "equity": 89651.66,
  "start_equity": 100000.0,
- "total_pl": -10340.04,
- "total_pl_pct": -0.1034,
- "day_pl": -389.32,
- "day_pl_pct": -0.0043,
+ "total_pl": -10348.34,
+ "total_pl_pct": -0.1035,
+ "day_pl": -397.62,
+ "day_pl_pct": -0.0044,
  "position_value": 12925.72,
  "avg_entry": 129.7091,
  "invested_pct": 0.144,
  "signal": {
-  "exposure": 0.205,
+  "exposure": 0.206,
   "trend": 0,
   "momentum": 1,
   "dip_buy": 0,
@@ -23,7 +23,7 @@
    "vol": 0.15
   }
  },
- "spy_day": -0.0215,
+ "spy_day": -0.0214,
  "market_open": true,
  "halted": false,
  "history": [
@@ -93,7 +93,7 @@
   },
   {
    "date": "2026-11-20",
-   "equity": 89659.96
+   "equity": 89651.66
   }
  ],
  "actions": [
@@ -170,19 +170,19 @@
    "qty": 710,
    "entry": 30.95,
    "spy_at_entry": 706.29,
-   "value": 22482.15,
-   "open_pnl": 507.65
+   "value": 22478.6,
+   "open_pnl": 504.1
   },
-  "pnl_total": 1105.23,
-  "pnl_today": 507.65,
+  "pnl_total": 1101.68,
+  "pnl_today": 504.1,
   "day_trades_used": 2,
   "day_trade_limit": 3,
   "bands": {
-   "time": "12:03",
-   "spy": 701.22,
-   "upper": 722.54,
-   "lower": 706.93,
-   "vwap": 709.68
+   "time": "12:32",
+   "spy": 701.56,
+   "upper": 722.23,
+   "lower": 707.24,
+   "vwap": 708.76
   },
   "trades": [
    {
@@ -270,7 +270,7 @@
     "reason": "rose back into the band"
    }
   ],
-  "next_check": "12:30"
+  "next_check": "13:00"
  },
  "log": [
   "Watching. Decision after 15:30 ET."
@@ -519,9 +519,30 @@
    [
     1795195200,
     110.45,
-    110.57,
-    110.25,
-    110.25
+    110.64,
+    110.16,
+    110.64
+   ],
+   [
+    1795195500,
+    110.59,
+    110.59,
+    110.175,
+    110.175
+   ],
+   [
+    1795195800,
+    110.32,
+    110.82,
+    110.22,
+    110.82
+   ],
+   [
+    1795196100,
+    110.82,
+    110.82,
+    110.37,
+    110.37
    ]
   ],
   "daily": [
@@ -1173,8 +1194,8 @@
     "2026-11-20",
     116.56,
     118.66,
-    110.34,
-    110.34
+    110.16,
+    110.82
    ]
   ],
   "fills": [
