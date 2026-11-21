@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-21T09:20-05:00",
+ "updated": "2026-11-21T16:50-05:00",
  "mode": "paper",
  "symbol": "UPRO",
  "equity": 89947.09,
@@ -277,7 +277,7 @@
     "reason": "end of day"
    }
   ],
-  "next_check": "10:00"
+  "next_check": null
  },
  "log": [
   "Market closed."
