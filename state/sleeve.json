@@ -127,15 +127,16 @@
  "prev": 690.81,
  "open": 724.38,
  "done": [
-  30
+  30,
+  60
  ],
  "entries_today": 0,
  "pnl_day_start": 1960.78,
  "bands": {
-  "time": "10:03",
-  "spy": 720.66,
-  "upper": 727.83,
-  "lower": 687.52,
-  "vwap": 718.96
+  "time": "10:31",
+  "spy": 727.83,
+  "upper": 729.1,
+  "lower": 686.31,
+  "vwap": 720.32
  }
 }
