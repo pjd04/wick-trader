@@ -1,31 +1,21 @@
 {
- "updated": "2026-11-24T16:01-05:00",
+ "updated": "2026-11-25T16:00-05:00",
  "live_settings": "200/252/10/0.15",
  "shadow_settings": "200/252/5/0.1",
  "shadow_since": "2026-11-06",
- "days": 12,
+ "days": 13,
  "days_needed": 126,
  "live": {
-  "total": -0.05332359732406233,
-  "sharpe": -3.1253807541022463
+  "total": -0.054498669235292674,
+  "sharpe": -3.082703584942986
  },
  "shadow": {
-  "total": -0.029587460964056733,
-  "sharpe": -2.6438165960958013
+  "total": -0.030390515031787135,
+  "sharpe": -2.62084302747576
  },
  "promotions": [],
  "just_promoted": null,
  "report_card": [
-  {
-   "date": "2026-11-09",
-   "action": "sell",
-   "amount": -18283.3,
-   "exposure": 0.444,
-   "after_1d": -0.011,
-   "good_1d": true,
-   "after_5d": -0.0516,
-   "good_5d": true
-  },
   {
    "date": "2026-11-10",
    "action": "hold",
@@ -73,7 +63,7 @@
    "exposure": 0.656,
    "after_1d": -0.0092,
    "good_1d": false,
-   "after_5d": -0.0666,
+   "after_5d": -0.0658,
    "good_5d": false
   },
   {
@@ -83,7 +73,7 @@
    "exposure": 0.647,
    "after_1d": -0.0092,
    "good_1d": null,
-   "after_5d": -0.0666,
+   "after_5d": -0.0658,
    "good_5d": null
   },
   {
@@ -92,7 +82,9 @@
    "amount": -28579.07,
    "exposure": 0.219,
    "after_1d": -0.0589,
-   "good_1d": true
+   "good_1d": true,
+   "after_5d": -0.0651,
+   "good_5d": true
   },
   {
    "date": "2026-11-19",
@@ -115,18 +107,26 @@
    "action": "hold",
    "amount": 0.0,
    "exposure": 0.154,
-   "after_1d": -0.0154,
+   "after_1d": -0.0146,
    "good_1d": null
   },
   {
    "date": "2026-11-24",
    "action": "hold",
    "amount": 0.0,
-   "exposure": 0.157
+   "exposure": 0.157,
+   "after_1d": -0.0084,
+   "good_1d": null
+  },
+  {
+   "date": "2026-11-25",
+   "action": "hold",
+   "amount": 0.0,
+   "exposure": 0.158
   }
  ],
- "hit_rate_5d": 0.25,
- "graded": 4,
+ "hit_rate_5d": 0.4,
+ "graded": 5,
  "research": {
   "fixed_2016_now": 0.194,
   "best_self_tune_2016_now": 0.189,
