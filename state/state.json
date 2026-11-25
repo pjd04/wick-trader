@@ -2,7 +2,7 @@
  "account": "PA34J0XP5K55",
  "start_equity": 100000.0,
  "peak": 100060.02,
- "last_decision": "2026-11-24",
+ "last_decision": "2026-11-25",
  "halted": false,
  "history": [
   {
@@ -91,7 +91,7 @@
   },
   {
    "date": "2026-11-25",
-   "equity": 91238.02
+   "equity": 91155.75
   }
  ],
  "actions": [
@@ -184,6 +184,12 @@
    "action": "hold",
    "amount": 0.0,
    "exposure": 0.157
+  },
+  {
+   "date": "2026-11-25",
+   "action": "hold",
+   "amount": 0.0,
+   "exposure": 0.158
   }
  ]
 }
